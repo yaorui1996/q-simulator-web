@@ -2,6 +2,7 @@
 import { ref, reactive } from 'vue'
 import { QCircuitOperation } from './QCircuitOperation'
 import QCircuitOperationElement from './QCircuitOperationElement.vue';
+import PaletteDropzone from './PaletteDropzone.vue';
 
 const props = defineProps<{
   qCircuitOperationChosen: QCircuitOperation
@@ -30,6 +31,7 @@ function mousedownPalette(operation: QCircuitOperation) {
 <template>
   <div class="q-circuit-palette">
     <div class="wrapper">
+      <PaletteDropzone v-for="operation in ['h', 'x', 'y', 'z']" :gateName="operation" />
       <div class="q-circuit-palette-operation" v-for="operation in paletteOperations"
         :style="{ 'grid-column-start': operation.x, 'grid-row-start': operation.y }"
         @mousedown="mousedownPalette(operation)">
