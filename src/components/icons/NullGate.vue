@@ -1,20 +1,23 @@
-<script setup lang="ts">
-import { Display } from '../Gate'
+<script
+  setup
+  lang="ts"
+>
+  import { Display } from '../Gate'
 
-defineProps<{
-    value: string,
-    display: Display,
+  defineProps<{
+    value: string
+    display: Display
     inCircuitDropzone: boolean
-}>()
+  }>()
 </script>
 
 <template>
-    <p></p>
+  <p></p>
 </template>
 
 <style scoped>
-p {
+  p {
     width: 32px;
     height: 32px;
-}
+  }
 </style>
