@@ -51,9 +51,11 @@
     height: 32px;
     border-radius: 4px;
     color: v-bind(
-      "display == Display.Grabbed ? 'rgb(192, 132, 252)' : inCircuitDropzone ? 'rgb(229, 229, 229)' : 'rgb(168, 85, 247)'"
+      "display == Display.Drag ? 'rgb(192, 132, 252)' : inCircuitDropzone ? 'rgb(229, 229, 229)' : 'rgb(168, 85, 247)'"
     );
-    background-color: v-bind("display == Display.Grabbed ? 'rgb(168, 85, 247)' : 'rgb(249, 250, 251)'");
+    background-color: v-bind(
+      "display == Display.Drag ? 'rgb(168, 85, 247)' : inCircuitDropzone ? 'rgb(249, 250, 251)' : 'rgb(255, 255, 255)'"
+    );
   }
 
   .value {
@@ -61,8 +63,9 @@
     display: flex;
     justify-content: center;
     color: v-bind(
-      "display == Display.Grabbed ? 'rgb(255, 255, 255)' : value == '0' ? 'rgb(239, 68, 68)' : 'rgb(59, 130, 246)'"
+      "display == Display.Drag ? 'rgb(255, 255, 255)' : value == '0' ? 'rgb(239, 68, 68)' : 'rgb(59, 130, 246)'"
     );
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      'Liberation Mono', 'Courier New', monospace;
   }
 </style>

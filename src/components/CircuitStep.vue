@@ -2,78 +2,22 @@
   setup
   lang="ts"
 >
-  import CircuitDropzone from './CircuitDropzone.vue'
-  import { emitter } from './Emitter'
-  import { Display, Gate, isGateEqual, isGateValid } from './Gate'
+  import CommonDropzone from './CommonDropzone.vue'
+  import { handleMouseMoveCircuitStep } from './Event'
+  import { Gate } from './Gate'
 
-  const props = defineProps<{ step: Gate[]; gateDragging: Gate }>()
-
-  function mousemove(event: MouseEvent, gate: Gate) {
-    if (isGateValid(props.gateDragging)) {
-      if (!isGateValid(gate)) {
-        emitter.emit('removeCircuitDropzone')
-        emitter.emit('setCircuitDropzone', {
-          step: gate.step,
-          register: gate.register,
-          name: 'Null',
-          value: '',
-          display: Display.Default,
-          wireInput: false,
-          wireOutput: false,
-          connectTop: false,
-          connectBottom: false
-        })
-      } else if (isGateValid(gate) && !isGateEqual(gate, props.gateDragging)) {
-        if (
-          event.offsetX < 30 / 2 &&
-          !(props.gateDragging.step == gate.step - 1 && props.gateDragging.register == gate.register)
-        ) {
-          emitter.emit('removeCircuitDropzone')
-          emitter.emit('setCircuitDropzone', {
-            step: gate.step - 1,
-            register: gate.register,
-            name: 'Null',
-            value: '',
-            display: Display.Default,
-            wireInput: false,
-            wireOutput: false,
-            connectTop: false,
-            connectBottom: false
-          })
-        } else if (
-          event.offsetX >= 30 / 2 &&
-          !(props.gateDragging.step == gate.step + 1 && props.gateDragging.register == gate.register)
-        ) {
-          emitter.emit('removeCircuitDropzone')
-          emitter.emit('setCircuitDropzone', {
-            step: gate.step + 1,
-            register: gate.register,
-            name: 'Null',
-            value: '',
-            display: Display.Default,
-            wireInput: false,
-            wireOutput: false,
-            connectTop: false,
-            connectBottom: false
-          })
-        }
-      }
-    }
-  }
+  defineProps<{ stepGates: Gate[] }>()
 </script>
 
 <template>
   <div class="circuit-step">
     <div
       class="circuit-dropzone-container"
-      v-for="(gate, index) in step"
+      v-for="(circuitDropzoneGate, index) in stepGates"
       :key="index"
-      @mousemove="mousemove($event, gate)"
+      @mousemove.stop="handleMouseMoveCircuitStep($event, circuitDropzoneGate)"
     >
-      <CircuitDropzone
-        :gate="gate"
-        :gate-dragging="gateDragging"
-      />
+      <CommonDropzone :gate="circuitDropzoneGate" />
     </div>
   </div>
 </template>

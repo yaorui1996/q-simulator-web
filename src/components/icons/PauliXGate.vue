@@ -34,7 +34,9 @@
     height: 32px;
     border-radius: 4px;
     color: rgb(255, 255, 255);
-    background-color: v-bind("display == Display.Grabbed ? 'rgb(168, 85, 247)' : 'rgb(16, 185, 129)'");
+    background-color: v-bind(
+      "display == Display.Drag ? 'rgb(168, 85, 247)' : 'rgb(16, 185, 129)'"
+    );
     border-radius: 9999rem;
   }
 </style>

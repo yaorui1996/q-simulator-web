@@ -3,32 +3,26 @@
   lang="ts"
 >
   import CircuitStep from './CircuitStep.vue'
-  import { emitter } from './Emitter'
-  import { Gate, initGateBlank, isGateInCircuitDropzone, isGateValid } from './Gate'
+  import {
+    handleMouseEnterCircuitBoard,
+    handleMouseLeaveCircuitBoard
+  } from './Event'
+  import { Gate } from './Gate'
 
-  const props = defineProps<{ circuit: Gate[][]; gateDragging: Gate }>()
-
-  function mouseleave() {
-    if (isGateValid(props.gateDragging)) {
-      emitter.emit('removeCircuitDropzone')
-      if (isGateValid(props.gateDragging) && isGateInCircuitDropzone(props.gateDragging)) {
-        initGateBlank(props.gateDragging, props.gateDragging.name, props.gateDragging.value)
-      }
-    }
-  }
+  defineProps<{ circuitGates: Gate[][] }>()
 </script>
 
 <template>
   <div class="circuit-board-container">
     <div
       class="circuit-board"
-      @mouseleave="mouseleave"
+      @mouseenter="handleMouseEnterCircuitBoard()"
+      @mouseleave="handleMouseLeaveCircuitBoard()"
     >
       <CircuitStep
-        :step="step"
-        v-for="(step, index) in circuit"
+        v-for="(stepGates, index) in circuitGates"
         :key="index"
-        :gate-dragging="gateDragging"
+        :stepGates="stepGates"
       />
     </div>
   </div>

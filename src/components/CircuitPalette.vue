@@ -2,24 +2,23 @@
   setup
   lang="ts"
 >
-  import CircuitDropzone from './CircuitDropzone.vue'
+  import CommonDropzone from './CommonDropzone.vue'
   import { Gate } from './Gate'
 
-  defineProps<{ palette: Gate[]; gateDragging: Gate }>()
+  defineProps<{ paletteGates: Gate[] }>()
 </script>
 
 <template>
   <div class="circuit-palette-container">
-    <div class="circuit-palette rounded-bl-2xl rounded-tr-md bg-white drop-shadow-xl">
+    <div
+      class="circuit-palette rounded-bl-2xl rounded-tr-md bg-white drop-shadow-xl"
+    >
       <div
         class="palette-dropzone-container"
-        v-for="(gate, index) in palette"
+        v-for="(paletteDropzoneGate, index) in paletteGates"
         :key="index"
       >
-        <CircuitDropzone
-          :gate="gate"
-          :gate-dragging="gateDragging"
-        />
+        <CommonDropzone :gate="paletteDropzoneGate" />
       </div>
     </div>
   </div>
