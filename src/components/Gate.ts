@@ -7,8 +7,17 @@ export enum Display {
 
 export enum GateName {
   Null,
+  Hadamard,
   PauliX,
   PauliY,
+  PauliZ,
+  Phase,
+  T,
+  SquareRootX,
+  RotationX,
+  RotationY,
+  RotationZ,
+  Swap,
   Control,
   Write,
   Measurement
@@ -103,6 +112,21 @@ export function emptyStep(stepIndex: number, registerNum: number): Gate[] {
   return step
 }
 
-export function isStepEmpty(step: Gate[]): boolean {
-  return step.every((gate) => !isGateValid(gate))
+export function isStepEmpty(stepGates: Gate[]): boolean {
+  return stepGates.every((gate) => !isGateValid(gate))
+}
+
+export function connectStepGates(
+  stepGates: Gate[],
+  connectStart: number,
+  connectEnd: number
+): void {
+  for (let i: number = connectStart; i <= connectEnd; i++) {
+    if (i > connectStart) {
+      stepGates[i].connectTop = true
+    }
+    if (i < connectEnd) {
+      stepGates[i].connectBottom = true
+    }
+  }
 }

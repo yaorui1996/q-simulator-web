@@ -20,10 +20,18 @@
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M17 13L24 24M24 24L31 13M24 24V35"
+      d="M12.3214 35V24M18 24.5L21.7303 35M12.3214 24V13C21 13 22 15.5 22 18.5C22 21.5 21 24 12.3214 24Z"
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M24.5 13H34.5L24.5 35H34.5"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     />
   </svg>
 </template>

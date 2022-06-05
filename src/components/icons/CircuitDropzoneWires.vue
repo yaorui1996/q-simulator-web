@@ -62,25 +62,31 @@
 </template>
 
 <style scoped>
-  svg {
-    width: 24px;
+  .wires {
+    width: var(--circuit-dropzone-wires-width);
   }
 
   .wire-input {
-    color: v-bind("wireInput ? 'rgb(23, 23, 23)' : 'rgb(229, 229, 229)'");
+    color: v-bind(
+      "wireInput?'var(--wire-enable-color)':'var(--wire-disable-color)'"
+    );
   }
 
   .wire-output {
-    color: v-bind("wireOutput ? 'rgb(23, 23, 23)' : 'rgb(229, 229, 229)'");
+    color: v-bind(
+      "wireOutput?'var(--wire-enable-color)':'var(--wire-disable-color)'"
+    );
   }
 
   .connect-top {
-    opacity: v-bind('connectTop ? 1 : 0');
-    color: rgb(16, 185, 129);
+    color: v-bind(
+      "connectTop?'var(--connect-enable-color)':'var(--connect-disable-color)'"
+    );
   }
 
   .connect-bottom {
-    opacity: v-bind('connectBottom ? 1 : 0');
-    color: rgb(16, 185, 129);
+    color: v-bind(
+      "connectBottom?'var(--connect-enable-color)':'var(--connect-disable-color)'"
+    );
   }
 </style>

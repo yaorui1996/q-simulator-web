@@ -28,14 +28,14 @@
 
 <style scoped>
   svg {
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
+    border-radius: var(--gate-border-radius);
+    width: var(--gate-width);
+    height: var(--gate-height);
     color: v-bind(
-      "display == Display.Drag ? 'rgb(255, 255, 255)' : 'rgb(16, 185, 129)'"
+      "display == Display.Drag ? 'var(--gate-color-white)' : value == '1' ? 'var(--gate-color-green)' : 'var(--gate-color-gray)'"
     );
     background-color: v-bind(
-      "display == Display.Drag ? 'rgb(168, 85, 247)' : 'transparent'"
+      "display == Display.Drag ? 'var(--gate-color-purple-500)' : transparent"
     );
   }
 </style>

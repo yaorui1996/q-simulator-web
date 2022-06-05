@@ -17,22 +17,41 @@
     Gate,
     GateName,
     isGateInCircuitDropzone,
-    isGateInPaletteDropzone
+    isGateInPaletteDropzone,
+    isGateValid
   } from './Gate'
+  import CircuitDropzoneWires from './icons/CircuitDropzoneWires.vue'
   import ControlGate from './icons/ControlGate.vue'
-  import DropzoneWires from './icons/DropzoneWires.vue'
+  import HadamardGate from './icons/HadamardGate.vue'
   import MeasurementGate from './icons/MeasurementGate.vue'
   import NullYGate from './icons/NullGate.vue'
   import PauliXGate from './icons/PauliXGate.vue'
   import PauliYGate from './icons/PauliYGate.vue'
+  import PauliZGate from './icons/PauliZGate.vue'
+  import PhaseGate from './icons/PhaseGate.vue'
+  import RotationXGate from './icons/RotationXGate.vue'
+  import RotationYGate from './icons/RotationYGate.vue'
+  import RotationZGate from './icons/RotationZGate.vue'
+  import SquareRootXGate from './icons/SquareRootXGate.vue'
+  import SwapGate from './icons/SwapGate.vue'
+  import TGate from './icons/TGate.vue'
   import WriteGate from './icons/WriteGate.vue'
 
-  const props = defineProps<{ gate: Gate }>()
+  defineProps<{ gate: Gate }>()
 
   const gateElements: { [key in GateName]: object } = {
     [GateName.Null]: NullYGate,
+    [GateName.Hadamard]: HadamardGate,
     [GateName.PauliX]: PauliXGate,
     [GateName.PauliY]: PauliYGate,
+    [GateName.PauliZ]: PauliZGate,
+    [GateName.Phase]: PhaseGate,
+    [GateName.T]: TGate,
+    [GateName.SquareRootX]: SquareRootXGate,
+    [GateName.RotationX]: RotationXGate,
+    [GateName.RotationY]: RotationYGate,
+    [GateName.RotationZ]: RotationZGate,
+    [GateName.Swap]: SwapGate,
     [GateName.Control]: ControlGate,
     [GateName.Write]: WriteGate,
     [GateName.Measurement]: MeasurementGate
@@ -54,9 +73,9 @@
     }
   }
 
-  function onMouseDown(eventGate: Gate): void {
+  function onMouseDown(event: MouseEvent, eventGate: Gate): void {
     if (isGateInPaletteDropzone(eventGate)) {
-      handleMouseDownPaletteDropzone(eventGate)
+      handleMouseDownPaletteDropzone(event, eventGate)
     } else if (isGateInCircuitDropzone(eventGate)) {
       handleMouseDownCircuitDropzone(eventGate)
     }
@@ -73,7 +92,7 @@
 
 <template>
   <div class="dropzone">
-    <DropzoneWires
+    <CircuitDropzoneWires
       class="circuit-wires"
       v-if="isGateInCircuitDropzone(gate)"
       :wire-input="gate.wireInput"
@@ -83,10 +102,9 @@
     />
     <div
       class="gate-container"
-      :class="gate.name == GateName.Null ? 'z-0' : 'z-10'"
       @mouseenter="onMouseEnter(gate)"
       @mouseleave="onMouseLeave(gate)"
-      @mousedown.stop="onMouseDown(gate)"
+      @mousedown.stop="onMouseDown($event, gate)"
       @mouseup.stop="onMouseUp(gate)"
     >
       <component
@@ -106,26 +124,22 @@
     justify-content: center;
     align-items: center;
   }
-
+  .circuit-wires {
+    position: absolute;
+  }
   .gate-container {
     position: relative;
-    width: 38px;
-    height: 38px;
-    border-radius: 6px;
-    cursor: v-bind("props.gate.name == GateName.Null ? 'default' : 'grab'");
-    border-width: v-bind(
-      "gate.display == Display.Focus || gate.display == Display.Select ? '2px' : '0'"
-    );
+    z-index: v-bind('isGateValid(gate) ? 10 : 0');
+    cursor: v-bind("isGateValid(gate)? 'var(--cursor-grab)' : 'default'");
+    border-radius: var(--gate-container-border-radius);
+    border-width: var(--gate-container-border-width);
     border-style: solid;
     border-color: v-bind(
-      "gate.display === Display.Select ? 'rgb(168, 85, 247)' : 'rgb(163, 163, 163)'"
+      "gate.display == Display.Select ? 'var(--gate-container-border-corlor-purple)' : gate.display == Display.Focus ? 'var(--gate-container-border-corlor-neutral-400)' : 'transparent'"
     );
+    padding: var(--gate-container-padding);
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .circuit-wires {
-    position: absolute;
   }
 </style>

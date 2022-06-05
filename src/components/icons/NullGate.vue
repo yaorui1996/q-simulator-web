@@ -12,12 +12,12 @@
 </script>
 
 <template>
-  <p></p>
+  <svg />
 </template>
 
 <style scoped>
-  p {
-    width: 32px;
-    height: 32px;
+  svg {
+    width: var(--gate-width);
+    height: var(--gate-height);
   }
 </style>

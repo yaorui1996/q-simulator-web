@@ -1,6 +1,7 @@
 import { reactive } from 'vue'
 
 import {
+  connectStepGates,
   Display,
   emptyGate,
   emptyStep,
@@ -15,7 +16,10 @@ export const stepMin = 4
 export const stepMax = 10
 export const registerMin = 3
 export const registerMax = 6
-
+export const dragDropzonePos = reactive<{ left: number; top: number }>({
+  left: 0,
+  top: 0
+})
 export const dragDropzoneGate = reactive<Gate>(emptyGate())
 export const paletteGates = reactive<Gate[]>([])
 export const circuitGates = reactive<Gate[][]>([])
@@ -25,7 +29,7 @@ export function initPalette(): void {
   paletteGates.push({
     step: 0,
     register: -1,
-    name: GateName.PauliX,
+    name: GateName.Hadamard,
     value: '',
     display: Display.Default,
     wireInput: false,
@@ -36,7 +40,7 @@ export function initPalette(): void {
   paletteGates.push({
     step: 1,
     register: -1,
-    name: GateName.PauliY,
+    name: GateName.PauliX,
     value: '',
     display: Display.Default,
     wireInput: false,
@@ -47,7 +51,7 @@ export function initPalette(): void {
   paletteGates.push({
     step: 2,
     register: -1,
-    name: GateName.Control,
+    name: GateName.PauliY,
     value: '',
     display: Display.Default,
     wireInput: false,
@@ -58,6 +62,105 @@ export function initPalette(): void {
   paletteGates.push({
     step: 3,
     register: -1,
+    name: GateName.PauliZ,
+    value: '',
+    display: Display.Default,
+    wireInput: false,
+    wireOutput: false,
+    connectTop: false,
+    connectBottom: false
+  })
+  paletteGates.push({
+    step: 4,
+    register: -1,
+    name: GateName.Phase,
+    value: '',
+    display: Display.Default,
+    wireInput: false,
+    wireOutput: false,
+    connectTop: false,
+    connectBottom: false
+  })
+  paletteGates.push({
+    step: 5,
+    register: -1,
+    name: GateName.T,
+    value: '',
+    display: Display.Default,
+    wireInput: false,
+    wireOutput: false,
+    connectTop: false,
+    connectBottom: false
+  })
+  paletteGates.push({
+    step: 6,
+    register: -1,
+    name: GateName.SquareRootX,
+    value: '',
+    display: Display.Default,
+    wireInput: false,
+    wireOutput: false,
+    connectTop: false,
+    connectBottom: false
+  })
+  paletteGates.push({
+    step: 7,
+    register: -1,
+    name: GateName.RotationX,
+    value: '',
+    display: Display.Default,
+    wireInput: false,
+    wireOutput: false,
+    connectTop: false,
+    connectBottom: false
+  })
+  paletteGates.push({
+    step: 8,
+    register: -1,
+    name: GateName.RotationY,
+    value: '',
+    display: Display.Default,
+    wireInput: false,
+    wireOutput: false,
+    connectTop: false,
+    connectBottom: false
+  })
+  paletteGates.push({
+    step: 9,
+    register: -1,
+    name: GateName.RotationZ,
+    value: '',
+    display: Display.Default,
+    wireInput: false,
+    wireOutput: false,
+    connectTop: false,
+    connectBottom: false
+  })
+  paletteGates.push({
+    step: 10,
+    register: -1,
+    name: GateName.Swap,
+    value: '1',
+    display: Display.Default,
+    wireInput: false,
+    wireOutput: false,
+    connectTop: false,
+    connectBottom: false
+  })
+  paletteGates.push({
+    step: 11,
+    register: -1,
+    name: GateName.Control,
+    value: '1',
+    display: Display.Default,
+    wireInput: false,
+    wireOutput: false,
+    connectTop: false,
+    connectBottom: false
+  })
+  paletteGates.push({
+    step: 12,
+    register: -1,
     name: GateName.Write,
     value: '0',
     display: Display.Default,
@@ -67,7 +170,7 @@ export function initPalette(): void {
     connectBottom: false
   })
   paletteGates.push({
-    step: 4,
+    step: 13,
     register: -1,
     name: GateName.Write,
     value: '1',
@@ -78,7 +181,7 @@ export function initPalette(): void {
     connectBottom: false
   })
   paletteGates.push({
-    step: 5,
+    step: 13,
     register: -1,
     name: GateName.Measurement,
     value: '',
@@ -162,7 +265,7 @@ export function trimRegister(): void {
 
 export function trimStep(): void {
   // insert empty step from end to start
-  for (let i = getStepNum() - 1; i >= 0; i--) {
+  for (let i: number = getStepNum() - 1; i >= 0; i--) {
     if (isStepEmpty(circuitGates[i])) {
       if (getStepNum() > 1) {
         circuitGates.splice(i, 1)
@@ -207,10 +310,8 @@ export function arrangeWires(): void {
     const wires: boolean[] = Array(getRegisterNum()).fill(false)
 
     circuitGates.forEach((stepGates) => {
+      // set wire input and output
       stepGates.forEach((gate, index) => {
-        gate.connectTop = false
-        gate.connectBottom = false
-
         gate.wireInput = wires[index]
         if (gate.name == GateName.Write) {
           wires[index] = true
@@ -220,34 +321,63 @@ export function arrangeWires(): void {
         gate.wireOutput = wires[index]
       })
 
-      const controlGateTag: string[] = stepGates.map((gate) =>
+      // disconnect all gate
+      stepGates.forEach((gate) => {
+        gate.connectTop = false
+        gate.connectBottom = false
+      })
+
+      // classify gate by controllable
+      const gateControllableTag: string[] = stepGates.map((gate) =>
         gate.name == GateName.Control
           ? 'Control'
           : uncontrollableGate.includes(gate.name)
           ? 'Uncontrollable'
           : 'Controllable'
       )
-      const firstControlGate: number = controlGateTag.indexOf('Control')
-      if (firstControlGate >= 0) {
-        const lastControlGate: number = controlGateTag.lastIndexOf('Control')
+
+      // set control gate value
+      const controlGateValue: string =
+        gateControllableTag.filter((tag) => tag !== 'Uncontrollable').length > 1
+          ? '1'
+          : '0'
+      stepGates
+        .filter((gate) => gate.name == GateName.Control)
+        .forEach((gate) => (gate.value = controlGateValue))
+
+      // connect gate
+      if (gateControllableTag.includes('Control')) {
+        const firstControlGate: number = gateControllableTag.indexOf('Control')
+        const lastControlGate: number =
+          gateControllableTag.lastIndexOf('Control')
         let connectStart: number = firstControlGate
         let connectEnd: number = lastControlGate
-        const firstControllableGate: number =
-          controlGateTag.indexOf('Controllable')
-        if (firstControllableGate >= 0) {
+        if (gateControllableTag.includes('Controllable')) {
+          const firstControllableGate: number =
+            gateControllableTag.indexOf('Controllable')
           const lastControllableGate: number =
-            controlGateTag.lastIndexOf('Controllable')
+            gateControllableTag.lastIndexOf('Controllable')
           connectStart = Math.min(firstControlGate, firstControllableGate)
           connectEnd = Math.max(lastControlGate, lastControllableGate)
         }
-        for (let i: number = connectStart; i <= connectEnd; i++) {
-          if (i > connectStart) {
-            stepGates[i].connectTop = true
-          }
-          if (i < connectEnd) {
-            stepGates[i].connectBottom = true
-          }
-        }
+        connectStepGates(stepGates, connectStart, connectEnd)
+      }
+
+      // classify gate by swap
+      const gateSwapTag: string[] = stepGates.map((gate) =>
+        gate.name == GateName.Swap ? 'Swap' : ''
+      )
+
+      // set swap gate value and connect
+      const swapGateValue: string =
+        gateSwapTag.filter((tag) => tag == 'Swap').length == 2 ? '1' : '0'
+      stepGates
+        .filter((gate) => gate.name == GateName.Swap)
+        .forEach((gate) => (gate.value = swapGateValue))
+      if (swapGateValue == '1' && !gateControllableTag.includes('Control')) {
+        const firstSwapGate: number = gateSwapTag.indexOf('Swap')
+        const lastSwapGate: number = gateSwapTag.lastIndexOf('Swap')
+        connectStepGates(stepGates, firstSwapGate, lastSwapGate)
       }
     })
   }

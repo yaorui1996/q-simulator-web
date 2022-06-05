@@ -20,10 +20,11 @@
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M17 13L24 24M24 24L31 13M24 24V35"
+      d="M12 36L36 12M12 12L36 36"
       stroke="currentColor"
-      stroke-width="2"
+      stroke-width="4"
       stroke-linecap="round"
+      stroke-linejoin="round"
     />
   </svg>
 </template>
@@ -33,9 +34,11 @@
     border-radius: var(--gate-border-radius);
     width: var(--gate-width);
     height: var(--gate-height);
-    color: var(--gate-color-white);
+    color: v-bind(
+      "display == Display.Drag ? 'var(--gate-color-white)' : value == '1' ? 'var(--gate-color-green)' : 'var(--gate-color-gray)'"
+    );
     background-color: v-bind(
-      "display == Display.Drag ? 'var(--gate-background-color-purple)' : 'var(--gate-background-color-green)'"
+      "display == Display.Drag ? 'var(--gate-color-purple-500)' : transparent"
     );
   }
 </style>

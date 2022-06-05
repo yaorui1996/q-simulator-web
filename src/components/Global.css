@@ -1,0 +1,61 @@
+:root {
+  --circuit-background-color-gray: rgb(249, 250, 251);
+  --cursor-grab: grab;
+}
+
+:root {
+  --gate-width: 2rem;
+  --gate-height: 2rem;
+  --gate-border-radius: 0.25rem;
+  --circuit-dropzone-wires-width: 1.5rem;
+  --write-gate-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --gate-color-white: rgb(255, 255, 255);
+  --gate-color-red: rgb(239, 68, 68);
+  --gate-color-neutral-200: rgb(229, 229, 229);
+  --gate-color-neutral-500: rgb(115, 115, 115);
+  --gate-color-purple-400: rgb(192, 132, 252);
+  --gate-color-purple-500: rgb(168, 85, 247);
+  --gate-color-gray: rgb(107, 114, 128);
+  --gate-color-blue: rgb(59, 130, 246);
+  --gate-color-green: rgb(16, 185, 129);
+  --gate-background-color-white: rgb(255, 255, 255);
+  --gate-background-color-gray: rgb(249, 250, 251);
+  --gate-background-color-purple: rgb(168, 85, 247);
+  --gate-background-color-green: rgb(16, 185, 129);
+  --wire-enable-color: rgb(23, 23, 23);
+  --wire-disable-color: rgb(229, 229, 229);
+  --connect-enable-color: rgb(16, 185, 129);
+  --connect-disable-color: transparent;
+}
+
+:root {
+  --gate-container-border-radius: 0.375rem;
+  --gate-container-border-width: 0.125rem;
+  --gate-container-padding: 0.125rem 0.125rem 0.125rem 0.125rem;
+  --gate-container-border-corlor-purple: rgb(168, 85, 247);
+  --gate-container-border-corlor-neutral-400: rgb(163, 163, 163);
+}
+
+:root {
+  --step-width: 1.5rem;
+}
+
+:root {
+  --board-margin: 2.5rem 0.625rem 0.625rem 0.625rem;
+}
+
+:root {
+  --palette-margin: 1.25rem 0 3rem 0.625rem;
+  --palette-border-radius: 12px;
+  --palette-padding: 1rem 0.625rem 1rem 0.625rem;
+  --palette-background-color-white: rgb(255, 255, 255);
+}
+
+:root {
+  --dropzone-container-width: 1.125rem;
+  --dropzone-container-height: 2.375rem;
+  --circuit-dropzone-container-width: 1.5rem;
+  --circuit-dropzone-container-height: 3rem;
+  --palette-dropzone-container-margin: 0.125rem 0.125rem 0.125rem 0.125rem;
+}

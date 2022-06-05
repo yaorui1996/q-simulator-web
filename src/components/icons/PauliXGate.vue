@@ -30,13 +30,12 @@
 
 <style scoped>
   svg {
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    color: rgb(255, 255, 255);
-    background-color: v-bind(
-      "display == Display.Drag ? 'rgb(168, 85, 247)' : 'rgb(16, 185, 129)'"
-    );
     border-radius: 9999rem;
+    width: var(--gate-width);
+    height: var(--gate-height);
+    color: var(--gate-color-white);
+    background-color: v-bind(
+      "display == Display.Drag ? 'var(--gate-background-color-purple)' : 'var(--gate-background-color-green)'"
+    );
   }
 </style>

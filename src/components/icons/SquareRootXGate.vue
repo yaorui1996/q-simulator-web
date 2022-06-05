@@ -17,14 +17,13 @@
     height="48"
     viewBox="0 0 48 48"
     fill="none"
-    xmlns="http://www.w3.org/2000/svg"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
   >
-    <path
-      d="M17 13L24 24M24 24L31 13M24 24V35"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-    />
+    <path d="M10 24L13 24L14 36L17 36L18 12L38 12" />
+    <path d="M24 32L34 18M34 32L24 18" />
   </svg>
 </template>
 

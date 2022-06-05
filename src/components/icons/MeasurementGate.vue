@@ -42,19 +42,21 @@
       stroke-linejoin="round"
     />
   </svg>
-  <div class="value">{{ value }}</div>
+  <div class="value">
+    {{ value }}
+  </div>
 </template>
 
 <style scoped>
   svg {
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
+    border-radius: var(--gate-border-radius);
+    width: var(--gate-width);
+    height: var(--gate-height);
     color: v-bind(
-      "display == Display.Drag ? 'rgb(192, 132, 252)' : inCircuitDropzone ? 'rgb(229, 229, 229)' : 'rgb(168, 85, 247)'"
+      "display == Display.Drag ? 'var(--gate-color-purple-400)' : inCircuitDropzone ? 'var(--gate-color-neutral-200)' : 'var(--gate-color-purple-500)'"
     );
     background-color: v-bind(
-      "display == Display.Drag ? 'rgb(168, 85, 247)' : inCircuitDropzone ? 'rgb(249, 250, 251)' : 'rgb(255, 255, 255)'"
+      "display == Display.Drag ? 'var(--gate-background-color-purple)' : inCircuitDropzone ? 'var(--gate-background-color-gray)' : 'var(--gate-background-color-white)'"
     );
   }
 
@@ -63,9 +65,8 @@
     display: flex;
     justify-content: center;
     color: v-bind(
-      "display == Display.Drag ? 'rgb(255, 255, 255)' : value == '0' ? 'rgb(239, 68, 68)' : 'rgb(59, 130, 246)'"
+      "display == Display.Drag ? 'var(--gate-color-white)' : value == '1' ? 'var(--gate-color-blue)' : 'var(--gate-color-red)'"
     );
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-      'Liberation Mono', 'Courier New', monospace;
+    font-family: var(--write-gate-font-family);
   }
 </style>

@@ -20,7 +20,7 @@
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M17 13L24 24M24 24L31 13M24 24V35"
+      d="M15 13H33M24 13V35"
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"

@@ -17,20 +17,17 @@
     height="48"
     viewBox="0 0 48 48"
     fill="none"
-    xmlns="http://www.w3.org/2000/svg"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
   >
-    <path
-      d="M17 13L24 24M24 24L31 13M24 24V35"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-    />
+    <path d="M17 24A7 7 0 1 0 31 24A7 7 0 1 0 17 24M19 34L29 13" />
   </svg>
 </template>
 
 <style scoped>
   svg {
-    border-radius: var(--gate-border-radius);
+    border-radius: 9999rem;
     width: var(--gate-width);
     height: var(--gate-height);
     color: var(--gate-color-white);

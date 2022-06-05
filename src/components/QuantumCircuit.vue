@@ -2,19 +2,19 @@
   setup
   lang="ts"
 >
-  import { ref } from 'vue'
-
   import CircuitBoard from './CircuitBoard.vue'
   import CircuitPalette from './CircuitPalette.vue'
   import CommonDropzone from './CommonDropzone.vue'
   import {
     handleMouseDownQuantumCircuit,
+    handleMouseMoveQuantumCircuit,
     handleMouseUpQuantumCircuit
   } from './Event'
-  import { GateName, isGateInDragDropzone, isGateValid } from './Gate'
+  import { GateName, isGateInDragDropzone } from './Gate'
   import {
     circuitGates,
     dragDropzoneGate,
+    dragDropzonePos,
     initCircuit,
     initPalette,
     paletteGates,
@@ -23,49 +23,32 @@
 
   initPalette()
   initCircuit()
-
-  const x = ref<string>('0')
-  const y = ref<string>('0')
-
   circuitGates[0][1].name = GateName.PauliX
   circuitGates[1][0].name = GateName.PauliX
   circuitGates[1][1].name = GateName.PauliY
   circuitGates[2][1].name = GateName.PauliX
   trimCircuit()
-
-  function mousemove(event: MouseEvent) {
-    console.log('mousemovequantumcircuit')
-    x.value = event.pageX - 34 / 2 + 'px'
-    y.value = event.pageY - 34 / 2 + 'px'
-  }
 </script>
 
 <template>
   <div
     class="circuit"
-    @mousemove="mousemove"
     @mousedown="handleMouseDownQuantumCircuit()"
     @mouseup="handleMouseUpQuantumCircuit()"
+    @mousemove="handleMouseMoveQuantumCircuit($event)"
   >
     <CircuitPalette
       class="circuit-palette"
-      :paletteGates="paletteGates"
+      :palette-gates="paletteGates"
     />
     <CircuitBoard
       class="circuit-board"
-      :circuitGates="circuitGates"
+      :circuit-gates="circuitGates"
     />
-    <div
-      class="drag-dropzone-container"
-      style="position: absolute"
-    >
+    <div class="drag-dropzone-container">
       <CommonDropzone
-        class="drag-dropzone"
         :gate="dragDropzoneGate"
-        v-if="
-          isGateInDragDropzone(dragDropzoneGate) &&
-          isGateValid(dragDropzoneGate)
-        "
+        v-if="isGateInDragDropzone(dragDropzoneGate)"
       />
     </div>
   </div>
@@ -75,27 +58,30 @@
   .circuit {
     user-select: none;
     /* overflow: auto; */
-    background-color: rgb(249, 250, 251);
+    cursor: v-bind(
+      "isGateInDragDropzone(dragDropzoneGate) ? 'var(--cursor-grab)' : 'default'"
+    );
+    position: relative;
+    width: fit-content;
+    background-color: var(--circuit-background-color-gray);
     display: flex;
     flex-direction: column;
-    cursor: v-bind("isGateValid(dragDropzoneGate) ? 'default' : 'grab'");
-  }
-
-  .drag-dropzone-container {
-    position: absolute;
-    width: 38px;
-    height: 38px;
-    left: v-bind(x);
-    top: v-bind(y);
-    pointer-events: none;
   }
 
   .circuit-palette {
     position: relative;
-    border: 0px solid red;
   }
 
   .circuit-board {
     position: relative;
+  }
+
+  .drag-dropzone-container {
+    position: absolute;
+    width: var(--dropzone-container-width);
+    height: var(--dropzone-container-heightt);
+    left: v-bind("dragDropzonePos.left.toString() + 'px'");
+    top: v-bind("dragDropzonePos.top.toString() + 'px'");
+    pointer-events: none;
   }
 </style>
