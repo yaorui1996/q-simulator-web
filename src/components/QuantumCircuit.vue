@@ -7,6 +7,7 @@
   import CommonDropzone from './CommonDropzone.vue'
   import {
     handleMouseDownQuantumCircuit,
+    handleMouseLeaveQuantumCircuit,
     handleMouseMoveQuantumCircuit,
     handleMouseUpQuantumCircuit
   } from './Event'
@@ -33,6 +34,7 @@
 <template>
   <div
     class="circuit"
+    @mouseleave="handleMouseLeaveQuantumCircuit()"
     @mousedown="handleMouseDownQuantumCircuit()"
     @mouseup="handleMouseUpQuantumCircuit()"
     @mousemove="handleMouseMoveQuantumCircuit($event)"
@@ -78,8 +80,6 @@
 
   .drag-dropzone-container {
     position: absolute;
-    width: var(--dropzone-container-width);
-    height: var(--dropzone-container-heightt);
     left: v-bind("dragDropzonePos.left.toString() + 'px'");
     top: v-bind("dragDropzonePos.top.toString() + 'px'");
     pointer-events: none;

@@ -10,7 +10,7 @@
 </template>
 
 <style>
-  @import './components/Global.css';
+  /* @import './components/.css'; */
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

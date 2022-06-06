@@ -38,7 +38,7 @@
       "display == Display.Drag ? 'var(--gate-color-white)' : value == '1' ? 'var(--gate-color-green)' : 'var(--gate-color-gray)'"
     );
     background-color: v-bind(
-      "display == Display.Drag ? 'var(--gate-color-purple-500)' : transparent"
+      "display == Display.Drag ? 'var(--gate-color-purple-500)' : 'transparent'"
     );
   }
 </style>

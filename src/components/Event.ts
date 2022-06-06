@@ -172,6 +172,12 @@ export function handleMouseLeaveCircuitBoard(): void {
   }
 }
 
+export function handleMouseLeaveQuantumCircuit(): void {
+  //   console.log('mouseleavequantumcircuit')
+  handleMouseDownQuantumCircuit()
+  handleMouseUpQuantumCircuit()
+}
+
 export function handleMouseDownQuantumCircuit(): void {
   //   console.log('mousedownquantumcircuit')
   if (eventStatus == EventStatus.CircuitDropzoneGateSelected) {
@@ -190,7 +196,11 @@ export function handleMouseUpQuantumCircuit(): void {
 export function handleMouseMoveQuantumCircuit(event: MouseEvent): void {
   //   console.log('mousemovequantumcircuit')
   if (eventStatus == EventStatus.DraggindOutsideBoard) {
-    dragDropzonePos.left = event.pageX - 38 / 2
-    dragDropzonePos.top = event.pageY - 38 / 2
+    dragDropzonePos.left = event.pageX - 55 / 2
+    dragDropzonePos.top = event.pageY - 55 / 2
+  } else if (eventStatus == EventStatus.DraggingInsideBoard) {
+    eventStatus = EventStatus.DraggindOutsideBoard
+    initDragDropzone(draggedCircuitDropzoneGate)
+    deleteDraggedCircuitDrppzoneGate()
   }
 }
