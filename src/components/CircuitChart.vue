@@ -8,12 +8,14 @@
   import StateVectorBar from './charts/StateVectorBar.vue'
   import ProbabilityBar from './charts/ProbabilityBar.vue'
 
-  const registerNum = 3
-  const stateNum: number = Math.pow(2, registerNum)
-  const stateVectorsName = reactive<string[]>(new Array(stateNum))
-  const stateVectorsRe = reactive<string[]>(new Array(stateNum))
-  const stateVectorsIm = reactive<string[]>(new Array(stateNum))
-  const probability = reactive<string[]>(new Array(stateNum))
+  import {
+    registerNum,
+    stateNum,
+    stateVectorsName,
+    stateVectorsRe,
+    stateVectorsIm,
+    probability,
+  } from './Store'
 
   for (let i = 0; i < stateNum; i++) {
     stateVectorsName[i] = '|' + i.toString(2).padStart(registerNum, '0') + '⟩'

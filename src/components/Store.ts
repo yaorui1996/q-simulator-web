@@ -1,5 +1,11 @@
 import { reactive } from 'vue'
 
+import { io } from "socket.io-client";
+
+const socket = io("ws://127.0.0.1:8080", {
+  reconnectionDelayMax: 10000,
+});
+
 import {
   connectStepGates,
   Display,
@@ -23,6 +29,14 @@ export const dragDropzonePos = reactive<{ left: number; top: number }>({
 export const dragDropzoneGate = reactive<Gate>(emptyGate())
 export const paletteGates = reactive<Gate[]>([])
 export const circuitGates = reactive<Gate[][]>([])
+
+
+export let registerNum = 3
+export let stateNum: number = Math.pow(2, registerNum)
+export const stateVectorsName = reactive<string[]>(new Array(stateNum))
+export const stateVectorsRe = reactive<string[]>(new Array(stateNum))
+export const stateVectorsIm = reactive<string[]>(new Array(stateNum))
+export const probability = reactive<string[]>(new Array(stateNum))
 
 export function initPalette(): void {
   paletteGates.splice(0, paletteGates.length) // clear paletteGates
@@ -292,6 +306,7 @@ export function trimCircuit(): void {
   trimStep()
   arrangeIndex()
   arrangeWires()
+  commitCircuit()
 }
 
 export function arrangeIndex(): void {
@@ -382,3 +397,38 @@ export function arrangeWires(): void {
     })
   }
 }
+
+let circuitGatesJson = JSON.stringify(circuitGates)
+
+export function commitCircuit(): void {
+  if (circuitGatesJson == JSON.stringify(circuitGates)) {
+    return
+  } else {
+    circuitGatesJson = JSON.stringify(circuitGates)
+  }
+
+  const circuit = []
+  for (let i = 0; i < circuitGates.length; i++) {
+    if (i % 2 == 1) {
+      const step = []
+      for (const reg of circuitGates[i]) {
+        step.push(reg.name)
+      }
+      circuit.push(step)
+    }
+  }
+  //console.log(circuit)
+  socket.emit('circuit_message', circuit)
+}
+
+socket.on('result_message', (data) => {
+  //console.log(data)
+  registerNum = data.qubitNum
+  stateNum = Math.pow(2, registerNum)
+  for (let i = 0; i < stateNum; i++) {
+    stateVectorsName[i] = '|' + i.toString(2).padStart(registerNum, '0') + '⟩'
+    stateVectorsRe[i] = data.reVec[i].toFixed(3)
+    stateVectorsIm[i] = data.imVec[i].toFixed(3)
+    probability[i] = (data.reVec[i] ** 2 + data.imVec[i] ** 2).toFixed(3)
+  }
+})
