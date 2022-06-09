@@ -3,6 +3,7 @@
   lang="ts"
 >
   import CircuitBoard from './CircuitBoard.vue'
+  import CircuitChart from './CircuitChart.vue'
   import CircuitPalette from './CircuitPalette.vue'
   import CommonDropzone from './CommonDropzone.vue'
   import {
@@ -11,7 +12,7 @@
     handleMouseMoveQuantumCircuit,
     handleMouseUpQuantumCircuit
   } from './Event'
-  import { GateName, isGateInDragDropzone } from './Gate'
+  import { isGateInDragDropzone } from './Gate'
   import {
     circuitGates,
     dragDropzoneGate,
@@ -24,10 +25,6 @@
 
   initPalette()
   initCircuit()
-  circuitGates[0][1].name = GateName.PauliX
-  circuitGates[1][0].name = GateName.PauliX
-  circuitGates[1][1].name = GateName.PauliY
-  circuitGates[2][1].name = GateName.PauliX
   trimCircuit()
 </script>
 
@@ -39,6 +36,12 @@
     @mouseup="handleMouseUpQuantumCircuit()"
     @mousemove="handleMouseMoveQuantumCircuit($event)"
   >
+    <div class="drag-dropzone-container">
+      <CommonDropzone
+        :gate="dragDropzoneGate"
+        v-if="isGateInDragDropzone(dragDropzoneGate)"
+      />
+    </div>
     <CircuitPalette
       class="circuit-palette"
       :palette-gates="paletteGates"
@@ -47,12 +50,7 @@
       class="circuit-board"
       :circuit-gates="circuitGates"
     />
-    <div class="drag-dropzone-container">
-      <CommonDropzone
-        :gate="dragDropzoneGate"
-        v-if="isGateInDragDropzone(dragDropzoneGate)"
-      />
-    </div>
+    <CircuitChart class="circuit-chart" />
   </div>
 </template>
 
@@ -68,6 +66,14 @@
     background-color: var(--circuit-background-color-gray);
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .drag-dropzone-container {
+    position: absolute;
+    left: v-bind("dragDropzonePos.left.toString() + 'px'");
+    top: v-bind("dragDropzonePos.top.toString() + 'px'");
+    pointer-events: none;
   }
 
   .circuit-palette {
@@ -78,10 +84,8 @@
     position: relative;
   }
 
-  .drag-dropzone-container {
-    position: absolute;
-    left: v-bind("dragDropzonePos.left.toString() + 'px'");
-    top: v-bind("dragDropzonePos.top.toString() + 'px'");
-    pointer-events: none;
+  .circuit-chart {
+    position: relative;
+    align-self: center;
   }
 </style>

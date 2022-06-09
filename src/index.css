@@ -1,6 +1,8 @@
 :root {
   --circuit-background-color-gray: rgb(249, 250, 251);
   --cursor-grab: grab;
+  --font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
 }
 
 :root {
@@ -8,8 +10,6 @@
   --gate-height: 2rem;
   --gate-border-radius: 0.25rem;
   --circuit-dropzone-wires-width: 1.5rem;
-  --write-gate-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, 'Liberation Mono', 'Courier New', monospace;
   --gate-color-white: rgb(255, 255, 255);
   --gate-color-red: rgb(239, 68, 68);
   --gate-color-neutral-200: rgb(229, 229, 229);
@@ -42,12 +42,12 @@
 }
 
 :root {
-  --board-margin: 2.5rem 0.625rem 0.625rem 0.625rem;
+  --board-margin: 2.5rem 0.625rem 2.5rem 0.625rem;
 }
 
 :root {
-  --palette-margin: 1.25rem 0 3rem 0.625rem;
-  --palette-border-radius: 12px;
+  --palette-margin: 1.25rem 0.625rem 3rem 0.625rem;
+  --palette-border-radius: 0.75rem;
   --palette-padding: 1rem 0.625rem 1rem 0.625rem;
   --palette-background-color-white: rgb(255, 255, 255);
 }
@@ -56,4 +56,13 @@
   --circuit-dropzone-container-width: 1.5rem;
   --circuit-dropzone-container-height: 3rem;
   --palette-dropzone-container-margin: 0.125rem 0.125rem 0.125rem 0.125rem;
+}
+
+:root {
+  --circuit-chart-background-color-white: rgb(255, 255, 255);
+}
+
+:root {
+  --chart-width: 32rem;
+  --chart-height: 24rem;
 }

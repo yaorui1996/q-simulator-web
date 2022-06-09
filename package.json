@@ -10,9 +10,14 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@types/echarts": "^4.9.15",
+    "@types/vue-select": "^3.16.0",
+    "echarts": "^5.3.2",
     "mitt": "^3.0.0",
     "pinia": "^2.0.14",
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "vue-echarts": "^6.0.3",
+    "vue-select": "^4.0.0-beta.3"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.27.0",
