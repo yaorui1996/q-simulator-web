@@ -10,7 +10,7 @@ import {
   isGateValid,
   isStepEmpty,
   uncontrollableGate
-} from './Gate'
+} from '../Gate.js'
 
 export const stepMin = 4
 export const stepMax = 10

@@ -37,7 +37,7 @@
   import TGate from './icons/TGate.vue'
   import WriteGate from './icons/WriteGate.vue'
 
-  const props = defineProps<{ gate: Gate }>()
+  defineProps<{ gate: Gate }>()
 
   const gateElements: { [key in GateName]: object } = {
     [GateName.Null]: NullYGate,

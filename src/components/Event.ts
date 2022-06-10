@@ -15,7 +15,7 @@ import {
   initDragDropzone,
   removeDragDropzone,
   trimCircuit
-} from './Store'
+} from './store/Circuit'
 
 enum EventStatus {
   Idle,
@@ -123,8 +123,9 @@ export function handleMouseUpCircuitDropzone(eventGate: Gate): void {
   } else {
     if (eventStatus == EventStatus.DraggingInsideBoard) {
       setGateDisplay(draggedCircuitDropzoneGate, Display.Default)
+      trimCircuit()
     }
-    handleMouseUpQuantumCircuit()
+    eventStatus = EventStatus.Idle
   }
 }
 
@@ -188,8 +189,10 @@ export function handleMouseDownQuantumCircuit(): void {
 
 export function handleMouseUpQuantumCircuit(): void {
   //   console.log('mouseupquantumcircuit')
+  if (eventStatus == EventStatus.DraggindOutsideBoard) {
+    trimCircuit()
+  }
   eventStatus = EventStatus.Idle
-  trimCircuit()
   removeDragDropzone()
 }
 
