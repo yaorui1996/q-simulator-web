@@ -4,8 +4,6 @@
 
 QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化界面用拖动的方式来编辑量子线路，向后端QuantumSimulationPlatform(qsp) 服务器提交量子线路模拟任务并下载模拟结果，能够实现数据可视化。
 
-![](https://github.com/dbader/readme-template/raw/master/header.png)
-
 ## Table of Contents 目录
 
 - [QSimulatorWeb](#qsimulatorweb)
