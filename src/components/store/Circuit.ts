@@ -9,8 +9,9 @@ import {
   GateName,
   isGateValid,
   isStepEmpty,
-  uncontrollableGate
+  uncontrollableGates
 } from '../Gate.js'
+import { getCircuitJson } from '../server/Encoder.js'
 
 export const stepMin = 4
 export const stepMax = 10
@@ -292,6 +293,7 @@ export function trimCircuit(): void {
   trimStep()
   arrangeIndex()
   arrangeWires()
+  console.log(JSON.stringify(getCircuitJson()))
 }
 
 export function arrangeIndex(): void {
@@ -331,7 +333,7 @@ export function arrangeWires(): void {
       const gateControllableTag: string[] = stepGates.map((gate) =>
         gate.name == GateName.Control
           ? 'Control'
-          : uncontrollableGate.includes(gate.name)
+          : uncontrollableGates.includes(gate.name)
           ? 'Uncontrollable'
           : 'Controllable'
       )

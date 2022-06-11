@@ -8,6 +8,7 @@
   import ProbabilityBar from './charts/ProbabilityBar.vue'
   import StateVectorBar from './charts/StateVectorBar.vue'
   import { states } from './store/State'
+  import { getCircuitJson } from './server/Encoder'
 
   const options = reactive<string[]>(['State Vector', 'Probability'])
   const selected = ref<string>('State Vector')

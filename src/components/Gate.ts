@@ -6,24 +6,37 @@ export enum Display {
 }
 
 export enum GateName {
-  Null,
-  Hadamard,
-  PauliX,
-  PauliY,
-  PauliZ,
-  Phase,
-  T,
-  SquareRootX,
-  RotationX,
-  RotationY,
-  RotationZ,
-  Swap,
-  Control,
-  Write,
-  Measurement
+  Null = 'Null',
+  Hadamard = 'Hadamard',
+  PauliX = 'PauliX',
+  PauliY = 'PauliY',
+  PauliZ = 'PauliZ',
+  Phase = 'Phase',
+  T = 'T',
+  SquareRootX = 'SquareRootX',
+  RotationX = 'RotationX',
+  RotationY = 'RotationY',
+  RotationZ = 'RotationZ',
+  Swap = 'Swap',
+  Control = 'Control',
+  Write = 'Write',
+  Measurement = 'Measurement'
 }
 
-export const uncontrollableGate: GateName[] = [
+export const singleBitGates: GateName[] = [
+  GateName.Hadamard,
+  GateName.PauliX,
+  GateName.PauliY,
+  GateName.PauliZ,
+  GateName.Phase,
+  GateName.T,
+  GateName.SquareRootX,
+  GateName.RotationX,
+  GateName.RotationY,
+  GateName.RotationZ
+]
+
+export const uncontrollableGates: GateName[] = [
   GateName.Null,
   GateName.Write,
   GateName.Measurement
