@@ -293,7 +293,6 @@ export function trimCircuit(): void {
   trimStep()
   arrangeIndex()
   arrangeWires()
-  console.log(JSON.stringify(getCircuitJson()))
 }
 
 export function arrangeIndex(): void {

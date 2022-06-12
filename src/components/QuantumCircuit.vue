@@ -13,7 +13,6 @@
     handleMouseUpQuantumCircuit
   } from './Event'
   import { isGateInDragDropzone } from './Gate'
-  import { getCircuitJson } from './server/Encoder'
   import {
     circuitGates,
     dragDropzoneGate,

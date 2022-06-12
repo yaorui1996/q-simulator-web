@@ -2,7 +2,7 @@
 
 > Quantum Simulator Web.
 
-QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化界面用拖动的方式来编辑量子线路，向后端QuantumSimulationPlatform(qsp) 服务器提交量子线路模拟任务并下载模拟结果，能够实现数据可视化。
+QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化界面用拖动的方式来编辑量子线路，向后端 QuantumSimulationPlatform(qsp) 服务器提交量子线路模拟任务并下载模拟结果，能够实现数据可视化。
 
 ## Table of Contents 目录
 
@@ -14,6 +14,7 @@ QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化
   - [Directory Structure 项目架构](#directory-structure-项目架构)
   - [Usage of Quantum Circuit 量子线路使用方法](#usage-of-quantum-circuit-量子线路使用方法)
   - [Circuit Encoder 线路编码器](#circuit-encoder-线路编码器)
+  - [State Encode Protocol 态编码方案](#state-encode-protocol-态编码方案)
 
 ## Getting Started 使用指南
 
@@ -54,3 +55,7 @@ Project 项目
 ## Circuit Encoder 线路编码器
 
 介绍量子线路的**数据结构**和**编码方案**。[详细文档](/docs/CircuitEncoder.md)
+
+## State Encode Protocol 态编码方案
+
+介绍运行结果的**数据结构**和**编码方案**。[详细文档](/docs/StateEncodeProtocol.md)

@@ -8,7 +8,7 @@
 
 单比特有效门包含：
 
-Hadamard, PauliX, PauliY, PauliZ, Phase, T, SquareRootX, RotationX, RotationY, RotationZ,  Write, Measurement
+Hadamard, PauliX, PauliY, PauliZ, Phase, T, SquareRootX, RotationX, RotationY, RotationZ, Write, Measurement
 
 多比特门包含：
 
@@ -21,6 +21,7 @@ Swap, Control
 单个 Step 上 **所有的 Swap 门共同作用**：总 Swap 门数量为 1 或 3 及以上时，所有 Swap 门都无效，即全部视为 Null；总 Swap 门数量为 2 时，执行这两个 Qubit 的 Swap 门操作。
 
 单个 Step 上 **所有的 Control 门共同作用**：
+
 - 首先将所有的 Control 门忽略，分析所有的其他门操作，包括 单比特有效门 和 所有的 Swap 门共同作用，如果所有的其他有效的门操作数量大于等于 1 ，说明有被 Control 的门存在，则所有的 Control 门设置为有效，它们共同作用在刚才分析的所有的其他有效的门操作上。
 - 在分析所有的其他门操作时，如果是 Control 无效的门，包括 Null Write Measurement，视为所有的其他有效的门操作数量为 0。
 - 当所有的其他有效的门操作数量为 0 时，如果仅有 1 个 Control 门，则此 Control 门设置为无效，视为 Null；如果有 2 及以上的 Control 门，则所有的 Control 门设置为有效，虽然它们没有控制任何东西，实际上和视为 Null 没有操作上的区别，但是目前前端渲染是按照此规则执行的。
@@ -41,7 +42,7 @@ Swap, Control
 
 #### 说明：
 
-将 Gate 矩阵存储为二维字符串数组，描述单个Gate的字符串为 *GateName_Value*.
+将 Gate 矩阵存储为二维字符串数组，描述单个 Gate 的字符串为 _GateName_Value_.
 
 #### 举例：
 
@@ -49,19 +50,19 @@ Swap, Control
 
 - 数组为
 
-|||||||
-|-|-|-|-|-|-|
-|Write_0|Hadamard_|PauliZ_|Control_1|Swap_1|Measurement_|
-|Write_1|PauliX_|Phase_0.5|SquareRootX_|Swap_1|Measurement_|
-|Write_0|PauliY_|T_|Control_1|Null_|Measurement_|
+|         |            |           |               |        |               |
+| ------- | ---------- | --------- | ------------- | ------ | ------------- |
+| Write_0 | Hadamard\_ | PauliZ\_  | Control_1     | Swap_1 | Measurement\_ |
+| Write_1 | PauliX\_   | Phase_0.5 | SquareRootX\_ | Swap_1 | Measurement\_ |
+| Write_0 | PauliY\_   | T\_       | Control_1     | Null\_ | Measurement\_ |
 
-- 方案1
+- 方案 1
 
- ```
- Write_0,Write_1,Write_0;Hadamard_,PauliX_,PauliY_;PauliZ_,Phase_0.5,T_;Control_1,SquareRootX_,Control_1;Swap_1,Swap_1,Null_;Measurement_,Measurement_,Measurement_
- ```
+```
+Write_0,Write_1,Write_0;Hadamard_,PauliX_,PauliY_;PauliZ_,Phase_0.5,T_;Control_1,SquareRootX_,Control_1;Swap_1,Swap_1,Null_;Measurement_,Measurement_,Measurement_
+```
 
-- 方案2
+- 方案 2
 
 ```
 0,0,Write_0
@@ -87,20 +88,20 @@ Swap, Control
 #### 定义：
 
 缩写，欠定义，可以根据后端代码统一定义。
-|全称 *GateName*|缩写 *GateNameAbbr*|*Value*|备注|
+|全称 _GateName_|缩写 _GateNameAbbr_|_Value_|备注|
 |-|-|-|-|
-|*Null*|||仅表示占位|
-|*Hadamard*||||
-|*PauliX*||||
-|*PauliY*||||
-|*PauliZ*||||
-|*Phase*||浮点数|单位为 $\pi$|
-|*T*||||
-|*SquareRootX*||||
-|*RotationX*||浮点数|单位为 $\pi$|
-|*RotationY*||浮点数|单位为 $\pi$|
-|*RotationZ*||浮点数|单位为 $\pi$|
-|*Swap*||1 / 0|1 表示有效，0 表示无效视为 Null|
-|*Control*||1 / 0|1 表示有效，0 表示无效视为 Null|
-|*Write*||1 / 0| 1/0 表示 Qubit 重置为 1/0 态|
-|*Measurement*||||
+|_Null_|||仅表示占位|
+|_Hadamard_||||
+|_PauliX_||||
+|_PauliY_||||
+|_PauliZ_||||
+|_Phase_||浮点数|单位为 $\pi$|
+|_T_||||
+|_SquareRootX_||||
+|_RotationX_||浮点数|单位为 $\pi$|
+|_RotationY_||浮点数|单位为 $\pi$|
+|_RotationZ_||浮点数|单位为 $\pi$|
+|_Swap_||1 / 0|1 表示有效，0 表示无效视为 Null|
+|_Control_||1 / 0|1 表示有效，0 表示无效视为 Null|
+|_Write_||1 / 0| 1/0 表示 Qubit 重置为 1/0 态|
+|_Measurement_||||
