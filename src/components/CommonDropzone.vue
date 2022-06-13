@@ -95,6 +95,7 @@
     <CircuitDropzoneWires
       class="circuit-wires"
       v-if="isGateInCircuitDropzone(gate)"
+      :wire-input-hidden="gate.step == 0"
       :wire-input="gate.wireInput"
       :wire-output="gate.wireOutput"
       :connect-top="gate.connectTop"
@@ -129,7 +130,7 @@
   }
   .gate-container {
     position: relative;
-    z-index: v-bind('isGateValid(gate) ? 10 : 0');
+    z-index: v-bind('isGateValid(gate) ? 20 : gate.step % 2 == 0 ? 10 : 0');
     cursor: v-bind("isGateValid(gate)? 'var(--cursor-grab)' : 'default'");
     border-radius: var(--gate-container-border-radius);
     border-width: var(--gate-container-border-width);

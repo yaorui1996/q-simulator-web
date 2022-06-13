@@ -3,6 +3,7 @@ import {
   emptyGate,
   Gate,
   GateName,
+  isGateInCircuitDropzone,
   isGateSelected,
   isGateValid,
   setGateDisplay
@@ -14,6 +15,8 @@ import {
   dragDropzonePos,
   initDragDropzone,
   removeDragDropzone,
+  stepFocus,
+  stepSelect,
   trimCircuit
 } from './store/Circuit'
 
@@ -80,13 +83,21 @@ export function handleMouseUpPaletteDropzone() {
 }
 
 export function handleMouseEnterCircuitDropzone(eventGate: Gate): void {
-  //   console.log('mouseentercircuitdropzone')
+  // console.log('mouseentercircuitdropzone')
   if (
     eventStatus !== EventStatus.DraggingInsideBoard &&
     isGateValid(eventGate) &&
     !isGateSelected(eventGate)
   ) {
     setGateDisplay(eventGate, Display.Focus)
+  }
+  if (
+    isGateInCircuitDropzone(eventGate) &&
+    eventGate.step % 2 == 0 &&
+    (eventStatus == EventStatus.Idle ||
+      eventStatus == EventStatus.CircuitDropzoneGateSelected)
+  ) {
+    stepFocus.value = eventGate.step
   }
 }
 
@@ -107,6 +118,14 @@ export function handleMouseLeaveCircuitDropzone(eventGate: Gate): void {
 export function handleMouseDownCircuitDropzone(eventGate: Gate): void {
   //   console.log('mousedowncircuitdropzone')
   handleMouseDownQuantumCircuit()
+  if (
+    isGateInCircuitDropzone(eventGate) &&
+    stepFocus.value > 0 &&
+    (eventStatus == EventStatus.Idle ||
+      eventStatus == EventStatus.CircuitDropzoneGateSelected)
+  ) {
+    stepSelect.value = stepFocus.value
+  }
   if (isGateValid(eventGate)) {
     eventStatus = EventStatus.CircuitDropzoneGatePressed
     setGateDisplay(eventGate, Display.Drag)
@@ -166,6 +185,7 @@ export function handleMouseEnterCircuitBoard(): void {
 
 export function handleMouseLeaveCircuitBoard(): void {
   //   console.log('mouseleavecircuitboard')
+  stepFocus.value = 0
   if (eventStatus == EventStatus.DraggingInsideBoard) {
     eventStatus = EventStatus.DraggindOutsideBoard
     initDragDropzone(draggedCircuitDropzoneGate)

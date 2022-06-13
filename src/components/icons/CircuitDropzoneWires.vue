@@ -3,6 +3,7 @@
   lang="ts"
 >
   defineProps<{
+    wireInputHidden: boolean
     wireInput: boolean
     wireOutput: boolean
     connectTop: boolean
@@ -68,25 +69,25 @@
 
   .wire-input {
     color: v-bind(
-      "wireInput?'var(--wire-enable-color)':'var(--wire-disable-color)'"
+      "wireInputHidden ? 'transparent' : wireInput ? 'var(--wire-enable-color)' : 'var(--wire-disable-color)'"
     );
   }
 
   .wire-output {
     color: v-bind(
-      "wireOutput?'var(--wire-enable-color)':'var(--wire-disable-color)'"
+      "wireOutput ? 'var(--wire-enable-color)' : 'var(--wire-disable-color)'"
     );
   }
 
   .connect-top {
     color: v-bind(
-      "connectTop?'var(--connect-enable-color)':'var(--connect-disable-color)'"
+      "connectTop ? 'var(--connect-enable-color)' : 'var(--connect-disable-color)'"
     );
   }
 
   .connect-bottom {
     color: v-bind(
-      "connectBottom?'var(--connect-enable-color)':'var(--connect-disable-color)'"
+      "connectBottom ? 'var(--connect-enable-color)' : 'var(--connect-disable-color)'"
     );
   }
 </style>

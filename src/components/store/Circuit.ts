@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 import {
   connectStepGates,
@@ -11,7 +11,6 @@ import {
   isStepEmpty,
   uncontrollableGates
 } from '../Gate.js'
-import { getCircuitJson } from '../server/Encoder.js'
 
 export const stepMin = 4
 export const stepMax = 10
@@ -24,6 +23,8 @@ export const dragDropzonePos = reactive<{ left: number; top: number }>({
 export const dragDropzoneGate = reactive<Gate>(emptyGate())
 export const paletteGates = reactive<Gate[]>([])
 export const circuitGates = reactive<Gate[][]>([])
+export const stepFocus = ref<number>(2)
+export const stepSelect = ref<number>(4)
 
 export function initPalette(): void {
   paletteGates.splice(0, paletteGates.length) // clear paletteGates
@@ -270,10 +271,16 @@ export function trimStep(): void {
     if (isStepEmpty(circuitGates[i])) {
       if (getStepNum() > 1) {
         circuitGates.splice(i, 1)
+        if (stepSelect.value > i) {
+          stepSelect.value--
+        }
       }
     } else {
       if (i == 0 || !isStepEmpty(circuitGates[i - 1])) {
         circuitGates.splice(i, 0, emptyStep(0, getRegisterNum()))
+        if (stepSelect.value > i) {
+          stepSelect.value++
+        }
       } else {
         i--
       }

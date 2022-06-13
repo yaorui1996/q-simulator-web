@@ -39,6 +39,8 @@
 
 :root {
   --step-width: 1.5rem;
+  --step-selector-width: 0.25rem;
+  --step-selector-background-color-blue: rgb(99 102 241);
 }
 
 :root {

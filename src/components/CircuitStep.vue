@@ -5,6 +5,7 @@
   import CommonDropzone from './CommonDropzone.vue'
   import { handleMouseMoveCircuitStep } from './Event'
   import { Gate } from './Gate'
+  import { stepFocus, stepSelect } from './store/Circuit'
 
   defineProps<{ stepGates: Gate[] }>()
 </script>
@@ -19,6 +20,10 @@
     >
       <CommonDropzone :gate="circuitDropzoneGate" />
     </div>
+    <div
+      class="step-selector"
+      v-if="stepGates[0].step % 2 == 0 && stepGates[0].step > 0"
+    ></div>
   </div>
 </template>
 
@@ -40,5 +45,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .step-selector {
+    position: absolute;
+    width: var(--step-selector-width);
+    height: 100%;
+    opacity: v-bind(
+      'stepGates[0].step == stepSelect ? 1 : stepGates[0].step == stepFocus ? 0.3 : 0'
+    );
+    background-color: var(--step-selector-background-color-blue);
+    pointer-events: none;
   }
 </style>
