@@ -3,16 +3,10 @@
   lang="ts"
 >
   import { EChartsOption } from 'echarts'
-  import { ref } from 'vue'
+  import { ref, reactive } from 'vue'
   import VChart from 'vue-echarts'
 
-  import { saveAsExcel } from '../store/State'
-
-  const props = defineProps<{
-    fullNames: string[]
-    vectorsRe: string[]
-    vectorsIm: string[]
-  }>()
+  import { saveAsExcel, stateVectorBar } from '../store/Chart'
 
   const option = ref<EChartsOption>({
     tooltip: {
@@ -23,7 +17,8 @@
       textStyle: {
         color: '#000000',
         fontWeight: 'bold'
-      }
+      },
+      valueFormatter: (value) => Number(value).toFixed(3)
     },
     legend: {
       data: ['Re', 'Im']
@@ -44,7 +39,7 @@
           color: '#000000',
           fontWeight: 'bold'
         },
-        data: props.fullNames
+        data: stateVectorBar.stateNames
       }
     ],
     yAxis: [
@@ -63,7 +58,7 @@
           show: false,
           position: 'inside'
         },
-        data: props.vectorsRe
+        data: stateVectorBar.realParts
       },
       {
         name: 'Im',
@@ -72,7 +67,7 @@
           show: false,
           position: 'inside'
         },
-        data: props.vectorsIm
+        data: stateVectorBar.imaginaryParts
       }
     ],
     toolbox: {

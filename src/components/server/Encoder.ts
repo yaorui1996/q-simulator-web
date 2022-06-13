@@ -17,7 +17,7 @@ interface Circuit {
   moments: Operation[][]
 }
 
-export function getCircuitJson(): Circuit {
+export function getEncodedCircuit(): Circuit {
   const circuit: Circuit = {
     qubits: [],
     moments: []

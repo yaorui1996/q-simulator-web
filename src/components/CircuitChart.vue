@@ -7,7 +7,7 @@
 
   import ProbabilityBar from './charts/ProbabilityBar.vue'
   import StateVectorBar from './charts/StateVectorBar.vue'
-  import { states } from './store/State'
+  import { stateVectorBar } from './store/Chart'
 
   const options = reactive<string[]>(['State Vector', 'Probability'])
   const selected = ref<string>('State Vector')
@@ -24,15 +24,10 @@
     <StateVectorBar
       class="state-vector-bar"
       v-if="selected == 'State Vector'"
-      :full-names="states.fullNames"
-      :vectors-re="states.vectorsRe"
-      :vectors-im="states.vectorsIm"
     />
     <ProbabilityBar
       class="state-vector-bar"
       v-if="selected == 'Probability'"
-      :full-names="states.fullNames"
-      :probabilities="states.probabilities"
     />
   </div>
 </template>
