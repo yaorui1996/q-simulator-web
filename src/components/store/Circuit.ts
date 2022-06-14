@@ -23,8 +23,8 @@ export const dragDropzonePos = reactive<{ left: number; top: number }>({
 export const dragDropzoneGate = reactive<Gate>(emptyGate())
 export const paletteGates = reactive<Gate[]>([])
 export const circuitGates = reactive<Gate[][]>([])
-export const stepFocus = ref<number>(2)
-export const stepSelect = ref<number>(4)
+export const stepFocus = ref<number>(0)
+export const stepSelect = ref<number>(0)
 
 export function initPalette(): void {
   paletteGates.splice(0, paletteGates.length) // clear paletteGates
@@ -271,16 +271,10 @@ export function trimStep(): void {
     if (isStepEmpty(circuitGates[i])) {
       if (getStepNum() > 1) {
         circuitGates.splice(i, 1)
-        if (stepSelect.value > i) {
-          stepSelect.value--
-        }
       }
     } else {
       if (i == 0 || !isStepEmpty(circuitGates[i - 1])) {
         circuitGates.splice(i, 0, emptyStep(0, getRegisterNum()))
-        if (stepSelect.value > i) {
-          stepSelect.value++
-        }
       } else {
         i--
       }

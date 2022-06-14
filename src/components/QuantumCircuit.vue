@@ -13,7 +13,11 @@
     handleMouseUpQuantumCircuit
   } from './Event'
   import { GateName, isGateInDragDropzone } from './Gate'
-  import { probabilityBar, stateVectorBar } from './store/Chart'
+  import {
+    changeChartDataToStepSelect,
+    probabilityBar,
+    stateVectorBar
+  } from './store/Chart'
   import {
     circuitGates,
     dragDropzoneGate,
@@ -23,75 +27,22 @@
     initCircuit,
     initPalette,
     paletteGates,
+    stepSelect,
     trimCircuit
   } from './store/Circuit'
-  import {
-    ComputationCache,
-    computationCaches,
-    getCircuitLatestSample,
-    Measurement,
-    State
-  } from './store/Computation'
-  import { reassignArray } from './utils/Array'
+  import { computation, sampleCircuit } from './store/Computation'
 
   initPalette()
   initCircuit()
   trimCircuit()
 
   function click() {
-    const computationCache: ComputationCache = {
-      circuit: JSON.stringify(circuitGates),
-      samples: [
-        {
-          states: [],
-          measurements: []
-        }
-      ]
+    sampleCircuit(1, true, false)
+    if (stepSelect.value == 0) {
+      stepSelect.value = getStepNum() - 1
     }
-    for (let i: number = 0; i < getStepNum(); i++) {
-      const state: State = {
-        realParts: [],
-        imaginaryParts: [],
-        probabilities: []
-      }
-      const registerNum = getRegisterNum()
-      const stateNum = Math.pow(2, registerNum)
-      for (let j = 0; j < stateNum; j++) {
-        const name: string = j.toString(2).padStart(registerNum, '0')
-        const phi: number = Math.random() * Math.PI * 2
-        state.realParts.push((1 / Math.sqrt(stateNum)) * Math.cos(phi))
-        state.imaginaryParts.push((1 / Math.sqrt(stateNum)) * Math.sin(phi))
-        state.probabilities.push(1 / Math.sqrt(stateNum))
-      }
-      computationCache.samples[0].states.push(state)
-    }
-    circuitGates.forEach((stepGates) =>
-      stepGates.forEach((gate) => {
-        if (gate.name == GateName.Measurement) {
-          const measurement: Measurement = {
-            step: gate.step,
-            register: gate.register,
-            value: Math.random() > 0.5 ? 1 : 0
-          }
-          computationCache.samples[0].measurements.push(measurement)
-        }
-      })
-    )
-
-    computationCaches.unshift(computationCache)
-
-    const latestSample = getCircuitLatestSample(JSON.stringify(circuitGates))
-
-    reassignArray(stateVectorBar.realParts, latestSample.states[0].realParts)
-    reassignArray(
-      stateVectorBar.imaginaryParts,
-      latestSample.states[0].imaginaryParts
-    )
-    reassignArray(
-      probabilityBar.probabilities,
-      latestSample.states[0].probabilities
-    )
-    latestSample.measurements.forEach((measurement) => {
+    changeChartDataToStepSelect()
+    computation.samples[0].measurements.forEach((measurement) => {
       circuitGates[measurement.step][measurement.register].value =
         measurement.value.toString()
     })

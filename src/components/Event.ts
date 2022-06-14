@@ -8,6 +8,7 @@ import {
   isGateValid,
   setGateDisplay
 } from './Gate'
+import { changeChartDataToStepSelect } from './store/Chart'
 import {
   appendRegister,
   circuitGates,
@@ -125,6 +126,7 @@ export function handleMouseDownCircuitDropzone(eventGate: Gate): void {
       eventStatus == EventStatus.CircuitDropzoneGateSelected)
   ) {
     stepSelect.value = stepFocus.value
+    changeChartDataToStepSelect()
   }
   if (isGateValid(eventGate)) {
     eventStatus = EventStatus.CircuitDropzoneGatePressed

@@ -1,5 +1,8 @@
 import { ExportToCsv } from 'export-to-csv'
 import { reactive } from 'vue'
+import { resetArray } from '../utils/Array'
+import { stepSelect } from './Circuit'
+import { computation, isComputationEmpty, sampleCircuit } from './Computation'
 
 export interface StateVectorBar {
   stateNames: string[]
@@ -94,4 +97,22 @@ export function saveAsExcel(term: string) {
       Object.assign(options, { filename: 'Probability' })
     ).generateCsv(getProbability())
   }
+}
+
+export function changeChartDataToStepSelect() {
+  if (isComputationEmpty()) {
+    sampleCircuit(1, true, false)
+  }
+  resetArray(
+    stateVectorBar.realParts,
+    computation.samples[0].stateVectors[stepSelect.value / 2 - 1].realParts
+  )
+  resetArray(
+    stateVectorBar.imaginaryParts,
+    computation.samples[0].stateVectors[stepSelect.value / 2 - 1].imaginaryParts
+  )
+  resetArray(
+    probabilityBar.probabilities,
+    computation.samples[0].stateVectors[stepSelect.value / 2 - 1].probabilities
+  )
 }
