@@ -103,6 +103,7 @@
     />
     <div
       class="gate-container"
+      v-if="gate.name !== GateName.Null"
       @mouseenter="onMouseEnter(gate)"
       @mouseleave="onMouseLeave(gate)"
       @mousedown.stop="onMouseDown($event, gate)"

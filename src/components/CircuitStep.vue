@@ -3,7 +3,10 @@
   lang="ts"
 >
   import CommonDropzone from './CommonDropzone.vue'
-  import { handleMouseMoveCircuitStep } from './Event'
+  import {
+    handleMouseMoveCircuitStep,
+    handleMouseDownCircuitStep
+  } from './Event'
   import { Gate } from './Gate'
   import { stepFocus, stepSelect } from './store/Circuit'
 
@@ -17,6 +20,7 @@
       :key="index"
       class="circuit-dropzone-container"
       @mousemove.stop="handleMouseMoveCircuitStep($event, circuitDropzoneGate)"
+      @mousedown.stop="handleMouseDownCircuitStep(circuitDropzoneGate)"
     >
       <CommonDropzone :gate="circuitDropzoneGate" />
     </div>

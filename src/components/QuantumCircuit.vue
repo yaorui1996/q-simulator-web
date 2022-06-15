@@ -14,7 +14,7 @@
   } from './Event'
   import { GateName, isGateInDragDropzone } from './Gate'
   import {
-    changeChartDataToStepSelect,
+    changeChartDataToStepSelectStateVector,
     probabilityBar,
     stateVectorBar
   } from './store/Chart'
@@ -30,22 +30,23 @@
     stepSelect,
     trimCircuit
   } from './store/Circuit'
-  import { computation, sampleCircuit } from './store/Computation'
+  import {
+    computation,
+    sampleCircuit,
+    updateCircuitMeasurement
+  } from './store/Computation'
 
   initPalette()
   initCircuit()
   trimCircuit()
 
   function click() {
-    sampleCircuit(1, true, false)
+    sampleCircuit(1, true)
     if (stepSelect.value == 0) {
       stepSelect.value = getStepNum() - 1
     }
-    changeChartDataToStepSelect()
-    computation.samples[0].measurements.forEach((measurement) => {
-      circuitGates[measurement.step][measurement.register].value =
-        measurement.value.toString()
-    })
+    changeChartDataToStepSelectStateVector()
+    updateCircuitMeasurement(computation.samples[0].measurements)
   }
 </script>
 

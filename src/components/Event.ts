@@ -8,7 +8,7 @@ import {
   isGateValid,
   setGateDisplay
 } from './Gate'
-import { changeChartDataToStepSelect } from './store/Chart'
+import { changeChartDataToStepSelectStateVector } from './store/Chart'
 import {
   appendRegister,
   circuitGates,
@@ -23,7 +23,7 @@ import {
 
 enum EventStatus {
   Idle,
-  DraggindOutsideBoard,
+  DraggingOutsideBoard,
   CircuitDropzoneGatePressed,
   CircuitDropzoneGateSelected,
   DraggingInsideBoard
@@ -53,14 +53,14 @@ function moveDraggedCircuitDrppzoneGate(step: number, register: number): void {
 
 export function handleMouseEnterPaletteDropzone(eventGate: Gate): void {
   //   console.log('mouseenterpalette')
-  if (eventStatus !== EventStatus.DraggindOutsideBoard) {
+  if (eventStatus !== EventStatus.DraggingOutsideBoard) {
     setGateDisplay(eventGate, Display.Focus)
   }
 }
 
 export function handleMouseLeavePaletteDropzone(eventGate: Gate): void {
   //   console.log('mouseleavepalette')
-  if (eventStatus !== EventStatus.DraggindOutsideBoard) {
+  if (eventStatus !== EventStatus.DraggingOutsideBoard) {
     setGateDisplay(eventGate, Display.Default)
   }
 }
@@ -70,9 +70,9 @@ export function handleMouseDownPaletteDropzone(
   eventGate: Gate
 ): void {
   //   console.log('mousedownpalette')
-  handleMouseDownQuantumCircuit()
-  eventStatus = EventStatus.DraggindOutsideBoard
-  handleMouseMoveQuantumCircuit(event)
+  cleanGateSelected()
+  eventStatus = EventStatus.DraggingOutsideBoard
+  setDragDropzonePos(event)
   initDragDropzone(eventGate)
   setGateDisplay(eventGate, Display.Default)
   appendRegister()
@@ -80,7 +80,7 @@ export function handleMouseDownPaletteDropzone(
 
 export function handleMouseUpPaletteDropzone() {
   //   console.log('mouseuppalette')
-  handleMouseUpQuantumCircuit()
+  cleanQuantumCircuit()
 }
 
 export function handleMouseEnterCircuitDropzone(eventGate: Gate): void {
@@ -117,17 +117,8 @@ export function handleMouseLeaveCircuitDropzone(eventGate: Gate): void {
 }
 
 export function handleMouseDownCircuitDropzone(eventGate: Gate): void {
-  //   console.log('mousedowncircuitdropzone')
-  handleMouseDownQuantumCircuit()
-  if (
-    isGateInCircuitDropzone(eventGate) &&
-    stepFocus.value > 0 &&
-    (eventStatus == EventStatus.Idle ||
-      eventStatus == EventStatus.CircuitDropzoneGateSelected)
-  ) {
-    stepSelect.value = stepFocus.value
-    changeChartDataToStepSelect()
-  }
+  // console.log('mousedowncircuitdropzone')
+  cleanGateSelected()
   if (isGateValid(eventGate)) {
     eventStatus = EventStatus.CircuitDropzoneGatePressed
     setGateDisplay(eventGate, Display.Drag)
@@ -156,6 +147,14 @@ export function handleMouseMoveCircuitStep(
 ): void {
   //   console.log('mousemovecircuitstep', eventGate)
   if (
+    isGateInCircuitDropzone(eventGate) &&
+    eventGate.step % 2 == 0 &&
+    (eventStatus == EventStatus.Idle ||
+      eventStatus == EventStatus.CircuitDropzoneGateSelected)
+  ) {
+    stepFocus.value = eventGate.step
+  }
+  if (
     eventStatus == EventStatus.DraggingInsideBoard &&
     draggedCircuitDropzoneGate !== eventGate
   ) {
@@ -176,9 +175,23 @@ export function handleMouseMoveCircuitStep(
   }
 }
 
+export function handleMouseDownCircuitStep(eventGate: Gate): void {
+  // console.log('mousedowncircuitstep')
+  if (
+    isGateInCircuitDropzone(eventGate) &&
+    stepFocus.value > 0 &&
+    (eventStatus == EventStatus.Idle ||
+      eventStatus == EventStatus.CircuitDropzoneGateSelected)
+  ) {
+    stepSelect.value = stepFocus.value
+    changeChartDataToStepSelectStateVector()
+  }
+  cleanGateSelected()
+}
+
 export function handleMouseEnterCircuitBoard(): void {
   //   console.log('mouseentercircuitboard')
-  if (eventStatus == EventStatus.DraggindOutsideBoard) {
+  if (eventStatus == EventStatus.DraggingOutsideBoard) {
     eventStatus = EventStatus.DraggingInsideBoard
     draggedCircuitDropzoneGate = dragDropzoneGate
     removeDragDropzone()
@@ -189,7 +202,7 @@ export function handleMouseLeaveCircuitBoard(): void {
   //   console.log('mouseleavecircuitboard')
   stepFocus.value = 0
   if (eventStatus == EventStatus.DraggingInsideBoard) {
-    eventStatus = EventStatus.DraggindOutsideBoard
+    eventStatus = EventStatus.DraggingOutsideBoard
     initDragDropzone(draggedCircuitDropzoneGate)
     deleteDraggedCircuitDrppzoneGate()
   }
@@ -197,35 +210,47 @@ export function handleMouseLeaveCircuitBoard(): void {
 
 export function handleMouseLeaveQuantumCircuit(): void {
   //   console.log('mouseleavequantumcircuit')
-  handleMouseDownQuantumCircuit()
-  handleMouseUpQuantumCircuit()
+  cleanGateSelected()
+  cleanQuantumCircuit()
 }
 
 export function handleMouseDownQuantumCircuit(): void {
-  //   console.log('mousedownquantumcircuit')
+  // console.log('mousedownquantumcircuit')
+  cleanGateSelected()
+}
+
+export function handleMouseUpQuantumCircuit(): void {
+  //   console.log('mouseupquantumcircuit')
+  cleanQuantumCircuit()
+}
+
+export function handleMouseMoveQuantumCircuit(event: MouseEvent): void {
+  //   console.log('mousemovequantumcircuit')
+  if (eventStatus == EventStatus.DraggingOutsideBoard) {
+    setDragDropzonePos(event)
+  } else if (eventStatus == EventStatus.DraggingInsideBoard) {
+    eventStatus = EventStatus.DraggingOutsideBoard
+    initDragDropzone(draggedCircuitDropzoneGate)
+    deleteDraggedCircuitDrppzoneGate()
+  }
+}
+
+function cleanGateSelected(): void {
   if (eventStatus == EventStatus.CircuitDropzoneGateSelected) {
     setGateDisplay(selectedCircuitDropzoneGate, Display.Default)
   }
   eventStatus = EventStatus.Idle
 }
 
-export function handleMouseUpQuantumCircuit(): void {
-  //   console.log('mouseupquantumcircuit')
-  if (eventStatus == EventStatus.DraggindOutsideBoard) {
+function cleanQuantumCircuit(): void {
+  if (eventStatus == EventStatus.DraggingOutsideBoard) {
     trimCircuit()
   }
   eventStatus = EventStatus.Idle
   removeDragDropzone()
 }
 
-export function handleMouseMoveQuantumCircuit(event: MouseEvent): void {
-  //   console.log('mousemovequantumcircuit')
-  if (eventStatus == EventStatus.DraggindOutsideBoard) {
-    dragDropzonePos.left = event.pageX - 55 / 2
-    dragDropzonePos.top = event.pageY - 55 / 2
-  } else if (eventStatus == EventStatus.DraggingInsideBoard) {
-    eventStatus = EventStatus.DraggindOutsideBoard
-    initDragDropzone(draggedCircuitDropzoneGate)
-    deleteDraggedCircuitDrppzoneGate()
-  }
+function setDragDropzonePos(event: MouseEvent): void {
+  dragDropzonePos.left = event.pageX - 55 / 2
+  dragDropzonePos.top = event.pageY - 55 / 2
 }

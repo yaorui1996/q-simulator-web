@@ -1,13 +1,19 @@
 import { ExportToCsv } from 'export-to-csv'
 import { reactive } from 'vue'
 import { resetArray } from '../utils/Array'
-import { stepSelect } from './Circuit'
-import { computation, isComputationEmpty, sampleCircuit } from './Computation'
+import { getStateFullName } from '../utils/String'
+import { circuitGates, getRegisterNum, stepSelect } from './Circuit'
+import { computation, sampleCircuit } from './Computation'
 
 export interface StateVectorBar {
   stateNames: string[]
   realParts: number[]
   imaginaryParts: number[]
+}
+
+export interface ProbabilityBar {
+  stateNames: string[]
+  probabilities: number[]
 }
 
 export const stateVectorBar = reactive<StateVectorBar>({
@@ -16,41 +22,10 @@ export const stateVectorBar = reactive<StateVectorBar>({
   imaginaryParts: []
 })
 
-export interface ProbabilityBar {
-  stateNames: string[]
-  probabilities: number[]
-}
-
 export const probabilityBar = reactive<ProbabilityBar>({
   stateNames: [],
   probabilities: []
 })
-
-const states = {
-  registerNum: 0,
-  stateNum: 0
-}
-states.registerNum = 3
-states.stateNum = Math.pow(2, states.registerNum)
-for (let i = 0; i < states.stateNum; i++) {
-  const name: string = i.toString(2).padStart(states.registerNum, '0')
-  const phi: number = Math.random() * Math.PI * 2
-
-  stateVectorBar.stateNames.push(getStateFullName(name))
-  stateVectorBar.realParts.push(
-    (1 / Math.sqrt(states.stateNum)) * Math.cos(phi)
-  )
-  stateVectorBar.imaginaryParts.push(
-    (1 / Math.sqrt(states.stateNum)) * Math.sin(phi)
-  )
-
-  probabilityBar.stateNames.push(getStateFullName(name))
-  probabilityBar.probabilities.push(1 / Math.sqrt(states.stateNum))
-}
-
-export function getStateFullName(name: string): string {
-  return '|' + name + '⟩'
-}
 
 export function saveAsExcel(term: string) {
   function getStateVector(): {
@@ -99,20 +74,32 @@ export function saveAsExcel(term: string) {
   }
 }
 
-export function changeChartDataToStepSelect() {
-  if (isComputationEmpty()) {
-    sampleCircuit(1, true, false)
+export function changeChartDataToStepSelectStateVector(): void {
+  if (
+    computation.circuit == JSON.stringify(circuitGates) &&
+    computation.samples.length > 0 &&
+    computation.samples[0].stateVectors.length > 0
+  ) {
+    const stateNames: string[] = Array(Math.pow(2, getRegisterNum()))
+      .fill('')
+      .map((_, index) =>
+        getStateFullName(index.toString(2).padStart(getRegisterNum(), '0'))
+      )
+    resetArray(stateVectorBar.stateNames, stateNames)
+    resetArray(
+      stateVectorBar.realParts,
+      computation.samples[0].stateVectors[stepSelect.value / 2 - 1].realParts
+    )
+    resetArray(
+      stateVectorBar.imaginaryParts,
+      computation.samples[0].stateVectors[stepSelect.value / 2 - 1]
+        .imaginaryParts
+    )
+    resetArray(probabilityBar.stateNames, stateNames)
+    resetArray(
+      probabilityBar.probabilities,
+      computation.samples[0].stateVectors[stepSelect.value / 2 - 1]
+        .probabilities
+    )
   }
-  resetArray(
-    stateVectorBar.realParts,
-    computation.samples[0].stateVectors[stepSelect.value / 2 - 1].realParts
-  )
-  resetArray(
-    stateVectorBar.imaginaryParts,
-    computation.samples[0].stateVectors[stepSelect.value / 2 - 1].imaginaryParts
-  )
-  resetArray(
-    probabilityBar.probabilities,
-    computation.samples[0].stateVectors[stepSelect.value / 2 - 1].probabilities
-  )
 }
