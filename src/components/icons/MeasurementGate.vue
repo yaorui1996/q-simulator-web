@@ -2,12 +2,10 @@
   setup
   lang="ts"
 >
-  import { Display } from '../Gate'
+  import { Display, Gate, isGateInCircuitDropzone } from '../Gate'
 
   defineProps<{
-    value: string
-    display: Display
-    inCircuitDropzone: boolean
+    gate: Gate
   }>()
 </script>
 
@@ -43,7 +41,7 @@
     />
   </svg>
   <div class="value">
-    {{ value }}
+    {{ gate.value }}
   </div>
 </template>
 
@@ -53,10 +51,10 @@
     width: var(--gate-width);
     height: var(--gate-height);
     color: v-bind(
-      "display == Display.Drag ? 'var(--gate-color-purple-400)' : inCircuitDropzone ? 'var(--gate-color-neutral-200)' : 'var(--gate-color-purple-500)'"
+      "gate.display == Display.Drag ? 'var(--gate-color-purple-400)' : isGateInCircuitDropzone(gate) ? 'var(--gate-color-neutral-200)' : 'var(--gate-color-purple-500)'"
     );
     background-color: v-bind(
-      "display == Display.Drag ? 'var(--gate-background-color-purple)' : inCircuitDropzone ? 'var(--gate-background-color-gray)' : 'var(--gate-background-color-white)'"
+      "gate.display == Display.Drag ? 'var(--gate-background-color-purple)' : isGateInCircuitDropzone(gate) ? 'var(--gate-background-color-gray)' : 'var(--gate-background-color-white)'"
     );
   }
 
@@ -65,7 +63,7 @@
     display: flex;
     justify-content: center;
     color: v-bind(
-      "display == Display.Drag ? 'var(--gate-color-white)' : value == '1' ? 'var(--gate-color-blue)' : 'var(--gate-color-red)'"
+      "gate.display == Display.Drag ? 'var(--gate-color-white)' : gate.value == '1' ? 'var(--gate-color-blue)' : 'var(--gate-color-red)'"
     );
     font-family: var(--write-gate-font-family);
   }

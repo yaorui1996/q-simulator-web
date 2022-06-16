@@ -2,12 +2,10 @@
   setup
   lang="ts"
 >
-  import { Display } from '../Gate'
+  import { Display, Gate } from '../Gate'
 
   defineProps<{
-    value: string
-    display: Display
-    inCircuitDropzone: boolean
+    gate: Gate
   }>()
 </script>
 
@@ -32,10 +30,10 @@
     width: var(--gate-width);
     height: var(--gate-height);
     color: v-bind(
-      "display == Display.Drag ? 'var(--gate-color-white)' : value == '1' ? 'var(--gate-color-green)' : 'var(--gate-color-gray)'"
+      "gate.display == Display.Drag ? 'var(--gate-color-white)' : gate.value == '1' ? 'var(--gate-color-green)' : 'var(--gate-color-gray)'"
     );
     background-color: v-bind(
-      "display == Display.Drag ? 'var(--gate-color-purple-500)' : 'transparent'"
+      "gate.display == Display.Drag ? 'var(--gate-color-purple-500)' : 'transparent'"
     );
   }
 </style>

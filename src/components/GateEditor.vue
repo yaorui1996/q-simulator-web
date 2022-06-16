@@ -3,7 +3,7 @@
   lang="ts"
 >
   import { ref } from 'vue'
-  import { Display, Gate, GateName } from './Gate'
+  import { checkValueValid, Display, Gate, GateName } from './Gate'
   import EditorDelete from './icons/EditorDelete.vue'
   import { trimCircuit } from './store/Circuit'
 
@@ -12,6 +12,10 @@
   const inputFront = ref<string>('π·')
   const focus = ref<boolean>(false)
   const del = ref<boolean>(false)
+
+  function onChange(): void {
+    checkValueValid(props.gate)
+  }
 
   function onClick(): void {
     Object.assign(props.gate, {
@@ -39,6 +43,7 @@
           type="text"
           v-model="gate.value"
           placeholder="Angle"
+          @change="onChange()"
           @mouseover="focus = true"
           @mouseout="focus = false"
           @mousedown.stop=""

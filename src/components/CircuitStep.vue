@@ -14,14 +14,7 @@
 
   defineProps<{ stepGates: Gate[] }>()
   function click(gate: Gate) {
-    try {
-      eval(gate.value)
-      console.log(eval(gate.value))
-    } catch (e) {
-      if (e instanceof SyntaxError) {
-        alert(e.message)
-      }
-    }
+    console.log(eval(gate.value))
   }
 </script>
 

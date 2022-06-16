@@ -153,3 +153,14 @@ export function connectStepGates(
     }
   }
 }
+
+export function checkValueValid(gate: Gate): void {
+  try {
+    eval(gate.value)
+    gate.valueValid = true
+  } catch (e) {
+    gate.valueValid = false
+    if (e instanceof SyntaxError) {
+    }
+  }
+}

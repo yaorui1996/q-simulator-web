@@ -111,9 +111,7 @@
     >
       <component
         :is="gateElements[gate.name]"
-        :value="gate.value"
-        :display="gate.display"
-        :in-circuit-dropzone="isGateInCircuitDropzone(gate)"
+        :gate="gate"
       />
     </div>
   </div>

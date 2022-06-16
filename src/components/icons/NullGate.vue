@@ -2,18 +2,14 @@
   setup
   lang="ts"
 >
-  import { Display } from '../Gate'
+  import { Gate } from '../Gate'
 
   defineProps<{
-    value: string
-    display: Display
-    inCircuitDropzone: boolean
+    gate: Gate
   }>()
 </script>
 
-<template>
-  <svg />
-</template>
+<template></template>
 
 <style scoped>
   svg {

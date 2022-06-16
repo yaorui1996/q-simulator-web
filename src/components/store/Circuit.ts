@@ -1,6 +1,7 @@
 import { reactive, ref } from 'vue'
 
 import {
+  checkValueValid,
   connectStepGates,
   Display,
   emptyGate,
@@ -407,14 +408,7 @@ export function checkValueEditableGates(): void {
   circuitGates.forEach((stepGates) => {
     stepGates.forEach((gate) => {
       if (valueEditableGates.includes(gate.name)) {
-        try {
-          eval(gate.value)
-          gate.valueValid = true
-        } catch (e) {
-          if (e instanceof SyntaxError) {
-            gate.valueValid = false
-          }
-        }
+        checkValueValid(gate)
       }
     })
   })
