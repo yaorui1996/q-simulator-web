@@ -7,10 +7,22 @@
     handleMouseMoveCircuitStep,
     handleMouseDownCircuitStep
   } from './Event'
-  import { Gate } from './Gate'
+  import { Gate, GateName, Display, valueEditableGates } from './Gate'
   import { stepFocus, stepSelect } from './store/Circuit'
+  import GateEditor from './GateEditor.vue'
+  import GateMonitor from './GateMonitor.vue'
 
   defineProps<{ stepGates: Gate[] }>()
+  function click(gate: Gate) {
+    try {
+      eval(gate.value)
+      console.log(eval(gate.value))
+    } catch (e) {
+      if (e instanceof SyntaxError) {
+        alert(e.message)
+      }
+    }
+  }
 </script>
 
 <template>
@@ -22,6 +34,23 @@
       @mousemove.stop="handleMouseMoveCircuitStep($event, circuitDropzoneGate)"
       @mousedown.stop="handleMouseDownCircuitStep(circuitDropzoneGate)"
     >
+      <GateEditor
+        class="gate-editor"
+        v-if="
+          valueEditableGates.includes(circuitDropzoneGate.name) &&
+          circuitDropzoneGate.display == Display.Select
+        "
+        :gate="circuitDropzoneGate"
+        @click="click(circuitDropzoneGate)"
+      />
+      <GateMonitor
+        class="gate-monitor"
+        v-if="
+          valueEditableGates.includes(circuitDropzoneGate.name) &&
+          circuitDropzoneGate.display !== Display.Select
+        "
+        :value="circuitDropzoneGate.value"
+      />
       <CommonDropzone :gate="circuitDropzoneGate" />
     </div>
     <div
@@ -49,6 +78,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .gate-editor {
+    position: absolute;
+    top: var(--gate-editor-top);
+    z-index: 30;
+  }
+  .gate-monitor {
+    position: absolute;
+    top: var(--gate-monitor-top);
+    z-index: 30;
+    font-size: var(--gate-editor-font-size);
+    font-family: var(--gate-editor-font-family);
+    color: var(--gate-editor-font-color-black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
   }
 
   .step-selector {

@@ -42,6 +42,13 @@ export const uncontrollableGates: GateName[] = [
   GateName.Measurement
 ]
 
+export const valueEditableGates: GateName[] = [
+  GateName.Phase,
+  GateName.RotationX,
+  GateName.RotationY,
+  GateName.RotationZ
+]
+
 export interface Gate {
   // index of register and step, start from 0
   // circuit (0, N); palette (-1, N); blank (-1, -1); undefined (-2, -2)
@@ -49,6 +56,7 @@ export interface Gate {
   register: number
   name: GateName
   value: string
+  valueValid: boolean
   display: Display
   wireInput: boolean
   wireOutput: boolean
@@ -62,6 +70,7 @@ export function emptyGate(): Gate {
     register: -2,
     name: GateName.Null,
     value: '',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -115,6 +124,7 @@ export function emptyStep(stepIndex: number, registerNum: number): Gate[] {
       register: i,
       name: GateName.Null,
       value: '',
+      valueValid: true,
       display: Display.Default,
       wireInput: false,
       wireOutput: false,

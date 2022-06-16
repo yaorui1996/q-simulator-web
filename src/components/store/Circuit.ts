@@ -9,7 +9,8 @@ import {
   GateName,
   isGateValid,
   isStepEmpty,
-  uncontrollableGates
+  uncontrollableGates,
+  valueEditableGates
 } from '../Gate.js'
 
 export const stepMin = 4
@@ -33,6 +34,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.Hadamard,
     value: '',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -44,6 +46,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.PauliX,
     value: '',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -55,6 +58,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.PauliY,
     value: '',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -66,6 +70,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.PauliZ,
     value: '',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -76,7 +81,8 @@ export function initPalette(): void {
     step: 4,
     register: -1,
     name: GateName.Phase,
-    value: '',
+    value: '1/2',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -88,6 +94,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.T,
     value: '',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -99,6 +106,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.SquareRootX,
     value: '',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -109,7 +117,8 @@ export function initPalette(): void {
     step: 7,
     register: -1,
     name: GateName.RotationX,
-    value: '',
+    value: '1/2',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -120,7 +129,8 @@ export function initPalette(): void {
     step: 8,
     register: -1,
     name: GateName.RotationY,
-    value: '',
+    value: '1/2',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -131,7 +141,8 @@ export function initPalette(): void {
     step: 9,
     register: -1,
     name: GateName.RotationZ,
-    value: '',
+    value: '1/2',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -143,6 +154,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.Swap,
     value: '1',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -154,6 +166,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.Control,
     value: '1',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -165,6 +178,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.Write,
     value: '0',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -176,6 +190,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.Write,
     value: '1',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -187,6 +202,7 @@ export function initPalette(): void {
     register: -1,
     name: GateName.Measurement,
     value: '',
+    valueValid: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -234,6 +250,7 @@ export function appendRegister(): void {
       register: i,
       name: GateName.Null,
       value: '',
+      valueValid: true,
       display: Display.Default,
       wireInput: false,
       wireOutput: false,
@@ -294,6 +311,7 @@ export function trimCircuit(): void {
   trimStep()
   arrangeIndex()
   arrangeWires()
+  checkValueEditableGates()
 }
 
 export function arrangeIndex(): void {
@@ -383,4 +401,21 @@ export function arrangeWires(): void {
       }
     })
   }
+}
+
+export function checkValueEditableGates(): void {
+  circuitGates.forEach((stepGates) => {
+    stepGates.forEach((gate) => {
+      if (valueEditableGates.includes(gate.name)) {
+        try {
+          eval(gate.value)
+          gate.valueValid = true
+        } catch (e) {
+          if (e instanceof SyntaxError) {
+            gate.valueValid = false
+          }
+        }
+      }
+    })
+  })
 }

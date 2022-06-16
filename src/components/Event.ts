@@ -69,7 +69,7 @@ export function handleMouseDownPaletteDropzone(
   event: MouseEvent,
   eventGate: Gate
 ): void {
-  //   console.log('mousedownpalette')
+  // console.log('mousedownpalette')
   cleanGateSelected()
   eventStatus = EventStatus.DraggingOutsideBoard
   setDragDropzonePos(event)
@@ -215,7 +215,7 @@ export function handleMouseLeaveQuantumCircuit(): void {
 }
 
 export function handleMouseDownQuantumCircuit(): void {
-  // console.log('mousedownquantumcircuit')
+  // console.log('mousedownquantumcircuit', eventStatus)
   cleanGateSelected()
 }
 

@@ -68,3 +68,21 @@
   --chart-width: 32rem;
   --chart-height: 24rem;
 }
+
+:root {
+  --gate-editor-top: -3rem;
+  --gate-editor-font-size: 0.875rem;
+  --gate-editor-font-family: ui-sans-serif, system-ui;
+  --gate-editor-background-color-white: rgb(255, 255, 255);
+  --gate-editor-text-color-black: rgb(17, 24, 39);
+  --gate-editor-text-background-color-gray: rgb(229, 231, 235);
+  --gate-editor-delete-background-color-pink: rgb(254, 202, 202);
+}
+
+:root {
+  --gate-monitor-top: -0.5rem;
+  --gate-editor-font-size: 0.75rem;
+  --gate-editor-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+  'Liberation Mono', 'Courier New', monospace;;
+  --gate-editor-font-color-black: rgb(17, 24, 39);
+}
