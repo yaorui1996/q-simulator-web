@@ -2,4 +2,5 @@
 
 ### 新建线路
 
-https://github.com/HYQubit/QSimulatorWeb/tree/main/docs/video/create_circuit.mp4
+https://user-images.githubusercontent.com/48665827/174290941-dcb74eaa-3bca-45ec-be07-7ca8839b434a.mp4
+
