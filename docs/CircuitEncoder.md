@@ -30,7 +30,7 @@ Swap, Control
 
 绿色格点说明有效，灰色格点说明无效。
 
-![](/img/gui_example.jpg)
+![](/docs/img/gui_example.jpg)
 
 # 输入
 
@@ -38,7 +38,7 @@ Swap, Control
 
 #### 实例：
 
-![](/img/circuit_example.jpg)
+![](/docs/img/circuit_example.jpg)
 
 #### 说明：
 

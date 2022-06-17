@@ -67,7 +67,7 @@
 
 ### 线路
 
-![](../img/state_example.jpg)
+![](../docs/img/state_example.jpg)
 
 ### 示例 1，传输态矢量
 
