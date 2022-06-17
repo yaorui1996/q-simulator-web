@@ -59,6 +59,7 @@ export function sampleCircuit(sampleNum: number, stateVector: boolean): void {
       }
     })
   )
+  updateCircuitMeasurement(computation.samples[0].measurements)
   computation.circuit = JSON.stringify(circuitGates)
 }
 

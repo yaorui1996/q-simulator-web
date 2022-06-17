@@ -46,7 +46,6 @@
       stepSelect.value = getStepNum() - 1
     }
     changeChartDataToStepSelectStateVector()
-    updateCircuitMeasurement(computation.samples[0].measurements)
   }
 </script>
 
