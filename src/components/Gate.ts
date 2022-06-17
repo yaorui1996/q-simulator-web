@@ -11,7 +11,7 @@ export enum GateName {
   PauliX = 'PauliX',
   PauliY = 'PauliY',
   PauliZ = 'PauliZ',
-  Phase = 'Phase',
+  S = 'S',
   T = 'T',
   SquareRootX = 'SquareRootX',
   RotationX = 'RotationX',
@@ -28,7 +28,7 @@ export const singleBitGates: GateName[] = [
   GateName.PauliX,
   GateName.PauliY,
   GateName.PauliZ,
-  GateName.Phase,
+  GateName.S,
   GateName.T,
   GateName.SquareRootX,
   GateName.RotationX,
@@ -43,7 +43,6 @@ export const uncontrollableGates: GateName[] = [
 ]
 
 export const valueEditableGates: GateName[] = [
-  GateName.Phase,
   GateName.RotationX,
   GateName.RotationY,
   GateName.RotationZ

@@ -3,6 +3,7 @@
   --cursor-grab: grab;
   --font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     'Liberation Mono', 'Courier New', monospace;
+  --circuit-padding: 1rem 10rem 2rem 4rem;
 }
 
 :root {
@@ -44,7 +45,7 @@
 }
 
 :root {
-  --board-margin: 2.5rem 0.625rem 2.5rem 0.625rem;
+  --board-margin: 0.5rem 0.625rem 2.5rem 0.625rem;
 }
 
 :root {

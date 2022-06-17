@@ -81,8 +81,8 @@ export function initPalette(): void {
   paletteGates.push({
     step: 4,
     register: -1,
-    name: GateName.Phase,
-    value: '1/2',
+    name: GateName.S,
+    value: '',
     valueValid: true,
     display: Display.Default,
     wireInput: false,

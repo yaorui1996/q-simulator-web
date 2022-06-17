@@ -1,4 +1,4 @@
-import { Gate, GateName, singleBitGates } from '../Gate'
+import { Gate, GateName, singleBitGates, valueEditableGates } from '../Gate'
 import { circuitGates } from '../store/Circuit'
 
 interface Qubit {
@@ -36,12 +36,19 @@ export function getEncodedCircuit(): Circuit {
 
       stepGates
         .filter((gate) => singleBitGates.includes(gate.name))
-        .forEach((gate) =>
-          moment.push({
-            gate: { name: gate.name, parameter: gate.value },
-            qubits: [circuit.qubits[gate.register]]
-          })
-        )
+        .forEach((gate) => {
+          if (!valueEditableGates.includes(gate.name)) {
+            moment.push({
+              gate: { name: gate.name, parameter: gate.value },
+              qubits: [circuit.qubits[gate.register]]
+            })
+          } else if (gate.valueValid) {
+            moment.push({
+              gate: { name: gate.name, parameter: eval(gate.value) },
+              qubits: [circuit.qubits[gate.register]]
+            })
+          }
+        })
 
       stepGates
         .filter((gate) =>

@@ -3,7 +3,13 @@
   lang="ts"
 >
   import { ref } from 'vue'
-  import { checkValueValid, Display, Gate, GateName } from './Gate'
+  import {
+    checkValueValid,
+    Display,
+    Gate,
+    GateName,
+    valueEditableGates
+  } from './Gate'
   import EditorDelete from './icons/EditorDelete.vue'
   import { trimCircuit } from './store/Circuit'
 
@@ -36,13 +42,15 @@
         :value="inputFront"
         disabled
       />
-      <div class="input-container">
+      <div
+        class="input-container"
+        v-if="valueEditableGates.includes(gate.name)"
+      >
         <span>{{ 'a' + gate.value + 'a' }}</span>
         <input
           class="input-value"
           type="text"
           v-model="gate.value"
-          placeholder="Angle"
           @change="onChange()"
           @mouseover="focus = true"
           @mouseout="focus = false"
@@ -72,6 +80,9 @@
     align-items: center;
   }
   .gate-editor-text {
+    visibility: v-bind(
+      "valueEditableGates.includes(gate.name) ? 'visible' : 'hidden'"
+    );
     display: flex;
     flex-direction: row;
     justify-content: center;

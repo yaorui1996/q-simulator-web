@@ -8,7 +8,7 @@
 
 单比特有效门包含：
 
-Hadamard, PauliX, PauliY, PauliZ, Phase, T, SquareRootX, RotationX, RotationY, RotationZ, Write, Measurement
+Hadamard, PauliX, PauliY, PauliZ, S, T, SquareRootX, RotationX, RotationY, RotationZ, Write, Measurement
 
 多比特门包含：
 
@@ -53,13 +53,13 @@ Swap, Control
 |         |            |           |               |        |               |
 | ------- | ---------- | --------- | ------------- | ------ | ------------- |
 | Write_0 | Hadamard\_ | PauliZ\_  | Control_1     | Swap_1 | Measurement\_ |
-| Write_1 | PauliX\_   | Phase_0.5 | SquareRootX\_ | Swap_1 | Measurement\_ |
+| Write_1 | PauliX\_   | S_ | SquareRootX\_ | Swap_1 | Measurement\_ |
 | Write_0 | PauliY\_   | T\_       | Control_1     | Null\_ | Measurement\_ |
 
 - 方案 1
 
 ```
-Write_0,Write_1,Write_0;Hadamard_,PauliX_,PauliY_;PauliZ_,Phase_0.5,T_;Control_1,SquareRootX_,Control_1;Swap_1,Swap_1,Null_;Measurement_,Measurement_,Measurement_
+Write_0,Write_1,Write_0;Hadamard_,PauliX_,PauliY_;PauliZ_,S_,T_;Control_1,SquareRootX_,Control_1;Swap_1,Swap_1,Null_;Measurement_,Measurement_,Measurement_
 ```
 
 - 方案 2
@@ -72,7 +72,7 @@ Write_0,Write_1,Write_0;Hadamard_,PauliX_,PauliY_;PauliZ_,Phase_0.5,T_;Control_1
 1,1,PauliX_
 1,2,PauliY_
 2,0,PauliZ_
-2,1,Phase_0.5
+2,1,S_
 2,2,T_
 3,0,Control_1
 3,1,SquareRootX_
@@ -95,7 +95,7 @@ Write_0,Write_1,Write_0;Hadamard_,PauliX_,PauliY_;PauliZ_,Phase_0.5,T_;Control_1
 |_PauliX_||||
 |_PauliY_||||
 |_PauliZ_||||
-|_Phase_||浮点数|单位为 $\pi$|
+|_S_||||
 |_T_||||
 |_SquareRootX_||||
 |_RotationX_||浮点数|单位为 $\pi$|

@@ -11,10 +11,12 @@
   import { stepFocus, stepSelect } from './store/Circuit'
   import GateEditor from './GateEditor.vue'
   import GateMonitor from './GateMonitor.vue'
+  import { getEncodedCircuit } from './server/Encoder'
 
   defineProps<{ stepGates: Gate[] }>()
   function click(gate: Gate) {
-    console.log(eval(gate.value))
+    // console.log(eval(gate.value))
+    console.log(getEncodedCircuit())
   }
 </script>
 
@@ -29,10 +31,7 @@
     >
       <GateEditor
         class="gate-editor"
-        v-if="
-          valueEditableGates.includes(circuitDropzoneGate.name) &&
-          circuitDropzoneGate.display == Display.Select
-        "
+        v-if="circuitDropzoneGate.display == Display.Select"
         :gate="circuitDropzoneGate"
         @click="click(circuitDropzoneGate)"
       />

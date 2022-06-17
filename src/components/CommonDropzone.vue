@@ -28,7 +28,7 @@
   import PauliXGate from './icons/PauliXGate.vue'
   import PauliYGate from './icons/PauliYGate.vue'
   import PauliZGate from './icons/PauliZGate.vue'
-  import PhaseGate from './icons/PhaseGate.vue'
+  import SGate from './icons/SGate.vue'
   import RotationXGate from './icons/RotationXGate.vue'
   import RotationYGate from './icons/RotationYGate.vue'
   import RotationZGate from './icons/RotationZGate.vue'
@@ -45,7 +45,7 @@
     [GateName.PauliX]: PauliXGate,
     [GateName.PauliY]: PauliYGate,
     [GateName.PauliZ]: PauliZGate,
-    [GateName.Phase]: PhaseGate,
+    [GateName.S]: SGate,
     [GateName.T]: TGate,
     [GateName.SquareRootX]: SquareRootXGate,
     [GateName.RotationX]: RotationXGate,
