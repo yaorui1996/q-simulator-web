@@ -50,11 +50,11 @@ Swap, Control
 
 - 数组为
 
-|         |            |           |               |        |               |
-| ------- | ---------- | --------- | ------------- | ------ | ------------- |
-| Write_0 | Hadamard\_ | PauliZ\_  | Control_1     | Swap_1 | Measurement\_ |
-| Write_1 | PauliX\_   | S_ | SquareRootX\_ | Swap_1 | Measurement\_ |
-| Write_0 | PauliY\_   | T\_       | Control_1     | Null\_ | Measurement\_ |
+|         |            |          |               |        |               |
+| ------- | ---------- | -------- | ------------- | ------ | ------------- |
+| Write_0 | Hadamard\_ | PauliZ\_ | Control_1     | Swap_1 | Measurement\_ |
+| Write_1 | PauliX\_   | S\_      | SquareRootX\_ | Swap_1 | Measurement\_ |
+| Write_0 | PauliY\_   | T\_      | Control_1     | Null\_ | Measurement\_ |
 
 - 方案 1
 

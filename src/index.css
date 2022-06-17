@@ -83,7 +83,7 @@
 :root {
   --gate-monitor-top: -0.5rem;
   --gate-editor-font-size: 0.75rem;
-  --gate-editor-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-  'Liberation Mono', 'Courier New', monospace;;
+  --gate-editor-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
   --gate-editor-font-color-black: rgb(17, 24, 39);
 }
