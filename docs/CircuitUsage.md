@@ -1,5 +1,5 @@
 # 量子线路使用方法
 
-### 展示
+### 新建线路
 
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://youtu.be/vt5fpE0bzSY)
+https://github.com/HYQubit/QSimulatorWeb/tree/main/docs/video/create_circuit.mp4
