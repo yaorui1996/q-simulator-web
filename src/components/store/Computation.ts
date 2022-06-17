@@ -26,7 +26,6 @@ export interface Computation {
 export const computation: Computation = { circuit: '', samples: [] }
 
 export function sampleCircuit(sampleNum: number, stateVector: boolean): void {
-  computation.circuit = JSON.stringify(circuitGates)
   computation.samples.splice(0, computation.samples.length)
   computation.samples.push({
     stateVectors: [],
@@ -60,6 +59,7 @@ export function sampleCircuit(sampleNum: number, stateVector: boolean): void {
       }
     })
   )
+  computation.circuit = JSON.stringify(circuitGates)
 }
 
 export function updateCircuitMeasurement(measurements: Measurement[]) {
