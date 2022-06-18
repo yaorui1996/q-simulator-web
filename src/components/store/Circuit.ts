@@ -369,7 +369,8 @@ export function arrangeWires(): void {
       const gateControllableTag: string[] = stepGates.map((gate) =>
         gate.name == GateName.Control
           ? 'Control'
-          : uncontrollableGates.includes(gate.name)
+          : uncontrollableGates.includes(gate.name) ||
+            gate.name == GateName.Null
           ? 'Uncontrollable'
           : 'Controllable'
       )
@@ -431,4 +432,18 @@ export function checkAllValueValid(): void {
   })
 }
 
-export function checkAllProperPlaced(): void {}
+export function checkAllProperPlaced(): void {
+  circuitGates.forEach((stepGates) => {
+    const isControlInStep: boolean = stepGates.some(
+      (gate) => gate.name == GateName.Control
+    )
+    stepGates
+      .filter((gate) => uncontrollableGates.includes(gate.name))
+      .forEach((gate) => {
+        gate.properPlaced = !(
+          isControlInStep &&
+          (gate.connectTop || gate.connectBottom)
+        )
+      })
+  })
+}

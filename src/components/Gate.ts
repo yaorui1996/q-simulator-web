@@ -37,7 +37,6 @@ export const singleBitGates: GateName[] = [
 ]
 
 export const uncontrollableGates: GateName[] = [
-  GateName.Null,
   GateName.Write,
   GateName.Measurement
 ]

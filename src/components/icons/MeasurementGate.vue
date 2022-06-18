@@ -51,7 +51,7 @@
     width: var(--gate-width);
     height: var(--gate-height);
     color: v-bind(
-      "gate.display == Display.Drag ? 'var(--gate-color-purple-400)' : 'var(--gate-color-purple-500)'"
+      "gate.display == Display.Drag ? 'var(--gate-color-purple-400)' : gate.properPlaced ? 'var(--gate-color-purple-500)' : 'var(--gate-color-gray)'"
     );
     background-color: v-bind(
       "gate.display == Display.Drag ? 'var(--gate-background-color-purple)' : isGateInCircuitDropzone(gate) ? 'var(--gate-background-color-gray)' : 'var(--gate-background-color-white)'"

@@ -42,7 +42,7 @@
     width: var(--gate-width);
     height: var(--gate-height);
     color: v-bind(
-      "gate.display == Display.Drag ? 'var(--gate-color-white)' : 'var(--gate-color-neutral-500)'"
+      "gate.display == Display.Drag ? 'var(--gate-color-white)' : gate.properPlaced ? 'var(--gate-color-neutral-500)' : 'var(--gate-color-gray)'"
     );
     background-color: v-bind(
       "gate.display == Display.Drag ? 'var(--gate-background-color-purple)' : isGateInCircuitDropzone(gate) ? 'var(--gate-background-color-gray)' : 'var(--gate-background-color-white)'"
@@ -54,7 +54,7 @@
     display: flex;
     justify-content: center;
     color: v-bind(
-      "gate.display == Display.Drag ? 'var(--gate-color-white)' : gate.value == '1' ? 'var(--gate-color-blue)' : 'var(--gate-color-red)'"
+      "gate.display == Display.Drag ? 'var(--gate-color-white)' : gate.properPlaced ? gate.value == '1' ? 'var(--gate-color-blue)' : 'var(--gate-color-red)' : 'var(--gate-color-gray)'"
     );
     font-family: var(--write-gate-font-family);
   }
