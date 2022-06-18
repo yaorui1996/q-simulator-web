@@ -55,6 +55,7 @@ export interface Gate {
   name: GateName
   value: string
   valueValid: boolean
+  swapIndex: number
   display: Display
   wireInput: boolean
   wireOutput: boolean
@@ -70,6 +71,7 @@ export function emptyGate(): Gate {
     name: GateName.Null,
     value: '',
     valueValid: true,
+    swapIndex: 0,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
@@ -125,6 +127,7 @@ export function emptyStep(stepIndex: number, registerNum: number): Gate[] {
       name: GateName.Null,
       value: '',
       valueValid: true,
+      swapIndex: 0,
       display: Display.Default,
       wireInput: false,
       wireOutput: false,

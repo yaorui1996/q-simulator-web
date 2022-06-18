@@ -30,201 +30,118 @@ export const stepSelect = ref<number>(0)
 
 export function initPalette(): void {
   paletteGates.splice(0, paletteGates.length) // clear paletteGates
-  paletteGates.push({
-    step: 0,
-    register: -1,
-    name: GateName.Hadamard,
-    value: '',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 1,
-    register: -1,
-    name: GateName.PauliX,
-    value: '',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 2,
-    register: -1,
-    name: GateName.PauliY,
-    value: '',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 3,
-    register: -1,
-    name: GateName.PauliZ,
-    value: '',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 4,
-    register: -1,
-    name: GateName.S,
-    value: '',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 5,
-    register: -1,
-    name: GateName.T,
-    value: '',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 6,
-    register: -1,
-    name: GateName.SquareRootX,
-    value: '',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 7,
-    register: -1,
-    name: GateName.RotationX,
-    value: '1/2',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 8,
-    register: -1,
-    name: GateName.RotationY,
-    value: '1/2',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 9,
-    register: -1,
-    name: GateName.RotationZ,
-    value: '1/2',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 10,
-    register: -1,
-    name: GateName.Swap,
-    value: '1',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 11,
-    register: -1,
-    name: GateName.Control,
-    value: '1',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 12,
-    register: -1,
-    name: GateName.Write,
-    value: '0',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 13,
-    register: -1,
-    name: GateName.Write,
-    value: '1',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
-  paletteGates.push({
-    step: 13,
-    register: -1,
-    name: GateName.Measurement,
-    value: '',
-    valueValid: true,
-    display: Display.Default,
-    wireInput: false,
-    wireOutput: false,
-    connectTop: false,
-    connectBottom: false,
-    properPlaced: true
-  })
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 0,
+      register: -1,
+      name: GateName.Hadamard
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 1,
+      register: -1,
+      name: GateName.PauliX
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 2,
+      register: -1,
+      name: GateName.PauliY
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 3,
+      register: -1,
+      name: GateName.PauliZ
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 4,
+      register: -1,
+      name: GateName.S
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 5,
+      register: -1,
+      name: GateName.T
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 6,
+      register: -1,
+      name: GateName.SquareRootX
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 7,
+      register: -1,
+      name: GateName.RotationX,
+      value: '1/2'
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 8,
+      register: -1,
+      name: GateName.RotationY,
+      value: '1/2'
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 9,
+      register: -1,
+      name: GateName.RotationZ,
+      value: '1/2'
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 10,
+      register: -1,
+      name: GateName.Swap,
+      value: '1'
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 11,
+      register: -1,
+      name: GateName.Control,
+      value: '1'
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 12,
+      register: -1,
+      name: GateName.Write,
+      value: '0'
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 13,
+      register: -1,
+      name: GateName.Write,
+      value: '1'
+    })
+  )
+  paletteGates.push(
+    Object.assign(emptyGate(), {
+      step: 14,
+      register: -1,
+      name: GateName.Measurement
+    })
+  )
 }
 
 export function initCircuit(): void {
@@ -267,6 +184,7 @@ export function appendRegister(): void {
       name: GateName.Null,
       value: '',
       valueValid: true,
+      swapIndex: 0,
       display: Display.Default,
       wireInput: false,
       wireOutput: false,
