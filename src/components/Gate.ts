@@ -61,6 +61,7 @@ export interface Gate {
   wireOutput: boolean
   connectTop: boolean
   connectBottom: boolean
+  properPlaced: boolean
 }
 
 export function emptyGate(): Gate {
@@ -74,7 +75,8 @@ export function emptyGate(): Gate {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   }
 }
 
@@ -128,7 +130,8 @@ export function emptyStep(stepIndex: number, registerNum: number): Gate[] {
       wireInput: false,
       wireOutput: false,
       connectTop: false,
-      connectBottom: false
+      connectBottom: false,
+      properPlaced: true
     })
   }
   return step

@@ -40,7 +40,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 1,
@@ -52,7 +53,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 2,
@@ -64,7 +66,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 3,
@@ -76,7 +79,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 4,
@@ -88,7 +92,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 5,
@@ -100,7 +105,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 6,
@@ -112,7 +118,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 7,
@@ -124,7 +131,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 8,
@@ -136,7 +144,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 9,
@@ -148,7 +157,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 10,
@@ -160,7 +170,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 11,
@@ -172,7 +183,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 12,
@@ -184,7 +196,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 13,
@@ -196,7 +209,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
   paletteGates.push({
     step: 13,
@@ -208,7 +222,8 @@ export function initPalette(): void {
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false
+    connectBottom: false,
+    properPlaced: true
   })
 }
 
@@ -256,7 +271,8 @@ export function appendRegister(): void {
       wireInput: false,
       wireOutput: false,
       connectTop: false,
-      connectBottom: false
+      connectBottom: false,
+      properPlaced: true
     })
   )
 }
@@ -312,7 +328,8 @@ export function trimCircuit(): void {
   trimStep()
   arrangeIndex()
   arrangeWires()
-  checkValueEditableGates()
+  checkAllValueValid()
+  checkAllProperPlaced()
 }
 
 export function arrangeIndex(): void {
@@ -404,7 +421,7 @@ export function arrangeWires(): void {
   }
 }
 
-export function checkValueEditableGates(): void {
+export function checkAllValueValid(): void {
   circuitGates.forEach((stepGates) => {
     stepGates.forEach((gate) => {
       if (valueEditableGates.includes(gate.name)) {
@@ -413,3 +430,5 @@ export function checkValueEditableGates(): void {
     })
   })
 }
+
+export function checkAllProperPlaced(): void {}
