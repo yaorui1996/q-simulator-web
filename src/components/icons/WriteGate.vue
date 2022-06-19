@@ -3,6 +3,7 @@
   lang="ts"
 >
   import { Display, Gate, isGateInCircuitDropzone } from '../Gate'
+  import { checkingCircuitGatesError } from '../store/Circuit'
 
   defineProps<{
     gate: Gate
@@ -45,7 +46,7 @@
       "gate.display == Display.Drag ? 'var(--gate-color-white)' : gate.properPlaced ? 'var(--gate-color-neutral-500)' : 'var(--gate-color-gray)'"
     );
     background-color: v-bind(
-      "gate.display == Display.Drag ? 'var(--gate-background-color-purple)' : isGateInCircuitDropzone(gate) ? 'var(--gate-background-color-gray)' : 'var(--gate-background-color-white)'"
+      "gate.display == Display.Drag ? 'var(--gate-background-color-purple)' : (checkingCircuitGatesError && !gate.properPlaced) ? 'var(--gate-background-color-red)' : isGateInCircuitDropzone(gate) ? 'var(--gate-background-color-gray)' : 'var(--gate-background-color-white)'"
     );
   }
 

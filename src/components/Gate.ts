@@ -2,7 +2,8 @@ export enum Display {
   Default,
   Focus,
   Drag,
-  Select
+  Select,
+  Error
 }
 
 export enum GateName {

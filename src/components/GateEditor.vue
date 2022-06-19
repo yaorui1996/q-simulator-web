@@ -12,7 +12,7 @@
     valueEditableGates
   } from './Gate'
   import EditorDelete from './icons/EditorDelete.vue'
-  import { trimCircuit } from './store/Circuit'
+  import { arrangeWires, trimCircuit } from './store/Circuit'
 
   const props = defineProps<{ gate: Gate }>()
 
@@ -22,6 +22,7 @@
 
   function onChange(): void {
     checkValueValid(props.gate)
+    arrangeWires()
   }
 
   function onClick(): void {

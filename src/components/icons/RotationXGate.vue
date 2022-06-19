@@ -3,6 +3,7 @@
   lang="ts"
 >
   import { Display, Gate } from '../Gate'
+  import { checkingCircuitGatesError } from '../store/Circuit'
 
   defineProps<{
     gate: Gate
@@ -48,7 +49,7 @@
     height: var(--gate-height);
     color: var(--gate-color-white);
     background-color: v-bind(
-      "gate.display == Display.Drag ? 'var(--gate-background-color-purple)' : gate.valueValid ? 'var(--gate-background-color-green)' : 'var(--gate-color-gray)'"
+      "gate.display == Display.Drag ? 'var(--gate-background-color-purple)' : gate.valueValid ? 'var(--gate-background-color-green)' : (checkingCircuitGatesError && !gate.valueValid) ? 'var(--gate-background-color-red)' : 'var(--gate-color-gray)'"
     );
   }
 </style>

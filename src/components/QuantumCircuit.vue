@@ -2,6 +2,7 @@
   setup
   lang="ts"
 >
+  import { ElMessage } from 'element-plus'
   import CircuitBoard from './CircuitBoard.vue'
   import CircuitChart from './CircuitChart.vue'
   import CircuitPalette from './CircuitPalette.vue'
@@ -15,6 +16,8 @@
   import { isGateInDragDropzone } from './Gate'
   import { changeChartDataToStepSelectStateVector } from './store/Chart'
   import {
+    getCircuitGatesErrorNum,
+    checkingCircuitGatesError,
     circuitGates,
     dragDropzoneGate,
     dragDropzonePos,
@@ -32,11 +35,25 @@
   trimCircuit()
 
   function click() {
-    sampleCircuit(1, true)
-    if (stepSelect.value == 0) {
-      stepSelect.value = getStepNum() - 1
+    const errorNum: number = getCircuitGatesErrorNum()
+    if (errorNum > 0) {
+      checkingCircuitGatesError.value = true
+      ElMessage({
+        showClose: true,
+        message:
+          getCircuitGatesErrorNum() > 1
+            ? `Oops, there are ${getCircuitGatesErrorNum()} errors in the circuit.`
+            : `Oops, there is an error in the circuit.`,
+        type: 'error'
+      })
+    } else {
+      checkingCircuitGatesError.value = false
+      sampleCircuit(1, true)
+      if (stepSelect.value == 0) {
+        stepSelect.value = getStepNum() - 1
+      }
+      changeChartDataToStepSelectStateVector()
     }
-    changeChartDataToStepSelectStateVector()
   }
 </script>
 

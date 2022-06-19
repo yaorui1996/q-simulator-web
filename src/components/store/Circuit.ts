@@ -25,6 +25,7 @@ export const dragDropzonePos = reactive<{ left: number; top: number }>({
 export const dragDropzoneGate = reactive<Gate>(emptyGate())
 export const paletteGates = reactive<Gate[]>([])
 export const circuitGates = reactive<Gate[][]>([])
+export const checkingCircuitGatesError = ref<boolean>(false)
 export const stepFocus = ref<number>(0)
 export const stepSelect = ref<number>(0)
 
@@ -358,13 +359,12 @@ export function arrangeWires(): void {
 }
 
 export function checkAllValueValid(): void {
-  circuitGates.forEach((stepGates) => {
-    stepGates.forEach((gate) => {
-      if (valueEditableGates.includes(gate.name)) {
-        checkValueValid(gate)
-      }
+  circuitGates
+    .flat()
+    .filter((gate) => valueEditableGates.includes(gate.name))
+    .forEach((gate) => {
+      checkValueValid(gate)
     })
-  })
 }
 
 export function checkAllProperPlaced(): void {
@@ -420,4 +420,16 @@ export function arrangeSwapIndex(): void {
       .sort((gate1, gate2) => gate1.swapIndex - gate2.swapIndex)
       .forEach((gate, index) => (gate.swapIndex = index + 1))
   }
+}
+
+export function getCircuitGatesErrorNum(): number {
+  return circuitGates
+    .flat()
+    .filter(
+      (gate) =>
+        ([GateName.Control, GateName.Swap].includes(gate.name) &&
+          gate.value == '0') ||
+        (uncontrollableGates.includes(gate.name) && !gate.properPlaced) ||
+        (valueEditableGates.includes(gate.name) && !gate.valueValid)
+    ).length
 }

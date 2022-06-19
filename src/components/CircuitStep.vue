@@ -15,7 +15,7 @@
 
   defineProps<{ stepGates: Gate[] }>()
   function click(gate: Gate) {
-    console.log(eval(gate.value))
+    console.log(gate.value)
     console.log(getEncodedCircuit())
   }
 </script>
