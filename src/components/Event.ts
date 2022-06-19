@@ -5,8 +5,7 @@ import {
   GateName,
   isGateInCircuitDropzone,
   isGateSelected,
-  isGateValid,
-  setGateDisplay
+  isGateValid
 } from './Gate'
 import { changeChartDataToStepSelectStateVector } from './store/Chart'
 import {
@@ -14,6 +13,8 @@ import {
   circuitGates,
   dragDropzoneGate,
   dragDropzonePos,
+  getMaxSwapIndex,
+  getSwapGatePartner,
   initDragDropzone,
   removeDragDropzone,
   stepFocus,
@@ -37,6 +38,7 @@ function deleteDraggedCircuitDrppzoneGate(): void {
   Object.assign(draggedCircuitDropzoneGate, {
     name: GateName.Null,
     value: '',
+    swapIndex: 0,
     display: Display.Default
   })
 }
@@ -45,6 +47,7 @@ function moveDraggedCircuitDrppzoneGate(step: number, register: number): void {
   Object.assign(circuitGates[step][register], {
     name: draggedCircuitDropzoneGate.name,
     value: draggedCircuitDropzoneGate.value,
+    swapIndex: draggedCircuitDropzoneGate.swapIndex,
     display: Display.Drag
   })
   deleteDraggedCircuitDrppzoneGate()
@@ -52,16 +55,16 @@ function moveDraggedCircuitDrppzoneGate(step: number, register: number): void {
 }
 
 export function handleMouseEnterPaletteDropzone(eventGate: Gate): void {
-  //   console.log('mouseenterpalette')
+  // console.log('mouseenterpalette')
   if (eventStatus !== EventStatus.DraggingOutsideBoard) {
-    setGateDisplay(eventGate, Display.Focus)
+    Object.assign(eventGate, { display: Display.Focus })
   }
 }
 
 export function handleMouseLeavePaletteDropzone(eventGate: Gate): void {
-  //   console.log('mouseleavepalette')
+  // console.log('mouseleavepalette')
   if (eventStatus !== EventStatus.DraggingOutsideBoard) {
-    setGateDisplay(eventGate, Display.Default)
+    Object.assign(eventGate, { display: Display.Default })
   }
 }
 
@@ -74,12 +77,12 @@ export function handleMouseDownPaletteDropzone(
   eventStatus = EventStatus.DraggingOutsideBoard
   setDragDropzonePos(event)
   initDragDropzone(eventGate)
-  setGateDisplay(eventGate, Display.Default)
+  Object.assign(eventGate, { display: Display.Default })
   appendRegister()
 }
 
 export function handleMouseUpPaletteDropzone() {
-  //   console.log('mouseuppalette')
+  // console.log('mouseuppalette')
   cleanQuantumCircuit()
 }
 
@@ -90,7 +93,7 @@ export function handleMouseEnterCircuitDropzone(eventGate: Gate): void {
     isGateValid(eventGate) &&
     !isGateSelected(eventGate)
   ) {
-    setGateDisplay(eventGate, Display.Focus)
+    Object.assign(eventGate, { display: Display.Focus })
   }
   if (
     isGateInCircuitDropzone(eventGate) &&
@@ -103,7 +106,7 @@ export function handleMouseEnterCircuitDropzone(eventGate: Gate): void {
 }
 
 export function handleMouseLeaveCircuitDropzone(eventGate: Gate): void {
-  //   console.log('mouseleavecircuitdropzone')
+  // console.log('mouseleavecircuitdropzone')
   if (eventStatus == EventStatus.CircuitDropzoneGatePressed) {
     eventStatus = EventStatus.DraggingInsideBoard
     appendRegister()
@@ -112,7 +115,7 @@ export function handleMouseLeaveCircuitDropzone(eventGate: Gate): void {
     isGateValid(eventGate) &&
     !isGateSelected(eventGate)
   ) {
-    setGateDisplay(eventGate, Display.Default)
+    Object.assign(eventGate, { display: Display.Default })
   }
 }
 
@@ -121,20 +124,38 @@ export function handleMouseDownCircuitDropzone(eventGate: Gate): void {
   cleanGateSelected()
   if (isGateValid(eventGate)) {
     eventStatus = EventStatus.CircuitDropzoneGatePressed
-    setGateDisplay(eventGate, Display.Drag)
+    Object.assign(eventGate, { display: Display.Drag })
+    if (eventGate.name == GateName.Swap) {
+      Object.assign(getSwapGatePartner(eventGate) ?? emptyGate(), {
+        display: Display.Drag
+      })
+    }
     draggedCircuitDropzoneGate = eventGate
+  } else {
+    eventStatus = EventStatus.Idle
   }
 }
 
 export function handleMouseUpCircuitDropzone(eventGate: Gate): void {
-  //   console.log('mouseupcircuitdropzone')
+  // console.log('mouseupcircuitdropzone')
   if (eventStatus == EventStatus.CircuitDropzoneGatePressed) {
     eventStatus = EventStatus.CircuitDropzoneGateSelected
-    setGateDisplay(eventGate, Display.Select)
+    Object.assign(eventGate, { display: Display.Select })
+    if (eventGate.name == GateName.Swap) {
+      Object.assign(getSwapGatePartner(eventGate) ?? emptyGate(), {
+        display: Display.Default
+      })
+    }
     selectedCircuitDropzoneGate = eventGate
   } else {
     if (eventStatus == EventStatus.DraggingInsideBoard) {
-      setGateDisplay(draggedCircuitDropzoneGate, Display.Default)
+      Object.assign(draggedCircuitDropzoneGate, { display: Display.Default })
+      if (draggedCircuitDropzoneGate.name == GateName.Swap) {
+        Object.assign(
+          getSwapGatePartner(draggedCircuitDropzoneGate) ?? emptyGate(),
+          { display: Display.Default }
+        )
+      }
       trimCircuit()
     }
     eventStatus = EventStatus.Idle
@@ -145,7 +166,7 @@ export function handleMouseMoveCircuitStep(
   event: MouseEvent,
   eventGate: Gate
 ): void {
-  //   console.log('mousemovecircuitstep', eventGate)
+  // console.log('mousemovecircuitstep', eventGate)
   if (
     isGateInCircuitDropzone(eventGate) &&
     eventGate.step % 2 == 0 &&
@@ -187,19 +208,20 @@ export function handleMouseDownCircuitStep(eventGate: Gate): void {
     changeChartDataToStepSelectStateVector()
   }
   cleanGateSelected()
+  eventStatus = EventStatus.Idle
 }
 
 export function handleMouseEnterCircuitBoard(): void {
-  //   console.log('mouseentercircuitboard')
+  // console.log('mouseentercircuitboard')
   if (eventStatus == EventStatus.DraggingOutsideBoard) {
     eventStatus = EventStatus.DraggingInsideBoard
-    draggedCircuitDropzoneGate = dragDropzoneGate
+    draggedCircuitDropzoneGate = Object.assign(emptyGate(), dragDropzoneGate)
     removeDragDropzone()
   }
 }
 
 export function handleMouseLeaveCircuitBoard(): void {
-  //   console.log('mouseleavecircuitboard')
+  // console.log('mouseleavecircuitboard')
   stepFocus.value = 0
   if (eventStatus == EventStatus.DraggingInsideBoard) {
     eventStatus = EventStatus.DraggingOutsideBoard
@@ -209,23 +231,24 @@ export function handleMouseLeaveCircuitBoard(): void {
 }
 
 export function handleMouseLeaveQuantumCircuit(): void {
-  //   console.log('mouseleavequantumcircuit')
+  // console.log('mouseleavequantumcircuit')
   cleanGateSelected()
   cleanQuantumCircuit()
 }
 
 export function handleMouseDownQuantumCircuit(): void {
-  // console.log('mousedownquantumcircuit', eventStatus)
+  // console.log('mousedownquantumcircuit')
   cleanGateSelected()
+  eventStatus = EventStatus.Idle
 }
 
 export function handleMouseUpQuantumCircuit(): void {
-  //   console.log('mouseupquantumcircuit')
+  // console.log('mouseupquantumcircuit')
   cleanQuantumCircuit()
 }
 
 export function handleMouseMoveQuantumCircuit(event: MouseEvent): void {
-  //   console.log('mousemovequantumcircuit')
+  // console.log('mousemovequantumcircuit')
   if (eventStatus == EventStatus.DraggingOutsideBoard) {
     setDragDropzonePos(event)
   } else if (eventStatus == EventStatus.DraggingInsideBoard) {
@@ -237,17 +260,28 @@ export function handleMouseMoveQuantumCircuit(event: MouseEvent): void {
 
 function cleanGateSelected(): void {
   if (eventStatus == EventStatus.CircuitDropzoneGateSelected) {
-    setGateDisplay(selectedCircuitDropzoneGate, Display.Default)
+    Object.assign(selectedCircuitDropzoneGate, { display: Display.Default })
   }
-  eventStatus = EventStatus.Idle
 }
 
 function cleanQuantumCircuit(): void {
+  if (dragDropzoneGate.name == GateName.Swap) {
+    if (dragDropzoneGate.swapIndex < getMaxSwapIndex()) {
+      Object.assign(
+        getSwapGatePartner(dragDropzoneGate) ?? emptyGate(),
+        emptyGate()
+      )
+    } else {
+      Object.assign(getSwapGatePartner(dragDropzoneGate) ?? emptyGate(), {
+        display: Display.Default
+      })
+    }
+  }
+  removeDragDropzone()
   if (eventStatus == EventStatus.DraggingOutsideBoard) {
     trimCircuit()
   }
   eventStatus = EventStatus.Idle
-  removeDragDropzone()
 }
 
 function setDragDropzonePos(event: MouseEvent): void {

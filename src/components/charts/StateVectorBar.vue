@@ -3,7 +3,7 @@
   lang="ts"
 >
   import { EChartsOption } from 'echarts'
-  import { ref, reactive } from 'vue'
+  import { ref } from 'vue'
   import VChart from 'vue-echarts'
 
   import { saveAsExcel, stateVectorBar } from '../store/Chart'

@@ -4,18 +4,18 @@
 >
   import CommonDropzone from './CommonDropzone.vue'
   import {
-    handleMouseMoveCircuitStep,
-    handleMouseDownCircuitStep
+    handleMouseDownCircuitStep,
+    handleMouseMoveCircuitStep
   } from './Event'
-  import { Gate, GateName, Display, valueEditableGates } from './Gate'
-  import { stepFocus, stepSelect } from './store/Circuit'
+  import { Display, Gate, valueEditableGates } from './Gate'
   import GateEditor from './GateEditor.vue'
   import GateMonitor from './GateMonitor.vue'
   import { getEncodedCircuit } from './server/Encoder'
+  import { stepFocus, stepSelect } from './store/Circuit'
 
   defineProps<{ stepGates: Gate[] }>()
   function click(gate: Gate) {
-    // console.log(eval(gate.value))
+    console.log(eval(gate.value))
     console.log(getEncodedCircuit())
   }
 </script>

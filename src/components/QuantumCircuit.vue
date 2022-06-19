@@ -12,17 +12,12 @@
     handleMouseMoveQuantumCircuit,
     handleMouseUpQuantumCircuit
   } from './Event'
-  import { GateName, isGateInDragDropzone } from './Gate'
-  import {
-    changeChartDataToStepSelectStateVector,
-    probabilityBar,
-    stateVectorBar
-  } from './store/Chart'
+  import { isGateInDragDropzone } from './Gate'
+  import { changeChartDataToStepSelectStateVector } from './store/Chart'
   import {
     circuitGates,
     dragDropzoneGate,
     dragDropzonePos,
-    getRegisterNum,
     getStepNum,
     initCircuit,
     initPalette,
@@ -30,11 +25,7 @@
     stepSelect,
     trimCircuit
   } from './store/Circuit'
-  import {
-    computation,
-    sampleCircuit,
-    updateCircuitMeasurement
-  } from './store/Computation'
+  import { sampleCircuit } from './store/Computation'
 
   initPalette()
   initCircuit()

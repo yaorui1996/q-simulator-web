@@ -7,7 +7,6 @@
 
   import ProbabilityBar from './charts/ProbabilityBar.vue'
   import StateVectorBar from './charts/StateVectorBar.vue'
-  import { stateVectorBar } from './store/Chart'
 
   const options = reactive<string[]>(['State Vector', 'Probability'])
   const selected = ref<string>('State Vector')

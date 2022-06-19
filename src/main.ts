@@ -13,10 +13,11 @@ import {
 import { use } from 'echarts/core'
 // import ECharts modules manually to reduce bundle size
 import { CanvasRenderer } from 'echarts/renderers'
+import ElementPlus from 'element-plus'
 import { createApp } from 'vue'
 import ECharts from 'vue-echarts'
+
 import App from './App.vue'
-import ElementPlus from 'element-plus'
 
 use([
   CanvasRenderer,

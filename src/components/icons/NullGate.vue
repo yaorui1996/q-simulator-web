@@ -10,10 +10,3 @@
 </script>
 
 <template></template>
-
-<style scoped>
-  svg {
-    width: var(--gate-width);
-    height: var(--gate-height);
-  }
-</style>

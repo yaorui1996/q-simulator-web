@@ -158,13 +158,18 @@ export function initDragDropzone(gate: Gate): void {
     value: gate.value,
     display: Display.Drag
   })
+  if (gate.name == GateName.Swap) {
+    Object.assign(dragDropzoneGate, {
+      swapIndex: gate.swapIndex == 0 ? getMaxSwapIndex() + 1 : gate.swapIndex
+    })
+    Object.assign(getSwapGatePartner(dragDropzoneGate) ?? emptyGate(), {
+      display: Display.Drag
+    })
+  }
 }
 
 export function removeDragDropzone(): void {
-  Object.assign(dragDropzoneGate, {
-    step: -2,
-    register: -2
-  })
+  Object.assign(dragDropzoneGate, emptyGate())
 }
 
 export function getStepNum(): number {
@@ -242,11 +247,11 @@ export function trimStep(): void {
 }
 
 export function trimCircuit(): void {
+  checkAllValueValid()
   trimRegister()
   trimStep()
   arrangeIndex()
   arrangeWires()
-  checkAllValueValid()
   checkAllProperPlaced()
 }
 
@@ -265,6 +270,43 @@ export function arrangeWires(): void {
   if (getRegisterNum() > 0) {
     const wires: boolean[] = Array(getRegisterNum()).fill(false)
 
+    // disconnect all gate
+    circuitGates.flat().forEach((gate) => {
+      gate.connectTop = false
+      gate.connectBottom = false
+    })
+
+    // connect swap gate
+    arrangeSwapIndex()
+    const swapGates: Gate[] = circuitGates
+      .flat()
+      .filter((gate) => gate.name == GateName.Swap)
+    swapGates.forEach((gate) => (gate.value = '0'))
+    for (let i = 1; i < getMaxSwapIndex(); i += 2) {
+      let swapGate1: Gate = swapGates.find((gate) => gate.swapIndex == i)!
+      let swapGate2: Gate = swapGates.find((gate) => gate.swapIndex == i + 1)!
+      if (swapGate1.register > swapGate2.register) {
+        const swapGateTemp: Gate = swapGate1
+        swapGate1 = swapGate2
+        swapGate2 = swapGateTemp
+      }
+      if (swapGate1.step == swapGate2.step) {
+        if (
+          circuitGates[swapGate1.step]
+            .slice(swapGate1.register, swapGate2.register + 1)
+            .every((gate) => !gate.connectTop && !gate.connectBottom)
+        ) {
+          swapGate1.value = '1'
+          swapGate2.value = '1'
+          connectStepGates(
+            circuitGates[swapGate1.step],
+            swapGate1.register,
+            swapGate2.register
+          )
+        }
+      }
+    }
+
     circuitGates.forEach((stepGates) => {
       // set wire input and output
       stepGates.forEach((gate, index) => {
@@ -277,64 +319,39 @@ export function arrangeWires(): void {
         gate.wireOutput = wires[index]
       })
 
-      // disconnect all gate
-      stepGates.forEach((gate) => {
-        gate.connectTop = false
-        gate.connectBottom = false
-      })
-
       // classify gate by controllable
       const gateControllableTag: string[] = stepGates.map((gate) =>
         gate.name == GateName.Control
           ? 'Control'
           : uncontrollableGates.includes(gate.name) ||
-            gate.name == GateName.Null
+            gate.name == GateName.Null ||
+            (gate.name == GateName.Swap && gate.value == '0') ||
+            (valueEditableGates.includes(gate.name) && !gate.valueValid)
           ? 'Uncontrollable'
           : 'Controllable'
       )
 
-      // set control gate value
-      const controlGateValue: string =
-        gateControllableTag.filter((tag) => tag !== 'Uncontrollable').length > 1
-          ? '1'
-          : '0'
-      stepGates
-        .filter((gate) => gate.name == GateName.Control)
-        .forEach((gate) => (gate.value = controlGateValue))
-
-      // connect gate
-      if (gateControllableTag.includes('Control')) {
-        const firstControlGate: number = gateControllableTag.indexOf('Control')
-        const lastControlGate: number =
-          gateControllableTag.lastIndexOf('Control')
-        let connectStart: number = firstControlGate
-        let connectEnd: number = lastControlGate
-        if (gateControllableTag.includes('Controllable')) {
-          const firstControllableGate: number =
-            gateControllableTag.indexOf('Controllable')
-          const lastControllableGate: number =
-            gateControllableTag.lastIndexOf('Controllable')
-          connectStart = Math.min(firstControlGate, firstControllableGate)
-          connectEnd = Math.max(lastControlGate, lastControllableGate)
-        }
+      // connect control gate
+      if (
+        gateControllableTag.includes('Control') &&
+        gateControllableTag.includes('Controllable')
+      ) {
+        stepGates
+          .filter((gate) => gate.name == GateName.Control)
+          .forEach((gate) => (gate.value = '1'))
+        const connectStart = Math.min(
+          gateControllableTag.indexOf('Control'),
+          gateControllableTag.indexOf('Controllable')
+        )
+        const connectEnd = Math.max(
+          gateControllableTag.lastIndexOf('Control'),
+          gateControllableTag.lastIndexOf('Controllable')
+        )
         connectStepGates(stepGates, connectStart, connectEnd)
-      }
-
-      // classify gate by swap
-      const gateSwapTag: string[] = stepGates.map((gate) =>
-        gate.name == GateName.Swap ? 'Swap' : ''
-      )
-
-      // set swap gate value and connect
-      const swapGateValue: string =
-        gateSwapTag.filter((tag) => tag == 'Swap').length == 2 ? '1' : '0'
-      stepGates
-        .filter((gate) => gate.name == GateName.Swap)
-        .forEach((gate) => (gate.value = swapGateValue))
-      if (swapGateValue == '1' && !gateControllableTag.includes('Control')) {
-        const firstSwapGate: number = gateSwapTag.indexOf('Swap')
-        const lastSwapGate: number = gateSwapTag.lastIndexOf('Swap')
-        connectStepGates(stepGates, firstSwapGate, lastSwapGate)
+      } else {
+        stepGates
+          .filter((gate) => gate.name == GateName.Control)
+          .forEach((gate) => (gate.value = '0'))
       }
     })
   }
@@ -364,4 +381,43 @@ export function checkAllProperPlaced(): void {
         )
       })
   })
+}
+
+export function getMaxSwapIndex(): number {
+  const swapIndices: number[] = circuitGates
+    .flat()
+    .filter((gate) => gate.name == GateName.Swap)
+    .map((gate) => gate.swapIndex)
+  return swapIndices.length > 0 ? Math.max(...swapIndices) : 0
+}
+
+export function getMinSwapIndex(): number {
+  const swapIndices: number[] = circuitGates
+    .flat()
+    .filter((gate) => gate.name == GateName.Swap)
+    .map((gate) => gate.swapIndex)
+  return swapIndices.length > 0 ? Math.min(...swapIndices) : 0
+}
+
+export function getSwapGatePartner(swapGate: Gate): Gate | undefined {
+  return circuitGates
+    .flat()
+    .find(
+      (gate) =>
+        gate.swapIndex ==
+        (swapGate.swapIndex % 2 == 0
+          ? swapGate.swapIndex - 1
+          : swapGate.swapIndex + 1)
+    )
+}
+
+export function arrangeSwapIndex(): void {
+  const swapGates: Gate[] = circuitGates
+    .flat()
+    .filter((gate) => gate.name == GateName.Swap)
+  if (swapGates.length < getMaxSwapIndex()) {
+    swapGates
+      .sort((gate1, gate2) => gate1.swapIndex - gate2.swapIndex)
+      .forEach((gate, index) => (gate.swapIndex = index + 1))
+  }
 }

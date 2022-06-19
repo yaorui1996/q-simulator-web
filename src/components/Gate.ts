@@ -114,10 +114,6 @@ export function isGateSelected(gate: Gate): boolean {
   return gate.display == Display.Select
 }
 
-export function setGateDisplay(gate: Gate, display: Display): void {
-  Object.assign(gate, { display: display })
-}
-
 export function emptyStep(stepIndex: number, registerNum: number): Gate[] {
   const step: Gate[] = []
   for (let i = 0; i < registerNum; i++) {

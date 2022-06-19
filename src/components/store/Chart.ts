@@ -1,9 +1,10 @@
 import { ExportToCsv } from 'export-to-csv'
 import { reactive } from 'vue'
+
 import { resetArray } from '../utils/Array'
 import { getStateFullName } from '../utils/String'
 import { circuitGates, getRegisterNum, stepSelect } from './Circuit'
-import { computation, sampleCircuit } from './Computation'
+import { computation } from './Computation'
 
 export interface StateVectorBar {
   stateNames: string[]

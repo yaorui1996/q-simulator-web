@@ -31,7 +31,7 @@ export function sampleCircuit(sampleNum: number, stateVector: boolean): void {
     stateVectors: [],
     measurements: []
   })
-  for (let i: number = 0; i < (getStepNum() - 1) / 2; i++) {
+  for (let i = 0; i < (getStepNum() - 1) / 2; i++) {
     const state: StateVector = {
       realParts: [],
       imaginaryParts: [],
