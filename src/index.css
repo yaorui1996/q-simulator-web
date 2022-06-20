@@ -50,7 +50,7 @@
 }
 
 :root {
-  --palette-margin: 1.25rem 0.625rem 3rem 0.625rem;
+  --palette-margin: 2.25rem 0.625rem 2rem 0.625rem;
   --palette-border-radius: 0.75rem;
   --palette-padding: 1rem 0.625rem 1rem 0.625rem;
   --palette-background-color-white: rgb(255, 255, 255);

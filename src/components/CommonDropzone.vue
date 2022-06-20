@@ -24,7 +24,7 @@
   import ControlGate from './icons/ControlGate.vue'
   import HadamardGate from './icons/HadamardGate.vue'
   import MeasurementGate from './icons/MeasurementGate.vue'
-  import NullYGate from './icons/NullGate.vue'
+  import NullGate from './icons/NullGate.vue'
   import PauliXGate from './icons/PauliXGate.vue'
   import PauliYGate from './icons/PauliYGate.vue'
   import PauliZGate from './icons/PauliZGate.vue'
@@ -40,7 +40,7 @@
   defineProps<{ gate: Gate }>()
 
   const gateElements: { [key in GateName]: object } = {
-    [GateName.Null]: NullYGate,
+    [GateName.Null]: NullGate,
     [GateName.Hadamard]: HadamardGate,
     [GateName.PauliX]: PauliXGate,
     [GateName.PauliY]: PauliYGate,

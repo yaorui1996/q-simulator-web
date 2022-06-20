@@ -4,6 +4,7 @@
 >
   import CommonDropzone from './CommonDropzone.vue'
   import { Gate } from './Gate'
+  import { gateDescriptions } from './GateDescription'
 
   defineProps<{ paletteGates: Gate[] }>()
 </script>
@@ -16,10 +17,12 @@
       :key="index"
     >
       <el-tooltip
-        class="box-item"
         effect="dark"
-        content="Top Left prompts info"
+        :content="gateDescriptions[paletteDropzoneGate.name]"
         placement="top-start"
+        transition="el-fade-in-linear"
+        :hide-after="10"
+        popper-class="tip-class"
       >
         <CommonDropzone :gate="paletteDropzoneGate" />
       </el-tooltip>
@@ -27,7 +30,7 @@
   </div>
 </template>
 
-<style scoped>
+<style>
   .circuit-palette {
     margin: var(--palette-margin);
     border-radius: var(--palette-border-radius);
@@ -44,5 +47,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .tip-class {
+    font-size: 0.75rem;
+    max-width: 15rem;
   }
 </style>
