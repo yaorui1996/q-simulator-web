@@ -4,7 +4,7 @@
 >
   import CommonDropzone from './CommonDropzone.vue'
   import { Gate } from './Gate'
-  import { gateDescriptions } from './GateDescription'
+  import { gateDescriptionsBody, gateDescriptionsHead } from './GateDescription'
 
   defineProps<{ paletteGates: Gate[] }>()
 </script>
@@ -17,13 +17,21 @@
       :key="index"
     >
       <el-tooltip
-        effect="dark"
-        :content="gateDescriptions[paletteDropzoneGate.name]"
-        placement="top-start"
-        transition="el-fade-in-linear"
+        effect="light"
+        placement="bottom"
         :hide-after="10"
-        popper-class="tip-class"
+        popper-class="tooltip"
       >
+        <template #content>
+          <div
+            class="tooltip-head"
+            v-html="gateDescriptionsHead[paletteDropzoneGate.name]"
+          ></div>
+          <div
+            class="tooltip-body"
+            v-html="gateDescriptionsBody[paletteDropzoneGate.name]"
+          ></div>
+        </template>
         <CommonDropzone :gate="paletteDropzoneGate" />
       </el-tooltip>
     </div>
@@ -48,8 +56,16 @@
     justify-content: center;
     align-items: center;
   }
-  .tip-class {
-    font-size: 0.75rem;
-    max-width: 15rem;
+  .tooltip {
+    pointer-events: none;
+    max-width: 14rem;
+    font-family: var(--font-family);
+  }
+  .tooltip-head {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  .tooltip-body {
+    font-size: 0.875rem;
   }
 </style>

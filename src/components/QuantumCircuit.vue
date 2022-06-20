@@ -3,6 +3,7 @@
   lang="ts"
 >
   import { ElMessage } from 'element-plus'
+
   import CircuitBoard from './CircuitBoard.vue'
   import CircuitChart from './CircuitChart.vue'
   import CircuitPalette from './CircuitPalette.vue'
@@ -16,11 +17,11 @@
   import { isGateInDragDropzone } from './Gate'
   import { changeChartDataToStepSelectStateVector } from './store/Chart'
   import {
-    getCircuitGatesErrorNum,
     checkingCircuitGatesError,
     circuitGates,
     dragDropzoneGate,
     dragDropzonePos,
+    getCircuitGatesErrorNum,
     getStepNum,
     initCircuit,
     initPalette,
