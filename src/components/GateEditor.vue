@@ -32,10 +32,7 @@
   }
 
   function onClick(): void {
-    if (
-      props.gate.name == GateName.Swap &&
-      props.gate.swapIndex < getMaxSwapIndex()
-    ) {
+    if (props.gate.name == GateName.Swap) {
       Object.assign(getSwapGatePartner(props.gate) ?? emptyGate(), emptyGate())
     }
     Object.assign(props.gate, {

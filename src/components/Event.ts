@@ -266,16 +266,10 @@ function cleanGateSelected(): void {
 
 function cleanQuantumCircuit(): void {
   if (dragDropzoneGate.name == GateName.Swap) {
-    if (dragDropzoneGate.swapIndex < getMaxSwapIndex()) {
-      Object.assign(
-        getSwapGatePartner(dragDropzoneGate) ?? emptyGate(),
-        emptyGate()
-      )
-    } else {
-      Object.assign(getSwapGatePartner(dragDropzoneGate) ?? emptyGate(), {
-        display: Display.Default
-      })
-    }
+    Object.assign(
+      getSwapGatePartner(dragDropzoneGate) ?? emptyGate(),
+      emptyGate()
+    )
   }
   removeDragDropzone()
   if (eventStatus == EventStatus.DraggingOutsideBoard) {
