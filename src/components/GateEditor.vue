@@ -7,12 +7,18 @@
   import {
     checkValueValid,
     Display,
+    emptyGate,
     Gate,
     GateName,
     valueEditableGates
   } from './Gate'
   import EditorDelete from './icons/EditorDelete.vue'
-  import { arrangeWires, trimCircuit } from './store/Circuit'
+  import {
+    arrangeWires,
+    getMaxSwapIndex,
+    getSwapGatePartner,
+    trimCircuit
+  } from './store/Circuit'
 
   const props = defineProps<{ gate: Gate }>()
 
@@ -26,6 +32,12 @@
   }
 
   function onClick(): void {
+    if (
+      props.gate.name == GateName.Swap &&
+      props.gate.swapIndex < getMaxSwapIndex()
+    ) {
+      Object.assign(getSwapGatePartner(props.gate) ?? emptyGate(), emptyGate())
+    }
     Object.assign(props.gate, {
       name: GateName.Null,
       value: '',
