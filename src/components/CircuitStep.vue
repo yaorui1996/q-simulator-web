@@ -14,10 +14,6 @@
   import { stepFocus, stepSelect } from './store/Circuit'
 
   defineProps<{ stepGates: Gate[] }>()
-  function click(gate: Gate) {
-    console.log(gate.value)
-    console.log(getEncodedCircuit())
-  }
 </script>
 
 <template>
@@ -33,7 +29,6 @@
         class="gate-editor"
         v-if="circuitDropzoneGate.display == Display.Select"
         :gate="circuitDropzoneGate"
-        @click="click(circuitDropzoneGate)"
       />
       <GateMonitor
         class="gate-monitor"

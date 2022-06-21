@@ -1,4 +1,6 @@
 import { GateName } from '../Gate'
+import { getEncodedCircuit } from '../server/Encoder'
+import { ws } from '../server/Server'
 import { circuitGates, getRegisterNum, getStepNum } from './Circuit'
 
 export interface StateVector {

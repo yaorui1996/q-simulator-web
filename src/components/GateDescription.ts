@@ -30,7 +30,7 @@ export const gateDescriptionsBody: { [key in GateName]: string } = {
   [GateName.RotationX]: 'Rotates around the X-axis by the given angle.',
   [GateName.RotationY]: 'Rotates around the Y-axis by the given angle.',
   [GateName.RotationZ]: 'Rotates around the Z-axis by the given angle.',
-  [GateName.Swap]: 'Swap the states of two qubits.',
+  [GateName.Swap]: 'Swaps the states of two qubits.',
   [GateName.Control]:
     'Performs the gate on the target if the control is in state |1⟩.',
   [GateName.Write]: '(Re)sets the qubit to state |0⟩ or |1⟩.',

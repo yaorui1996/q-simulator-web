@@ -3,6 +3,7 @@
   lang="ts"
 >
   import { ElMessage } from 'element-plus'
+  import { ref } from 'vue'
 
   import CircuitBoard from './CircuitBoard.vue'
   import CircuitChart from './CircuitChart.vue'
@@ -15,6 +16,7 @@
     handleMouseUpQuantumCircuit
   } from './Event'
   import { isGateInDragDropzone } from './Gate'
+  import { getEncodedCircuit } from './server/Encoder'
   import { changeChartDataToStepSelectStateVector } from './store/Chart'
   import {
     checkingCircuitGatesError,
@@ -30,10 +32,15 @@
     trimCircuit
   } from './store/Circuit'
   import { sampleCircuit } from './store/Computation'
+  import { ws, fun } from './server/Server'
+
+  fun()
 
   initPalette()
   initCircuit()
   trimCircuit()
+
+  const elMessage = ref<HTMLElement>()
 
   function click() {
     const errorNum: number = getCircuitGatesErrorNum()
@@ -44,12 +51,18 @@
         message:
           getCircuitGatesErrorNum() > 1
             ? `Oops, there are ${getCircuitGatesErrorNum()} errors in the circuit.`
-            : `Oops, there is an error in the circuit.`,
-        type: 'error'
+            : `Oops, there is 1 error in the circuit.`,
+        type: 'error',
+        grouping: true,
+        appendTo: elMessage.value
       })
+      console.clear()
+      console.log(JSON.stringify(getEncodedCircuit(), undefined, 2))
     } else {
       checkingCircuitGatesError.value = false
-      sampleCircuit(1, true)
+      ws.send(JSON.stringify(getEncodedCircuit()))
+      // console.log(JSON.stringify(getEncodedCircuit()))
+      // sampleCircuit(1, true)
       if (stepSelect.value == 0) {
         stepSelect.value = getStepNum() - 1
       }
@@ -66,6 +79,10 @@
     @mouseup="handleMouseUpQuantumCircuit()"
     @mousemove="handleMouseMoveQuantumCircuit($event)"
   >
+    <div
+      ref="elMessage"
+      style="pointer-events: none"
+    ></div>
     <div class="drag-dropzone-container">
       <CommonDropzone
         :gate="dragDropzoneGate"

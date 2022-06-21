@@ -44,15 +44,20 @@ export function getEncodedCircuit(): Circuit {
             })
           } else if (gate.valueValid) {
             moment.push({
-              gate: { name: gate.name, parameter: eval(gate.value) },
+              gate: {
+                name: gate.name,
+                parameter: (Math.PI * eval(gate.value)).toString()
+              },
               qubits: [circuit.qubits[gate.register]]
             })
           }
         })
 
       stepGates
-        .filter((gate) =>
-          [GateName.Write, GateName.Measurement].includes(gate.name)
+        .filter(
+          (gate) =>
+            [GateName.Write, GateName.Measurement].includes(gate.name) &&
+            gate.properPlaced
         )
         .forEach((gate) =>
           moment.push({
@@ -62,13 +67,16 @@ export function getEncodedCircuit(): Circuit {
           })
         )
 
-      const swapGates: Gate[] = stepGates.filter(
-        (gate) => gate.name == GateName.Swap && gate.value == '1'
-      )
-      if (swapGates.length > 0) {
+      const swapGates: Gate[] = stepGates
+        .filter((gate) => gate.name == GateName.Swap && gate.value == '1')
+        .sort((gate1, gate2) => gate1.swapIndex - gate2.swapIndex)
+      for (let i: number = 0; i < swapGates.length; i += 2) {
         moment.push({
           gate: { name: GateName.Swap, parameter: '1' },
-          qubits: swapGates.map((gate) => circuit.qubits[gate.register])
+          qubits: [
+            circuit.qubits[swapGates[i].register],
+            circuit.qubits[swapGates[i + 1].register]
+          ]
         })
       }
 
