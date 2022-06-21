@@ -1,5 +1,6 @@
 import { WebsocketBuilder } from 'websocket-ts'
 import { GateName } from '../Gate'
+import { changeChartDataToStepSelectStateVector } from '../store/Chart'
 import { getStepNum, getRegisterNum, circuitGates } from '../store/Circuit'
 import {
   computation,
@@ -58,6 +59,7 @@ export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
     }
     updateCircuitMeasurement(computation.samples[0].measurements)
     computation.circuit = JSON.stringify(circuitGates)
+    changeChartDataToStepSelectStateVector()
   })
   .onRetry((i, ev) => {
     console.log('retry')

@@ -66,7 +66,7 @@
       if (stepSelect.value == 0) {
         stepSelect.value = getStepNum() - 1
       }
-      changeChartDataToStepSelectStateVector()
+      // changeChartDataToStepSelectStateVector()
     }
   }
 </script>
