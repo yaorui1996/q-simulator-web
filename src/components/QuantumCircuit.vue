@@ -37,7 +37,6 @@
 
   initPalette()
   initCircuit()
-  trimCircuit()
 
   const elMessage = ref<HTMLElement>()
 
