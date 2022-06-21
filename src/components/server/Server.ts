@@ -25,7 +25,7 @@ export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
       return
     }
     const evdata = JSON.parse(ev.data)
-    // console.log('message', i, JSON.stringify(JSON.parse(ev.data), undefined, 2))
+    console.log('message', i, JSON.stringify(JSON.parse(ev.data), undefined, 2))
     computation.samples.splice(0, computation.samples.length)
     computation.samples.push({
       stateVectors: [],
@@ -33,9 +33,9 @@ export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
     })
     for (let i = 0; i < (getStepNum() - 1) / 2; i++) {
       const state: StateVector = {
-        realParts: evdata.data.stateVector[i + 1].real,
-        imaginaryParts: evdata.data.stateVector[i + 1].imaginary,
-        probabilities: []
+        realParts: evdata.data.stateVector[i].real,
+        imaginaryParts: evdata.data.stateVector[i].imaginary,
+        probabilities: evdata.data.stateVector[i].probability
       }
       const registerNum = getRegisterNum()
       const stateNum = Math.pow(2, registerNum)
@@ -43,7 +43,7 @@ export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
         const phi: number = Math.random() * Math.PI * 2
         // state.realParts.push((1 / Math.sqrt(stateNum)) * Math.cos(phi))
         // state.imaginaryParts.push((1 / Math.sqrt(stateNum)) * Math.sin(phi))
-        state.probabilities.push(1 / Math.sqrt(stateNum))
+        // state.probabilities.push(1 / Math.sqrt(stateNum))
       }
       computation.samples[0].stateVectors.push(state)
     }
