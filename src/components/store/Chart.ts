@@ -89,17 +89,17 @@ export function changeChartDataToStepSelectStateVector(): void {
     resetArray(stateVectorBar.stateNames, stateNames)
     resetArray(
       stateVectorBar.realParts,
-      computation.samples[0].stateVectors[stepSelect.value / 2 - 1].realParts
+      computation.samples[0].stateVectors[(stepSelect.value - 1) / 2].realParts
     )
     resetArray(
       stateVectorBar.imaginaryParts,
-      computation.samples[0].stateVectors[stepSelect.value / 2 - 1]
+      computation.samples[0].stateVectors[(stepSelect.value - 1) / 2]
         .imaginaryParts
     )
     resetArray(probabilityBar.stateNames, stateNames)
     resetArray(
       probabilityBar.probabilities,
-      computation.samples[0].stateVectors[stepSelect.value / 2 - 1]
+      computation.samples[0].stateVectors[(stepSelect.value - 1) / 2]
         .probabilities
     )
   }

@@ -16,7 +16,7 @@ import {
 
 export const stepMin = 4
 export const stepMax = 10
-export const registerMin = 3
+export const registerMin = 1
 export const registerMax = 6
 export const dragDropzonePos = reactive<{ left: number; top: number }>({
   left: 0,
@@ -184,20 +184,14 @@ export function getRegisterNum(): number {
 export function appendRegister(): void {
   const i: number = getRegisterNum()
   circuitGates.forEach((stepGates, index) =>
-    stepGates.push({
-      step: index,
-      register: i,
-      name: GateName.Null,
-      value: '',
-      valueValid: true,
-      swapIndex: 0,
-      display: Display.Default,
-      wireInput: false,
-      wireOutput: false,
-      connectTop: false,
-      connectBottom: false,
-      properPlaced: true
-    })
+    stepGates.push(
+      Object.assign(emptyGate(), {
+        step: index,
+        register: i,
+        name: index == 0 ? GateName.Write : GateName.Null,
+        value: index == 0 ? '0' : ''
+      })
+    )
   )
 }
 
@@ -212,9 +206,9 @@ export function removeRegister(): void {
 
 export function trimRegister(): void {
   while (getRegisterNum() > registerMin) {
-    const lastRegisterGates: Gate[] = circuitGates.map(
-      (stepGates) => stepGates[stepGates.length - 1]
-    )
+    const lastRegisterGates: Gate[] = circuitGates
+      .slice(1, getStepNum() - 1)
+      .map((stepGates) => stepGates[stepGates.length - 1])
     if (lastRegisterGates.every((gate) => !isGateValid(gate))) {
       circuitGates.forEach((stepGates) => stepGates.pop())
     } else {
@@ -225,7 +219,7 @@ export function trimRegister(): void {
 
 export function trimStep(): void {
   // insert empty step from end to start
-  for (let i: number = getStepNum() - 1; i >= 0; i--) {
+  for (let i: number = getStepNum() - 1; i > 0; i--) {
     if (isStepEmpty(circuitGates[i])) {
       if (getStepNum() > 1) {
         circuitGates.splice(i, 1)
@@ -239,18 +233,19 @@ export function trimStep(): void {
     }
   }
   // fill step
-  if (getStepNum() % 2 == 0) {
+  if (getStepNum() % 2 == 1) {
     circuitGates.push(emptyStep(0, getRegisterNum()))
   }
-  while (getStepNum() < 2 * stepMin + 1) {
+  while (getStepNum() < 2 * stepMin) {
     circuitGates.push(emptyStep(0, getRegisterNum()))
   }
 }
 
 export function trimCircuit(): void {
   checkAllValueValid()
-  trimRegister()
   trimStep()
+  initCircuitWith0()
+  trimRegister()
   arrangeIndex()
   arrangeWires()
   checkAllProperPlaced()
@@ -268,94 +263,92 @@ export function arrangeIndex(): void {
 }
 
 export function arrangeWires(): void {
-  if (getRegisterNum() > 0) {
-    const wires: boolean[] = Array(getRegisterNum()).fill(false)
+  const wires: boolean[] = Array(getRegisterNum()).fill(false)
 
-    // disconnect all gate
-    circuitGates.flat().forEach((gate) => {
-      gate.connectTop = false
-      gate.connectBottom = false
-    })
+  // disconnect all gate
+  circuitGates.flat().forEach((gate) => {
+    gate.connectTop = false
+    gate.connectBottom = false
+  })
 
-    // connect swap gate
-    arrangeSwapIndex()
-    const swapGates: Gate[] = circuitGates
-      .flat()
-      .filter((gate) => gate.name == GateName.Swap)
-    swapGates.forEach((gate) => (gate.value = '0'))
-    for (let i = 1; i < getMaxSwapIndex(); i += 2) {
-      let swapGate1: Gate = swapGates.find((gate) => gate.swapIndex == i)!
-      let swapGate2: Gate = swapGates.find((gate) => gate.swapIndex == i + 1)!
-      if (swapGate1.register > swapGate2.register) {
-        const swapGateTemp: Gate = swapGate1
-        swapGate1 = swapGate2
-        swapGate2 = swapGateTemp
-      }
-      if (swapGate1.step == swapGate2.step) {
-        if (
-          circuitGates[swapGate1.step]
-            .slice(swapGate1.register, swapGate2.register + 1)
-            .every((gate) => !gate.connectTop && !gate.connectBottom)
-        ) {
-          swapGate1.value = '1'
-          swapGate2.value = '1'
-          connectStepGates(
-            circuitGates[swapGate1.step],
-            swapGate1.register,
-            swapGate2.register
-          )
-        }
+  // connect swap gate
+  arrangeSwapIndex()
+  const swapGates: Gate[] = circuitGates
+    .flat()
+    .filter((gate) => gate.name == GateName.Swap)
+  swapGates.forEach((gate) => (gate.value = '0'))
+  for (let i = 1; i < getMaxSwapIndex(); i += 2) {
+    let swapGate1: Gate = swapGates.find((gate) => gate.swapIndex == i)!
+    let swapGate2: Gate = swapGates.find((gate) => gate.swapIndex == i + 1)!
+    if (swapGate1.register > swapGate2.register) {
+      const swapGateTemp: Gate = swapGate1
+      swapGate1 = swapGate2
+      swapGate2 = swapGateTemp
+    }
+    if (swapGate1.step == swapGate2.step) {
+      if (
+        circuitGates[swapGate1.step]
+          .slice(swapGate1.register, swapGate2.register + 1)
+          .every((gate) => !gate.connectTop && !gate.connectBottom)
+      ) {
+        swapGate1.value = '1'
+        swapGate2.value = '1'
+        connectStepGates(
+          circuitGates[swapGate1.step],
+          swapGate1.register,
+          swapGate2.register
+        )
       }
     }
-
-    circuitGates.forEach((stepGates) => {
-      // set wire input and output
-      stepGates.forEach((gate, index) => {
-        gate.wireInput = wires[index]
-        if (gate.name == GateName.Write) {
-          wires[index] = true
-        } else if (gate.name == GateName.Measurement) {
-          wires[index] = false
-        }
-        gate.wireOutput = wires[index]
-      })
-
-      // classify gate by controllable
-      const gateControllableTag: string[] = stepGates.map((gate) =>
-        gate.name == GateName.Control
-          ? 'Control'
-          : uncontrollableGates.includes(gate.name) ||
-            gate.name == GateName.Null ||
-            (gate.name == GateName.Swap && gate.value == '0') ||
-            (valueEditableGates.includes(gate.name) && !gate.valueValid)
-          ? 'Uncontrollable'
-          : 'Controllable'
-      )
-
-      // connect control gate
-      if (
-        gateControllableTag.includes('Control') &&
-        gateControllableTag.includes('Controllable')
-      ) {
-        stepGates
-          .filter((gate) => gate.name == GateName.Control)
-          .forEach((gate) => (gate.value = '1'))
-        const connectStart = Math.min(
-          gateControllableTag.indexOf('Control'),
-          gateControllableTag.indexOf('Controllable')
-        )
-        const connectEnd = Math.max(
-          gateControllableTag.lastIndexOf('Control'),
-          gateControllableTag.lastIndexOf('Controllable')
-        )
-        connectStepGates(stepGates, connectStart, connectEnd)
-      } else {
-        stepGates
-          .filter((gate) => gate.name == GateName.Control)
-          .forEach((gate) => (gate.value = '0'))
-      }
-    })
   }
+
+  circuitGates.forEach((stepGates) => {
+    // set wire input and output
+    stepGates.forEach((gate, index) => {
+      gate.wireInput = wires[index]
+      if (gate.name == GateName.Write) {
+        wires[index] = true
+      } else if (gate.name == GateName.Measurement) {
+        wires[index] = false
+      }
+      gate.wireOutput = wires[index]
+    })
+
+    // classify gate by controllable
+    const gateControllableTag: string[] = stepGates.map((gate) =>
+      gate.name == GateName.Control
+        ? 'Control'
+        : uncontrollableGates.includes(gate.name) ||
+          gate.name == GateName.Null ||
+          (gate.name == GateName.Swap && gate.value == '0') ||
+          (valueEditableGates.includes(gate.name) && !gate.valueValid)
+        ? 'Uncontrollable'
+        : 'Controllable'
+    )
+
+    // connect control gate
+    if (
+      gateControllableTag.includes('Control') &&
+      gateControllableTag.includes('Controllable')
+    ) {
+      stepGates
+        .filter((gate) => gate.name == GateName.Control)
+        .forEach((gate) => (gate.value = '1'))
+      const connectStart = Math.min(
+        gateControllableTag.indexOf('Control'),
+        gateControllableTag.indexOf('Controllable')
+      )
+      const connectEnd = Math.max(
+        gateControllableTag.lastIndexOf('Control'),
+        gateControllableTag.lastIndexOf('Controllable')
+      )
+      connectStepGates(stepGates, connectStart, connectEnd)
+    } else {
+      stepGates
+        .filter((gate) => gate.name == GateName.Control)
+        .forEach((gate) => (gate.value = '0'))
+    }
+  })
 }
 
 export function checkAllValueValid(): void {
@@ -432,4 +425,11 @@ export function getCircuitGatesErrorNum(): number {
         (uncontrollableGates.includes(gate.name) && !gate.properPlaced) ||
         (valueEditableGates.includes(gate.name) && !gate.valueValid)
     ).length
+}
+
+export function initCircuitWith0(): void {
+  console.log('!!!')
+  circuitGates[0].forEach((gate) => {
+    Object.assign(gate, { name: GateName.Write, value: '0' })
+  })
 }

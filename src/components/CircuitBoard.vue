@@ -29,8 +29,7 @@
 <style scoped>
   .circuit-board {
     margin: var(--board-margin);
-    width: fit-content;
     display: flex;
-    flex-direction: row;
+    width: fit-content;
   }
 </style>

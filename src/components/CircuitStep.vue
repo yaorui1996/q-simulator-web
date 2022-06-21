@@ -42,7 +42,7 @@
     </div>
     <div
       class="step-selector"
-      v-if="stepGates[0].step % 2 == 0 && stepGates[0].step > 0"
+      v-if="stepGates[0].step % 2 == 1"
     ></div>
   </div>
 </template>

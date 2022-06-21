@@ -31,7 +31,7 @@ export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
       stateVectors: [],
       measurements: []
     })
-    for (let i = 0; i < (getStepNum() - 1) / 2; i++) {
+    for (let i = 0; i < getStepNum() / 2; i++) {
       const state: StateVector = {
         realParts: evdata.data.stateVector[i].real,
         imaginaryParts: evdata.data.stateVector[i].imaginary,

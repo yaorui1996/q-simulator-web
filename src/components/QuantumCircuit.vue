@@ -31,7 +31,6 @@
     stepSelect,
     trimCircuit
   } from './store/Circuit'
-  import { sampleCircuit } from './store/Computation'
   import { ws, fun } from './server/Server'
 
   fun()

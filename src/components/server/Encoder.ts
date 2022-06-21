@@ -30,7 +30,7 @@ export function getEncodedCircuit(): Circuit {
   })
 
   circuitGates
-    .filter((_, index) => index % 2 == 1)
+    .filter((_, index) => index % 2 == 0)
     .forEach((stepGates) => {
       const moment: Operation[] = []
 
