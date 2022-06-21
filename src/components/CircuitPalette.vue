@@ -29,7 +29,11 @@
           ></div>
           <div
             class="tooltip-body"
-            v-html="gateDescriptionsBody[paletteDropzoneGate.name]"
+            v-html="
+              gateDescriptionsBody[paletteDropzoneGate.name](
+                paletteDropzoneGate.value
+              )
+            "
           ></div>
         </template>
         <CommonDropzone :gate="paletteDropzoneGate" />
@@ -58,7 +62,7 @@
   }
   .tooltip {
     pointer-events: none;
-    max-width: 14rem;
+    max-width: 15rem;
     font-family: var(--font-family);
   }
   .tooltip-head {
