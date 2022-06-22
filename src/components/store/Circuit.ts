@@ -149,9 +149,6 @@ export function initCircuit(): void {
   circuitGates.splice(0, circuitGates.length) // clear circuitGates
   circuitGates.push(emptyStep(0, registerMin)) // set first step
   trimCircuit()
-  appendRegister()
-  arrangeIndex()
-  arrangeWires()
 }
 
 export function initDragDropzone(gate: Gate): void {

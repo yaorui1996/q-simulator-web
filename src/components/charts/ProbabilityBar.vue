@@ -37,7 +37,9 @@
         },
         axisLabel: {
           color: '#000000',
-          fontWeight: 'bold'
+          fontWeight: 'bold',
+          interval: 0,
+          rotate: 90
         },
         data: probabilityBar.stateNames
       }
