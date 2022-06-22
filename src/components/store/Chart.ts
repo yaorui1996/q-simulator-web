@@ -1,3 +1,4 @@
+import { EChartsOption } from 'echarts'
 import { ExportToCsv } from 'export-to-csv'
 import { reactive } from 'vue'
 
@@ -71,7 +72,28 @@ export const stateVectorBarOption = reactive({
     show: true,
     feature: {
       dataView: {
-        readOnly: true
+        readOnly: true,
+        optionToContent: function (opt: any): string {
+          let axisData = opt.xAxis[0].data
+          let series = opt.series
+          let table =
+            '<table border="1" cellspacing="0" cellpadding="2" style="width:100%;text-align:center">' +
+            '<thead><tr>' +
+            '<th width="20%">State</th>' +
+            `<th>${series[0].name}</th>` +
+            `<th>${series[1].name}</th>` +
+            '</tr></thead><tbody>'
+          for (let i: number = 0; i < axisData.length; i++) {
+            table +=
+              '<tr>' +
+              `<td>${axisData[i]}</td>` +
+              `<td>${series[0].data[i]}</td>` +
+              `<td>${series[1].data[i]}</td>` +
+              '</tr>'
+          }
+          table += '</tbody></table>'
+          return table
+        }
       },
       mySaveAsExcel: {
         show: true,
@@ -152,7 +174,26 @@ export const probabilityBarOption = reactive({
     show: true,
     feature: {
       dataView: {
-        readOnly: true
+        readOnly: true,
+        optionToContent: function (opt: any): string {
+          let axisData = opt.xAxis[0].data
+          let series = opt.series
+          let table =
+            '<table border="1" cellspacing="0" cellpadding="2" style="width:100%;text-align:center">' +
+            '<thead><tr>' +
+            '<th width="20%">State</th>' +
+            `<th>${series[0].name}</th>` +
+            '</tr></thead><tbody>'
+          for (let i: number = 0; i < axisData.length; i++) {
+            table +=
+              '<tr>' +
+              `<td>${axisData[i]}</td>` +
+              `<td>${series[0].data[i]}</td>` +
+              '</tr>'
+          }
+          table += '</tbody></table>'
+          return table
+        }
       },
       mySaveAsExcel: {
         show: true,
