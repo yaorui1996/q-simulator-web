@@ -1,4 +1,4 @@
-import { WebsocketBuilder } from 'websocket-ts'
+import { ConstantBackoff, WebsocketBuilder } from 'websocket-ts'
 import { GateName } from '../Gate'
 import { changeChartDataToStepSelectStateVector } from '../store/Chart'
 import { getStepNum, getRegisterNum, circuitGates } from '../store/Circuit'
@@ -11,8 +11,9 @@ import {
 import { getEncodedCircuit } from './Encoder'
 
 export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
+  .withBackoff(new ConstantBackoff(1000)) // 1000ms = 1s
   .onOpen((i, ev) => {
-    // console.log('opened', i, ev)
+    console.log('opened')
   })
   .onClose((i, ev) => {
     console.log('closed')
@@ -21,11 +22,11 @@ export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
     console.log('error')
   })
   .onMessage((i, ev) => {
-    if (ev.data == 'hello') {
+    if ('message' in JSON.parse(ev.data)) {
       return
     }
     const evdata = JSON.parse(ev.data)
-    console.log('message', i, JSON.stringify(JSON.parse(ev.data), undefined, 2))
+    // console.log('message', i, JSON.stringify(JSON.parse(ev.data), undefined, 2))
     computation.samples.splice(0, computation.samples.length)
     computation.samples.push({
       stateVectors: [],

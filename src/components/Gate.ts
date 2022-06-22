@@ -37,15 +37,15 @@ export const singleBitGates: GateName[] = [
   GateName.RotationZ
 ]
 
-export const uncontrollableGates: GateName[] = [
-  GateName.Write,
-  GateName.Measurement
-]
-
 export const valueEditableGates: GateName[] = [
   GateName.RotationX,
   GateName.RotationY,
   GateName.RotationZ
+]
+
+export const uncontrollableGates: GateName[] = [
+  GateName.Write,
+  GateName.Measurement
 ]
 
 export interface Gate {
@@ -57,12 +57,12 @@ export interface Gate {
   value: string
   valueValid: boolean
   swapIndex: number
+  properPlaced: boolean
   display: Display
   wireInput: boolean
   wireOutput: boolean
   connectTop: boolean
   connectBottom: boolean
-  properPlaced: boolean
 }
 
 export function emptyGate(): Gate {
@@ -73,38 +73,25 @@ export function emptyGate(): Gate {
     value: '',
     valueValid: true,
     swapIndex: 0,
+    properPlaced: true,
     display: Display.Default,
     wireInput: false,
     wireOutput: false,
     connectTop: false,
-    connectBottom: false,
-    properPlaced: true
+    connectBottom: false
   }
-}
-
-export function getGateDropzone(gate: Gate): string {
-  if (gate.register == -1) {
-    if (gate.step == -1) {
-      return 'blank'
-    } else if (gate.step >= 0) {
-      return 'palette'
-    }
-  } else if (gate.register >= 0 && gate.step >= 0) {
-    return 'circuit'
-  }
-  return 'undefined'
 }
 
 export function isGateInPaletteDropzone(gate: Gate): boolean {
-  return getGateDropzone(gate) == 'palette'
+  return gate.register == -1 && gate.step >= 0
 }
 
 export function isGateInCircuitDropzone(gate: Gate): boolean {
-  return getGateDropzone(gate) == 'circuit'
+  return gate.register >= 0 && gate.step >= 0
 }
 
 export function isGateInDragDropzone(gate: Gate): boolean {
-  return getGateDropzone(gate) == 'blank'
+  return gate.register == -1 && gate.step == -1
 }
 
 export function isGateValid(gate: Gate): boolean {
@@ -116,24 +103,11 @@ export function isGateSelected(gate: Gate): boolean {
 }
 
 export function emptyStep(stepIndex: number, registerNum: number): Gate[] {
-  const step: Gate[] = []
-  for (let i = 0; i < registerNum; i++) {
-    step.push({
-      step: stepIndex,
-      register: i,
-      name: GateName.Null,
-      value: '',
-      valueValid: true,
-      swapIndex: 0,
-      display: Display.Default,
-      wireInput: false,
-      wireOutput: false,
-      connectTop: false,
-      connectBottom: false,
-      properPlaced: true
-    })
-  }
-  return step
+  return Array(registerNum)
+    .fill(null)
+    .map((_, index) =>
+      Object.assign(emptyGate(), { step: stepIndex, register: index })
+    )
 }
 
 export function isStepEmpty(stepGates: Gate[]): boolean {
@@ -145,14 +119,12 @@ export function connectStepGates(
   connectStart: number,
   connectEnd: number
 ): void {
-  for (let i: number = connectStart; i <= connectEnd; i++) {
-    if (i > connectStart) {
-      stepGates[i].connectTop = true
-    }
-    if (i < connectEnd) {
-      stepGates[i].connectBottom = true
-    }
-  }
+  stepGates
+    .filter((_, index) => index > connectStart && index <= connectEnd)
+    .forEach((gate) => (gate.connectTop = true))
+  stepGates
+    .filter((_, index) => index >= connectStart && index < connectEnd)
+    .forEach((gate) => (gate.connectBottom = true))
 }
 
 export function checkValueValid(gate: Gate): void {
