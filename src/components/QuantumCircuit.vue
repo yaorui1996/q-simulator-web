@@ -4,6 +4,7 @@
 >
   import { ElMessage } from 'element-plus'
   import { ref } from 'vue'
+  import { inject } from 'vue'
 
   import CircuitBoard from './CircuitBoard.vue'
   import CircuitChart from './CircuitChart.vue'
@@ -17,7 +18,6 @@
   } from './Event'
   import { isGateInDragDropzone } from './Gate'
   import { getEncodedCircuit } from './server/Encoder'
-  import { changeChartDataToStepSelectStateVector } from './store/Chart'
   import {
     checkingCircuitGatesError,
     circuitGates,

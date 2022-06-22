@@ -34,9 +34,9 @@ export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
     })
     for (let i = 0; i < getStepNum() / 2; i++) {
       const state: StateVector = {
-        realParts: evdata.data.stateVector[i].real,
-        imaginaryParts: evdata.data.stateVector[i].imaginary,
-        probabilities: evdata.data.stateVector[i].probability
+        realParts: evdata.data[0].stateVector[i].real,
+        imaginaryParts: evdata.data[0].stateVector[i].imaginary,
+        probabilities: evdata.data[0].stateVector[i].probability
       }
       const registerNum = getRegisterNum()
       const stateNum = Math.pow(2, registerNum)
@@ -48,8 +48,8 @@ export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
       }
       computation.samples[0].stateVectors.push(state)
     }
-    if (evdata.data.measurement.length > 0) {
-      evdata.data.measurement.forEach((meas: any) => {
+    if (evdata.data[0].measurement.length > 0) {
+      evdata.data[0].measurement.forEach((meas: any) => {
         const measurement: Measurement = {
           step: meas.moment,
           register: parseInt(meas.qubit[0].name.replace('q', '')),

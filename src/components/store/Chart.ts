@@ -6,26 +6,175 @@ import { getStateFullName } from '../utils/String'
 import { circuitGates, getRegisterNum, stepSelect } from './Circuit'
 import { computation } from './Computation'
 
-export interface StateVectorBar {
-  stateNames: string[]
-  realParts: number[]
-  imaginaryParts: number[]
-}
-
-export interface ProbabilityBar {
-  stateNames: string[]
-  probabilities: number[]
-}
-
-export const stateVectorBar = reactive<StateVectorBar>({
-  stateNames: [],
-  realParts: [],
-  imaginaryParts: []
+export const stateVectorBarOption = reactive({
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    },
+    textStyle: {
+      color: '#000000',
+      fontWeight: 'bold'
+    },
+    valueFormatter: (value: string) => Number(value).toFixed(3)
+  },
+  legend: {
+    data: ['Re', 'Im']
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'category',
+    axisTick: {
+      show: true
+    },
+    axisLabel: {
+      show: true,
+      color: '#000000',
+      fontWeight: 'bold',
+      interval: 0,
+      rotate: 90
+    },
+    data: []
+  },
+  yAxis: {
+    type: 'value',
+    min: -1,
+    max: 1,
+    interval: 0.25
+  },
+  series: [
+    {
+      name: 'Re',
+      type: 'bar',
+      label: {
+        show: false,
+        position: 'inside'
+      },
+      data: []
+    },
+    {
+      name: 'Im',
+      type: 'bar',
+      label: {
+        show: false,
+        position: 'inside'
+      },
+      data: []
+    }
+  ],
+  toolbox: {
+    show: true,
+    feature: {
+      dataView: {
+        readOnly: true
+      },
+      mySaveAsExcel: {
+        show: true,
+        title: 'Save As Excel',
+        icon: 'M4.7,22.9L29.3,45.5L54.7,23.4M4.6,43.6L4.6,58L53.8,58L53.8,43.6M29.2,45.1L29.2,0',
+        onclick: function () {
+          saveAsExcel('StateVector')
+        }
+      }
+    }
+  },
+  color: [
+    '#5470c6',
+    '#91cc75',
+    '#fac858',
+    '#ee6666',
+    '#73c0de',
+    '#3ba272',
+    '#fc8452',
+    '#9a60b4',
+    '#ea7ccc'
+  ]
 })
 
-export const probabilityBar = reactive<ProbabilityBar>({
-  stateNames: [],
-  probabilities: []
+export const probabilityBarOption = reactive({
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    },
+    textStyle: {
+      color: '#000000',
+      fontWeight: 'bold'
+    },
+    valueFormatter: (value: string) => Number(value).toFixed(3)
+  },
+  legend: {
+    data: ['p']
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'category',
+    axisTick: {
+      show: true
+    },
+    axisLabel: {
+      show: true,
+      color: '#000000',
+      fontWeight: 'bold',
+      interval: 0,
+      rotate: 90
+    },
+    data: []
+  },
+  yAxis: {
+    type: 'value',
+    min: 0,
+    max: 1,
+    interval: 0.25
+  },
+  series: [
+    {
+      name: 'p',
+      type: 'bar',
+      label: {
+        show: false,
+        position: 'inside'
+      },
+      data: []
+    }
+  ],
+  toolbox: {
+    show: true,
+    feature: {
+      dataView: {
+        readOnly: true
+      },
+      mySaveAsExcel: {
+        show: true,
+        title: 'Save As Excel',
+        icon: 'M4.7,22.9L29.3,45.5L54.7,23.4M4.6,43.6L4.6,58L53.8,58L53.8,43.6M29.2,45.1L29.2,0',
+        onclick: function () {
+          saveAsExcel('Probability')
+        }
+      }
+    }
+  },
+  color: [
+    '#5470c6',
+    '#91cc75',
+    '#fac858',
+    '#ee6666',
+    '#73c0de',
+    '#3ba272',
+    '#fc8452',
+    '#9a60b4',
+    '#ea7ccc'
+  ]
 })
 
 export function saveAsExcel(term: string) {
@@ -34,10 +183,10 @@ export function saveAsExcel(term: string) {
     real: number
     imaginary: number
   }[] {
-    return stateVectorBar.stateNames.map((_, index) => ({
-      state: stateVectorBar.stateNames[index],
-      real: stateVectorBar.realParts[index],
-      imaginary: stateVectorBar.imaginaryParts[index]
+    return stateVectorBarOption.xAxis.data.map((_, index) => ({
+      state: stateVectorBarOption.xAxis.data[index],
+      real: stateVectorBarOption.series[0].data[index],
+      imaginary: stateVectorBarOption.series[1].data[index]
     }))
   }
 
@@ -45,9 +194,9 @@ export function saveAsExcel(term: string) {
     state: string
     probability: number
   }[] {
-    return probabilityBar.stateNames.map((_, index) => ({
-      state: probabilityBar.stateNames[index],
-      probability: probabilityBar.probabilities[index]
+    return probabilityBarOption.xAxis.data.map((_, index) => ({
+      state: probabilityBarOption.xAxis.data[index],
+      probability: probabilityBarOption.series[0].data[index]
     }))
   }
 
@@ -86,21 +235,24 @@ export function changeChartDataToStepSelectStateVector(): void {
       .map((_, index) =>
         getStateFullName(index.toString(2).padStart(getRegisterNum(), '0'))
       )
-    resetArray(stateVectorBar.stateNames, stateNames)
+
+    resetArray(stateVectorBarOption.xAxis.data, stateNames)
     resetArray(
-      stateVectorBar.realParts,
+      stateVectorBarOption.series[0].data,
       computation.samples[0].stateVectors[(stepSelect.value - 1) / 2].realParts
     )
     resetArray(
-      stateVectorBar.imaginaryParts,
+      stateVectorBarOption.series[1].data,
       computation.samples[0].stateVectors[(stepSelect.value - 1) / 2]
         .imaginaryParts
     )
-    resetArray(probabilityBar.stateNames, stateNames)
+    stateVectorBarOption.xAxis.axisLabel.show = getRegisterNum() <= 5
+    resetArray(probabilityBarOption.xAxis.data, stateNames)
     resetArray(
-      probabilityBar.probabilities,
+      probabilityBarOption.series[0].data,
       computation.samples[0].stateVectors[(stepSelect.value - 1) / 2]
         .probabilities
     )
+    probabilityBarOption.xAxis.axisLabel.show = getRegisterNum() <= 5
   }
 }

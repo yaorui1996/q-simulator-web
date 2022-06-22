@@ -2,109 +2,15 @@
   setup
   lang="ts"
 >
-  import { EChartsOption } from 'echarts'
-  import { ref } from 'vue'
   import VChart from 'vue-echarts'
 
-  import { saveAsExcel, stateVectorBar } from '../store/Chart'
-
-  const option = ref<EChartsOption>({
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
-      },
-      textStyle: {
-        color: '#000000',
-        fontWeight: 'bold'
-      },
-      valueFormatter: (value) => Number(value).toFixed(3)
-    },
-    legend: {
-      data: ['Re', 'Im']
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true
-    },
-    xAxis: [
-      {
-        type: 'category',
-        axisTick: {
-          show: true
-        },
-        axisLabel: {
-          color: '#000000',
-          fontWeight: 'bold',
-          interval: 0
-        },
-        data: stateVectorBar.stateNames
-      }
-    ],
-    yAxis: [
-      {
-        type: 'value',
-        min: -1,
-        max: 1,
-        interval: 0.25
-      }
-    ],
-    series: [
-      {
-        name: 'Re',
-        type: 'bar',
-        label: {
-          show: false,
-          position: 'inside'
-        },
-        data: stateVectorBar.realParts
-      },
-      {
-        name: 'Im',
-        type: 'bar',
-        label: {
-          show: false,
-          position: 'inside'
-        },
-        data: stateVectorBar.imaginaryParts
-      }
-    ],
-    toolbox: {
-      show: true,
-      feature: {
-        dataView: {
-          readOnly: true
-        },
-        mySaveAsExcel: {
-          show: true,
-          title: 'Save As Excel',
-          icon: 'M4.7,22.9L29.3,45.5L54.7,23.4M4.6,43.6L4.6,58L53.8,58L53.8,43.6M29.2,45.1L29.2,0',
-          onclick: function () {
-            saveAsExcel('StateVector')
-          }
-        }
-      }
-    },
-    color: [
-      '#5470c6',
-      '#91cc75',
-      '#fac858',
-      '#ee6666',
-      '#73c0de',
-      '#3ba272',
-      '#fc8452',
-      '#9a60b4',
-      '#ea7ccc'
-    ]
-  })
+  import { stateVectorBarOption } from '../store/Chart'
 </script>
 
 <template>
   <v-chart
     class="state-vector-bar"
-    :option="option"
+    :option="stateVectorBarOption"
   />
 </template>
 
