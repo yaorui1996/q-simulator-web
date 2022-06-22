@@ -13,7 +13,8 @@ QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化
     - [Run 运行](#run-运行)
   - [Directory Structure 项目架构](#directory-structure-项目架构)
   - [Usage of Quantum Circuit 量子线路使用方法](#usage-of-quantum-circuit-量子线路使用方法)
-  - [Circuit Encoder 线路编码器](#circuit-encoder-线路编码器)
+  - [Circuit Data Structure 线路数据结构](#circuit-data-structure-线路数据结构)
+  - [Communication Protocol 通信协议](#communication-protocol-通信协议)
   - [State Encode Protocol 态编码方案](#state-encode-protocol-态编码方案)
 
 ## Getting Started 使用指南
@@ -52,9 +53,13 @@ Project 项目
 
 介绍量子线路如何拖动，参数设置方法和解读可视化结果。[详细文档](/docs/CircuitUsage.md)
 
-## Circuit Encoder 线路编码器
+## Circuit Data Structure 线路数据结构
 
-介绍量子线路的**数据结构**和**编码方案**。[详细文档](/docs/CircuitEncoder.md)
+介绍量子线路的**数据结构**。[详细文档](/docs/CircuitDataStructure.md)
+
+## Communication Protocol 通信协议
+
+介绍和后端服务器的**通讯协议**。[详细文档](/docs/CommunicationProtocol.md)
 
 ## State Encode Protocol 态编码方案
 
