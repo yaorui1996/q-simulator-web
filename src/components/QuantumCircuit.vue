@@ -31,42 +31,10 @@
     stepSelect
   } from './store/Circuit'
   import { sendRequest, ws } from './server/Server'
+  import SampleControl from './SampleControl.vue'
 
   initPalette()
   initCircuit()
-
-  const elMessage = ref<HTMLElement>()
-
-  function click() {
-    const errorNum: number = getCircuitGatesErrorNum()
-    if (errorNum > 0) {
-      checkingCircuitGatesError.value = true
-      ElMessage({
-        showClose: true,
-        message:
-          getCircuitGatesErrorNum() > 1
-            ? `Oops, there are ${getCircuitGatesErrorNum()} errors in the circuit.`
-            : `Oops, there is 1 error in the circuit.`,
-        type: 'error',
-        grouping: true,
-        appendTo: elMessage.value
-      })
-      console.clear()
-      console.log(JSON.stringify(getEncodedCircuit(), undefined, 2))
-    } else {
-      checkingCircuitGatesError.value = false
-      // ws.send(
-      //   JSON.stringify({
-      //     request: {
-      //       time: true,
-      //       submitCircuit: false,
-      //       acquireResult: false
-      //     }
-      //   })
-      // )
-      sendRequest()
-    }
-  }
 </script>
 
 <template>
@@ -78,10 +46,6 @@
     @mousemove="handleMouseMoveQuantumCircuit($event)"
   >
     <ServerStatus />
-    <div
-      ref="elMessage"
-      style="pointer-events: none"
-    ></div>
     <div class="drag-dropzone-container">
       <CommonDropzone
         :gate="dragDropzoneGate"
@@ -96,12 +60,7 @@
       class="circuit-board"
       :circuit-gates="circuitGates"
     />
-    <div
-      class="sample-button"
-      @click="click"
-    >
-      Sample
-    </div>
+    <SampleControl />
     <CircuitChart class="circuit-chart" />
   </div>
 </template>
@@ -135,20 +94,6 @@
 
   .circuit-board {
     position: relative;
-  }
-
-  .sample-button {
-    margin: 0 2rem 2rem 2rem;
-    padding: 0.5rem 1rem;
-    background-color: #4caf50; /* Green */
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 9999rem;
   }
 
   .circuit-chart {
