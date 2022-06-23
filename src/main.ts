@@ -13,10 +13,12 @@ import {
 import { use } from 'echarts/core'
 // import ECharts modules manually to reduce bundle size
 import { CanvasRenderer } from 'echarts/renderers'
-import ElementPlus from 'element-plus'
-import { createApp } from 'vue'
 import ECharts from 'vue-echarts'
 
+import ElementPlus from 'element-plus'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
+import { createApp } from 'vue'
 import App from './App.vue'
 
 use([
@@ -35,5 +37,8 @@ const app = createApp(App)
 app.component('VChart', ECharts)
 
 app.use(ElementPlus)
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
 app.mount('#app')

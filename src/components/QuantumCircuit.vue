@@ -4,12 +4,12 @@
 >
   import { ElMessage } from 'element-plus'
   import { ref } from 'vue'
-  import { inject } from 'vue'
 
   import CircuitBoard from './CircuitBoard.vue'
   import CircuitChart from './CircuitChart.vue'
   import CircuitPalette from './CircuitPalette.vue'
   import CommonDropzone from './CommonDropzone.vue'
+  import ServerStatus from './ServerStatus.vue'
   import {
     handleMouseDownQuantumCircuit,
     handleMouseLeaveQuantumCircuit,
@@ -28,12 +28,9 @@
     initCircuit,
     initPalette,
     paletteGates,
-    stepSelect,
-    trimCircuit
+    stepSelect
   } from './store/Circuit'
-  import { ws, fun } from './server/Server'
-
-  fun()
+  import { ws } from './server/Server'
 
   initPalette()
   initCircuit()
@@ -58,7 +55,8 @@
       console.log(JSON.stringify(getEncodedCircuit(), undefined, 2))
     } else {
       checkingCircuitGatesError.value = false
-      ws.send(JSON.stringify(getEncodedCircuit()))
+      ws.send(JSON.stringify({}))
+      // ws.send(JSON.stringify(getEncodedCircuit()))
       // console.log(JSON.stringify(getEncodedCircuit()))
       // sampleCircuit(1, true)
       if (stepSelect.value == 0) {
@@ -77,6 +75,7 @@
     @mouseup="handleMouseUpQuantumCircuit()"
     @mousemove="handleMouseMoveQuantumCircuit($event)"
   >
+    <ServerStatus />
     <div
       ref="elMessage"
       style="pointer-events: none"

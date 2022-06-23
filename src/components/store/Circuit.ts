@@ -428,7 +428,6 @@ export function getCircuitGatesErrorNum(): number {
 }
 
 export function initCircuitWith0(): void {
-  console.log('!!!')
   circuitGates[0].forEach((gate) => {
     Object.assign(gate, { name: GateName.Write, value: '0' })
   })

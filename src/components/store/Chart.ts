@@ -1,8 +1,7 @@
-import { EChartsOption } from 'echarts'
 import { ExportToCsv } from 'export-to-csv'
 import { reactive } from 'vue'
 
-import { resetArray } from '../utils/Array'
+import { refillArray } from '../utils/Array'
 import { getStateFullName } from '../utils/String'
 import { circuitGates, getRegisterNum, stepSelect } from './Circuit'
 import { computation } from './Computation'
@@ -218,7 +217,7 @@ export const probabilityBarOption = reactive({
   ]
 })
 
-export function saveAsExcel(term: string) {
+export function saveAsExcel(term: string): void {
   function getStateVector(): {
     state: string
     real: number
@@ -277,19 +276,19 @@ export function changeChartDataToStepSelectStateVector(): void {
         getStateFullName(index.toString(2).padStart(getRegisterNum(), '0'))
       )
 
-    resetArray(stateVectorBarOption.xAxis.data, stateNames)
-    resetArray(
+    refillArray(stateVectorBarOption.xAxis.data, stateNames)
+    refillArray(
       stateVectorBarOption.series[0].data,
       computation.samples[0].stateVectors[(stepSelect.value - 1) / 2].realParts
     )
-    resetArray(
+    refillArray(
       stateVectorBarOption.series[1].data,
       computation.samples[0].stateVectors[(stepSelect.value - 1) / 2]
         .imaginaryParts
     )
     stateVectorBarOption.xAxis.axisLabel.show = getRegisterNum() <= 5
-    resetArray(probabilityBarOption.xAxis.data, stateNames)
-    resetArray(
+    refillArray(probabilityBarOption.xAxis.data, stateNames)
+    refillArray(
       probabilityBarOption.series[0].data,
       computation.samples[0].stateVectors[(stepSelect.value - 1) / 2]
         .probabilities

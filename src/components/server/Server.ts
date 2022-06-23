@@ -1,5 +1,5 @@
+import { ref } from 'vue'
 import { ConstantBackoff, WebsocketBuilder } from 'websocket-ts'
-import { GateName } from '../Gate'
 import { changeChartDataToStepSelectStateVector } from '../store/Chart'
 import { getStepNum, getRegisterNum, circuitGates } from '../store/Circuit'
 import {
@@ -8,20 +8,25 @@ import {
   StateVector,
   updateCircuitMeasurement
 } from '../store/Computation'
-import { getEncodedCircuit } from './Encoder'
 
-export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
+export const connected = ref<boolean>(false)
+
+export const ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
   .withBackoff(new ConstantBackoff(1000)) // 1000ms = 1s
   .onOpen((i, ev) => {
     console.log('opened')
+    connected.value = true
   })
   .onClose((i, ev) => {
     console.log('closed')
+    connected.value = false
   })
   .onError((i, ev) => {
     console.log('error')
+    connected.value = false
   })
   .onMessage((i, ev) => {
+    console.log('message', ev)
     if ('message' in JSON.parse(ev.data)) {
       return
     }
@@ -66,24 +71,3 @@ export let ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
     console.log('retry')
   })
   .build()
-
-export function fun() {
-  console.log(1)
-  // ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
-  //   .onOpen((i, ev) => {
-  //     console.log('opened')
-  //   })
-  //   .onClose((i, ev) => {
-  //     console.log('closed')
-  //   })
-  //   .onError((i, ev) => {
-  //     console.log('error')
-  //   })
-  //   .onMessage((i, ev) => {
-  //     console.log('message')
-  //   })
-  //   .onRetry((i, ev) => {
-  //     console.log('retry')
-  //   })
-  //   .build()
-}

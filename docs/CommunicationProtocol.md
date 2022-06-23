@@ -9,6 +9,7 @@
 | 字段名      | 二级字段      | 类型    | 说明                   |
 | ----------- | ------------- | ------- | ---------------------- |
 | request     |               | object  | 固定字段               |
+|             | time          | boolean | 是否获取服务器时间     |
 |             | submitCircuit | boolean | 是否提交线路           |
 |             | acquireResult | boolean | 是否获取结果           |
 | circuit     |               | obejct  | 符合后端线路编码方案   |
@@ -20,6 +21,7 @@
 ```
 {
   "request": {
+    "time": "boolean",
     "submitCircuit": "boolean",
     "acquireResult": "boolean"
   },

@@ -10,6 +10,7 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.0.6",
     "@types/echarts": "^4.9.15",
     "@types/vue-select": "^3.16.0",
     "axios": "^0.27.2",
