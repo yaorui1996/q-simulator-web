@@ -37,7 +37,7 @@ export const stateVectorBarOption = reactive({
       color: '#000000',
       fontWeight: 'bold',
       interval: 0,
-      rotate: 90
+      rotate: 0
     },
     data: []
   },
@@ -148,7 +148,7 @@ export const probabilityBarOption = reactive({
       color: '#000000',
       fontWeight: 'bold',
       interval: 0,
-      rotate: 90
+      rotate: 0
     },
     data: []
   },
@@ -217,6 +217,102 @@ export const probabilityBarOption = reactive({
   ]
 })
 
+export const samplingBarOption = reactive({
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    },
+    textStyle: {
+      color: '#000000',
+      fontWeight: 'bold'
+    }
+  },
+  legend: {
+    data: ['Frequency']
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'category',
+    axisTick: {
+      show: true
+    },
+    axisLabel: {
+      show: true,
+      color: '#000000',
+      fontWeight: 'bold',
+      interval: 0,
+      rotate: 0
+    },
+    data: ['00', '01', '10', '11']
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      name: 'Frequency',
+      type: 'bar',
+      label: {
+        show: false,
+        position: 'inside'
+      },
+      data: [1, 2, 3, 4]
+    }
+  ],
+  toolbox: {
+    show: true,
+    feature: {
+      dataView: {
+        readOnly: true,
+        optionToContent: function (opt: any): string {
+          let axisData = opt.xAxis[0].data
+          let series = opt.series
+          let table =
+            '<table border="1" cellspacing="0" cellpadding="2" style="width:100%;text-align:center">' +
+            '<thead><tr>' +
+            '<th width="20%">Outcome</th>' +
+            `<th>${series[0].name}</th>` +
+            '</tr></thead><tbody>'
+          for (let i: number = 0; i < axisData.length; i++) {
+            table +=
+              '<tr>' +
+              `<td>${axisData[i]}</td>` +
+              `<td>${series[0].data[i]}</td>` +
+              '</tr>'
+          }
+          table += '</tbody></table>'
+          return table
+        }
+      },
+      mySaveAsExcel: {
+        show: true,
+        title: 'Save As Excel',
+        icon: 'M4.7,22.9L29.3,45.5L54.7,23.4M4.6,43.6L4.6,58L53.8,58L53.8,43.6M29.2,45.1L29.2,0',
+        onclick: function () {
+          saveAsExcel('Sampling')
+        }
+      }
+    }
+  },
+  color: [
+    '#5470c6',
+    '#91cc75',
+    '#fac858',
+    '#ee6666',
+    '#73c0de',
+    '#3ba272',
+    '#fc8452',
+    '#9a60b4',
+    '#ea7ccc'
+  ]
+})
+
 export function saveAsExcel(term: string): void {
   function getStateVector(): {
     state: string
@@ -237,6 +333,16 @@ export function saveAsExcel(term: string): void {
     return probabilityBarOption.xAxis.data.map((_, index) => ({
       state: probabilityBarOption.xAxis.data[index],
       probability: probabilityBarOption.series[0].data[index]
+    }))
+  }
+
+  function getSampling(): {
+    outcome: string
+    frequency: number
+  }[] {
+    return samplingBarOption.xAxis.data.map((_, index) => ({
+      outcome: samplingBarOption.xAxis.data[index],
+      frequency: samplingBarOption.series[0].data[index]
     }))
   }
 
@@ -261,6 +367,10 @@ export function saveAsExcel(term: string): void {
     new ExportToCsv(
       Object.assign(options, { filename: 'Probability' })
     ).generateCsv(getProbability())
+  } else if (term == 'Sampling') {
+    new ExportToCsv(
+      Object.assign(options, { filename: 'Sampling' })
+    ).generateCsv(getSampling())
   }
 }
 
@@ -275,7 +385,6 @@ export function changeChartDataToStepSelectStateVector(): void {
       .map((_, index) =>
         getStateFullName(index.toString(2).padStart(getRegisterNum(), '0'))
       )
-
     refillArray(stateVectorBarOption.xAxis.data, stateNames)
     refillArray(
       stateVectorBarOption.series[0].data,
@@ -287,6 +396,7 @@ export function changeChartDataToStepSelectStateVector(): void {
         .imaginaryParts
     )
     stateVectorBarOption.xAxis.axisLabel.show = getRegisterNum() <= 5
+    stateVectorBarOption.xAxis.axisLabel.rotate = getRegisterNum() <= 3 ? 0 : 90
     refillArray(probabilityBarOption.xAxis.data, stateNames)
     refillArray(
       probabilityBarOption.series[0].data,
@@ -294,5 +404,6 @@ export function changeChartDataToStepSelectStateVector(): void {
         .probabilities
     )
     probabilityBarOption.xAxis.axisLabel.show = getRegisterNum() <= 5
+    probabilityBarOption.xAxis.axisLabel.rotate = getRegisterNum() <= 3 ? 0 : 90
   }
 }

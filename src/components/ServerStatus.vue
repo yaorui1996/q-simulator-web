@@ -9,7 +9,6 @@
 <template>
   <div>
     <el-tooltip
-      class="box-item"
       effect="light"
       placement="bottom"
     >
@@ -32,9 +31,5 @@
     right: 3rem;
     display: flex;
     flex-direction: row;
-  }
-
-  p {
-    border: 1px solid blue;
   }
 </style>

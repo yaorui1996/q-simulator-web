@@ -30,7 +30,7 @@
     paletteGates,
     stepSelect
   } from './store/Circuit'
-  import { ws } from './server/Server'
+  import { sendRequest, ws } from './server/Server'
 
   initPalette()
   initCircuit()
@@ -55,14 +55,16 @@
       console.log(JSON.stringify(getEncodedCircuit(), undefined, 2))
     } else {
       checkingCircuitGatesError.value = false
-      ws.send(JSON.stringify({}))
-      // ws.send(JSON.stringify(getEncodedCircuit()))
-      // console.log(JSON.stringify(getEncodedCircuit()))
-      // sampleCircuit(1, true)
-      if (stepSelect.value == 0) {
-        stepSelect.value = getStepNum() - 1
-      }
-      // changeChartDataToStepSelectStateVector()
+      // ws.send(
+      //   JSON.stringify({
+      //     request: {
+      //       time: true,
+      //       submitCircuit: false,
+      //       acquireResult: false
+      //     }
+      //   })
+      // )
+      sendRequest()
     }
   }
 </script>
