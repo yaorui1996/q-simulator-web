@@ -86,11 +86,6 @@
       })
     }
   }
-
-  function handleClear(): void {
-    circuitGates.splice(1, circuitGates.length - 1)
-    trimCircuit()
-  }
 </script>
 
 <template>
@@ -165,13 +160,6 @@
           type="success"
           @click="handleSave"
           >Save Current
-        </el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          type="danger"
-          @click="handleClear"
-          >Clear Current
         </el-button>
       </el-form-item>
     </el-form>

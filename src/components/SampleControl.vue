@@ -2,14 +2,16 @@
   setup
   lang="ts"
 >
-  import { Check, Close } from '@element-plus/icons-vue'
+  import { Check, Close, Delete } from '@element-plus/icons-vue'
   import { ElMessage } from 'element-plus'
   import { ref } from 'vue'
   import { getEncodedCircuit } from './server/Encoder'
   import { connected, sendRequest, ws } from './server/Server'
   import {
     getCircuitGatesErrorNum,
-    checkingCircuitGatesError
+    checkingCircuitGatesError,
+    circuitGates,
+    trimCircuit
   } from './store/Circuit'
 
   const elMessage = ref<HTMLElement>()
@@ -36,6 +38,11 @@
       checkingCircuitGatesError.value = false
       sendRequest()
     }
+  }
+
+  function handleClear(): void {
+    circuitGates.splice(1, circuitGates.length - 1)
+    trimCircuit()
   }
 </script>
 
@@ -69,6 +76,12 @@
           style="font-size: var(--el-font-size-medium)"
           >Sample
         </el-button>
+        <el-button
+          type="danger"
+          :icon="Delete"
+          circle
+          @click="handleClear"
+        />
       </el-form-item>
     </el-form>
   </div>

@@ -40,18 +40,18 @@ export const ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
   .build()
 
 export function sendRequest(): void {
-  // console.log(
-  //   JSON.stringify({
-  //     request: {
-  //       time: false,
-  //       submitCircuit: true,
-  //       acquireResult: true
-  //     },
-  //     circuit: getEncodedCircuit(),
-  //     sample: 1,
-  //     stateVector: true
-  //   })
-  // )
+  console.log(
+    JSON.stringify({
+      request: {
+        time: false,
+        submitCircuit: true,
+        acquireResult: true
+      },
+      circuit: getEncodedCircuit(),
+      sample: 1,
+      stateVector: true
+    })
+  )
   ws.send(JSON.stringify(getEncodedCircuit()))
 }
 
