@@ -8,7 +8,11 @@
   import exportFromJSON from 'export-from-json'
 
   import { connected } from './server/Server'
-  import { circuitGates, loadCircuitFromString } from './store/Circuit'
+  import {
+    circuitGates,
+    loadCircuitFromString,
+    trimCircuit
+  } from './store/Circuit'
 
   interface CircuitItem {
     index: number
@@ -82,6 +86,11 @@
       })
     }
   }
+
+  function handleClear(): void {
+    circuitGates.splice(1, circuitGates.length - 1)
+    trimCircuit()
+  }
 </script>
 
 <template>
@@ -89,7 +98,7 @@
     <el-table
       ref="circuitTable"
       :data="circuitItems"
-      height="300"
+      height="200"
       highlight-current-row
       @current-change="handleCurrentChange"
     >
@@ -148,14 +157,21 @@
         <el-button
           type="success"
           @click="handleLoad"
-          >Load Selected Circuit
+          >Load Selected
         </el-button>
       </el-form-item>
       <el-form-item>
         <el-button
           type="success"
           @click="handleSave"
-          >Save Current Circuit
+          >Save Current
+        </el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          type="danger"
+          @click="handleClear"
+          >Clear Current
         </el-button>
       </el-form-item>
     </el-form>
