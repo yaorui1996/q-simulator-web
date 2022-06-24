@@ -6,7 +6,7 @@
   import { ElMessage } from 'element-plus'
   import { ref } from 'vue'
   import { getEncodedCircuit } from './server/Encoder'
-  import { connected, sendRequest } from './server/Server'
+  import { connected, sendRequest, ws } from './server/Server'
   import {
     getCircuitGatesErrorNum,
     checkingCircuitGatesError
@@ -67,6 +67,7 @@
           :min="1"
           :max="1000"
           @change=""
+          style="width: 5rem"
         />
       </el-form-item>
       <el-form-item>

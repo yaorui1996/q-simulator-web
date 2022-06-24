@@ -217,7 +217,7 @@ export const probabilityBarOption = reactive({
   ]
 })
 
-export const samplingBarOption = reactive({
+export const samplingDistributionBarOption = reactive({
   tooltip: {
     trigger: 'axis',
     axisPointer: {
@@ -295,7 +295,7 @@ export const samplingBarOption = reactive({
         title: 'Save As Excel',
         icon: 'M4.7,22.9L29.3,45.5L54.7,23.4M4.6,43.6L4.6,58L53.8,58L53.8,43.6M29.2,45.1L29.2,0',
         onclick: function () {
-          saveAsExcel('Sampling')
+          saveAsExcel('SamplingDistribution')
         }
       }
     }
@@ -336,13 +336,13 @@ export function saveAsExcel(term: string): void {
     }))
   }
 
-  function getSampling(): {
+  function getSamplingDistribution(): {
     outcome: string
     frequency: number
   }[] {
-    return samplingBarOption.xAxis.data.map((_, index) => ({
-      outcome: samplingBarOption.xAxis.data[index],
-      frequency: samplingBarOption.series[0].data[index]
+    return samplingDistributionBarOption.xAxis.data.map((_, index) => ({
+      outcome: samplingDistributionBarOption.xAxis.data[index],
+      frequency: samplingDistributionBarOption.series[0].data[index]
     }))
   }
 
@@ -367,10 +367,10 @@ export function saveAsExcel(term: string): void {
     new ExportToCsv(
       Object.assign(options, { filename: 'Probability' })
     ).generateCsv(getProbability())
-  } else if (term == 'Sampling') {
+  } else if (term == 'SamplingDistribution') {
     new ExportToCsv(
-      Object.assign(options, { filename: 'Sampling' })
-    ).generateCsv(getSampling())
+      Object.assign(options, { filename: 'SamplingDistribution' })
+    ).generateCsv(getSamplingDistribution())
   }
 }
 

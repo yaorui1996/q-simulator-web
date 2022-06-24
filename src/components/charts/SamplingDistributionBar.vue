@@ -4,18 +4,18 @@
 >
   import VChart from 'vue-echarts'
 
-  import { samplingBarOption } from '../store/Chart'
+  import { samplingDistributionBarOption } from '../store/Chart'
 </script>
 
 <template>
   <v-chart
-    class="sampling-bar"
-    :option="samplingBarOption"
+    class="sampling-distribution-bar"
+    :option="samplingDistributionBarOption"
   />
 </template>
 
 <style scoped>
-  .sampling-bar {
+  .sampling-distribution-bar {
     width: var(--chart-width);
     height: var(--chart-height);
   }

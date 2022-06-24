@@ -32,6 +32,7 @@
   } from './store/Circuit'
   import { sendRequest, ws } from './server/Server'
   import SampleControl from './SampleControl.vue'
+  import CircuitEditor from './CircuitEditor.vue'
 
   initPalette()
   initCircuit()
@@ -60,8 +61,13 @@
       class="circuit-board"
       :circuit-gates="circuitGates"
     />
-    <SampleControl />
-    <CircuitChart class="circuit-chart" />
+    <div style="display: flex; flex-direction: row">
+      <div style="display: flex; flex-direction: column; margin-right: 2rem">
+        <SampleControl />
+        <CircuitEditor />
+      </div>
+      <CircuitChart class="circuit-chart" />
+    </div>
   </div>
 </template>
 
@@ -98,6 +104,6 @@
 
   .circuit-chart {
     position: relative;
-    align-self: center;
+    /* align-self: center; */
   }
 </style>
