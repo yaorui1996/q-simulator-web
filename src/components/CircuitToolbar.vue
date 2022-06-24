@@ -37,17 +37,11 @@
     circuitItems.forEach((item, index) => (item.index = index))
   }
 
-  function handleImport(): void {
-    circuitItems.push({
-      index: circuitItems.length,
-      name: `Circuit${circuitItems.length}`,
-      circuit: JSON.stringify(circuitGates)
-    })
-  }
+  function handleImport(): void {}
 
   function handleLoad(): void {
     if (currentCircuitItem.value.index >= 0) {
-      loadCircuitFromString(JSON.stringify(currentCircuitItem.value.circuit))
+      loadCircuitFromString(currentCircuitItem.value.circuit)
     }
   }
 
