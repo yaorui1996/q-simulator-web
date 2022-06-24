@@ -3,8 +3,10 @@
   lang="ts"
 >
   import { Check, Close } from '@element-plus/icons-vue'
-  import { ElTable } from 'element-plus'
+  import { ElTable, UploadFile, UploadRawFile } from 'element-plus'
   import { ref, reactive } from 'vue'
+  import exportFromJSON from 'export-from-json'
+
   import { connected } from './server/Server'
   import { circuitGates, loadCircuitFromString } from './store/Circuit'
 
@@ -37,7 +39,13 @@
     circuitItems.forEach((item, index) => (item.index = index))
   }
 
-  function handleImport(): void {}
+  function handleImport(): void {
+    const data = { foo: 'foo', bar: 'bar' }
+    const fileName = 'download'
+    const exportType = exportFromJSON.types.json
+
+    exportFromJSON({ data, fileName, exportType })
+  }
 
   function handleLoad(): void {
     if (currentCircuitItem.value.index >= 0) {
@@ -51,6 +59,28 @@
       name: `Circuit${circuitItems.length}`,
       circuit: JSON.stringify(circuitGates)
     })
+  }
+
+  function onUploadChange(file: UploadFile): void {
+    let reader = new FileReader()
+    reader.readAsText(file.raw as UploadRawFile)
+    reader.onload = () => {
+      circuitItems.push({
+        index: circuitItems.length,
+        name: file.name.replace('.json', ''),
+        circuit: JSON.stringify(JSON.parse(reader.result as string))
+      })
+    }
+  }
+
+  function handleExport(): void {
+    if (currentCircuitItem.value.index >= 0) {
+      exportFromJSON({
+        data: JSON.parse(currentCircuitItem.value.circuit),
+        fileName: currentCircuitItem.value.name,
+        exportType: exportFromJSON.types.json
+      })
+    }
   }
 </script>
 
@@ -68,56 +98,67 @@
         label="Circuit"
       />
     </el-table>
-    <div style="margin-top: 1rem">
-      <el-form
-        :inline="true"
-        @submit.prevent
-      >
-        <el-form-item label="">
-          <el-input
-            v-model="currentCircuitItem.name"
-            size="small"
-            style="width: 6rem"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="danger"
-            size="small"
-            @click="handleRemove"
-            >Remove
-          </el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="info"
-            size="small"
-            @click="handleImport"
-            >Import
-          </el-button>
-          <el-button
-            type="info"
-            size="small"
-            @click=""
-            >Export
-          </el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="success"
-            @click="handleLoad"
-            >Load Selected Circuit
-          </el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="success"
-            @click="handleSave"
-            >Save Current Circuit
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+    <el-form
+      :inline="true"
+      @submit.prevent
+      style="margin-top: 1rem"
+    >
+      <el-form-item>
+        <el-input
+          v-model="currentCircuitItem.name"
+          size="small"
+          style="width: 6rem"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          type="danger"
+          size="small"
+          @click="handleRemove"
+          >Remove
+        </el-button>
+      </el-form-item>
+    </el-form>
+    <el-upload
+      :show-file-list="false"
+      :auto-upload="false"
+      :on-change="onUploadChange"
+    >
+      <template #trigger>
+        <el-button
+          type="info"
+          size="small"
+          >Import
+        </el-button>
+      </template>
+      <el-button
+        type="info"
+        size="small"
+        @click="handleExport"
+        style="margin-left: 1rem"
+        >Export
+      </el-button>
+    </el-upload>
+    <el-form
+      :inline="true"
+      style="margin-top: 1rem"
+      @submit.prevent
+    >
+      <el-form-item>
+        <el-button
+          type="success"
+          @click="handleLoad"
+          >Load Selected Circuit
+        </el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          type="success"
+          @click="handleSave"
+          >Save Current Circuit
+        </el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 

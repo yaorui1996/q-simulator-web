@@ -16,6 +16,7 @@
     "axios": "^0.27.2",
     "echarts": "^5.3.2",
     "element-plus": "^2.2.6",
+    "export-from-json": "^1.6.0",
     "export-to-csv": "^0.2.1",
     "mitt": "^3.0.0",
     "pinia": "^2.0.14",

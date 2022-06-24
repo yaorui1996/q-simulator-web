@@ -17,19 +17,18 @@ import { getEncodedCircuit } from './Encoder'
 
 export const connected = ref<boolean>(false)
 
+let lastConnectTime: number = 0
+
 export const ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
   .withBackoff(new ConstantBackoff(1000)) // 1000ms = 1s
   .onOpen(() => {
     console.log('opened')
-    connected.value = true
   })
   .onClose(() => {
     console.log('closed')
-    connected.value = false
   })
   .onError(() => {
     console.log('error')
-    connected.value = false
   })
   .onMessage((_, event: MessageEvent) => {
     const response = JSON.parse(event.data)
@@ -41,14 +40,30 @@ export const ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
   .build()
 
 export function sendRequest(): void {
+  // console.log(
+  //   JSON.stringify({
+  //     request: {
+  //       time: false,
+  //       submitCircuit: true,
+  //       acquireResult: true
+  //     },
+  //     circuit: getEncodedCircuit(),
+  //     sample: 1,
+  //     stateVector: true
+  //   })
+  // )
   ws.send(JSON.stringify(getEncodedCircuit()))
 }
 
 export function handleResponse(response: any): void {
-  console.log('message', JSON.stringify(response, undefined, 2))
+  // console.log('message', JSON.stringify(response, undefined, 2))
   if ('message' in response) {
     return
-  } else {
+  }
+  if ('time' in response) {
+    lastConnectTime = Date.now()
+  }
+  if ('data' in response) {
     computation.samples.splice(0, computation.samples.length)
     if (response.data.length == 1) {
       const sample = response.data[0]
@@ -85,3 +100,18 @@ export function handleResponse(response: any): void {
     }
   }
 }
+
+function ping() {
+  ws.send(
+    JSON.stringify({
+      request: {
+        time: true,
+        submitCircuit: false,
+        acquireResult: false
+      }
+    })
+  )
+  connected.value = Date.now() - lastConnectTime < 3000
+}
+
+setInterval(ping, 1000)

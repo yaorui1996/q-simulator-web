@@ -30,19 +30,10 @@
         grouping: true,
         appendTo: elMessage.value
       })
-      console.clear()
-      console.log(JSON.stringify(getEncodedCircuit(), undefined, 2))
+      // console.clear()
+      // console.log(JSON.stringify(getEncodedCircuit(), undefined, 2))
     } else {
       checkingCircuitGatesError.value = false
-      // ws.send(
-      //   JSON.stringify({
-      //     request: {
-      //       time: true,
-      //       submitCircuit: false,
-      //       acquireResult: false
-      //     }
-      //   })
-      // )
       sendRequest()
     }
   }

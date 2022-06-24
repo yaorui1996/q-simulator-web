@@ -12,7 +12,7 @@
   const options = reactive<string[]>([
     'State Vector',
     'Probability',
-    'SamplingDistribution'
+    'Sampling Distribution'
   ])
   const selected = ref<string>('State Vector')
 </script>
@@ -35,7 +35,7 @@
     />
     <SamplingDistributionBar
       class="state-vector-bar"
-      v-if="selected == 'SamplingDistribution'"
+      v-if="selected == 'Sampling Distribution'"
     />
   </div>
 </template>
@@ -54,7 +54,7 @@
   }
   .select-chart {
     margin: 0 0.625rem 1.5rem 0.625rem;
-    width: 40%;
+    width: 50%;
     --vs-border-radius: 0.375rem;
     --vs-border-color: rgba(60, 60, 60, 0.1);
     font-weight: bold;

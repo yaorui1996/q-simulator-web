@@ -1,5 +1,5 @@
-import { ExportToCsv } from 'export-to-csv'
 import { reactive } from 'vue'
+import exportFromJSON from 'export-from-json'
 
 import { refillArray } from '../utils/Array'
 import { getStateFullName } from '../utils/String'
@@ -360,17 +360,23 @@ export function saveAsExcel(term: string): void {
   }
 
   if (term == 'StateVector') {
-    new ExportToCsv(
-      Object.assign(options, { filename: 'StateVecotr' })
-    ).generateCsv(getStateVector())
+    exportFromJSON({
+      data: getStateVector(),
+      fileName: 'StateVecotr',
+      exportType: exportFromJSON.types.csv
+    })
   } else if (term == 'Probability') {
-    new ExportToCsv(
-      Object.assign(options, { filename: 'Probability' })
-    ).generateCsv(getProbability())
+    exportFromJSON({
+      data: getProbability(),
+      fileName: 'Probability',
+      exportType: exportFromJSON.types.csv
+    })
   } else if (term == 'SamplingDistribution') {
-    new ExportToCsv(
-      Object.assign(options, { filename: 'SamplingDistribution' })
-    ).generateCsv(getSamplingDistribution())
+    exportFromJSON({
+      data: getSamplingDistribution(),
+      fileName: 'SamplingDistribution',
+      exportType: exportFromJSON.types.csv
+    })
   }
 }
 
