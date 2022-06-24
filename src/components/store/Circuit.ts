@@ -13,6 +13,7 @@ import {
   uncontrollableGates,
   valueEditableGates
 } from '../Gate.js'
+import { refillArray } from '../utils/Array.js'
 
 export const stepMin = 4
 export const stepMax = 10
@@ -431,4 +432,8 @@ export function initCircuitWith0(): void {
   circuitGates[0].forEach((gate) => {
     Object.assign(gate, { name: GateName.Write, value: '0' })
   })
+}
+
+export function loadCircuitFromString(circuit: string): void {
+  refillArray(circuitGates, JSON.parse(circuit))
 }

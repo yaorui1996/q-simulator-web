@@ -6,35 +6,56 @@
   import { ElTable } from 'element-plus'
   import { ref, reactive } from 'vue'
   import { connected } from './server/Server'
+  import { circuitGates, loadCircuitFromString } from './store/Circuit'
 
-  interface circuitName {
+  interface CircuitItem {
     index: number
     name: string
+    circuit: string
   }
 
   const circuitTable = ref<InstanceType<typeof ElTable>>()
-  const circuitNames = reactive<circuitName[]>([])
-  const currentCircuitName = ref<circuitName>({ index: -1, name: '' })
+  const circuitItems = reactive<CircuitItem[]>([])
+  const currentCircuitItem = ref<CircuitItem>({
+    index: -1,
+    name: '',
+    circuit: ''
+  })
 
-  function handleCurrentChange(currentRow: circuitName | undefined): void {
+  function handleCurrentChange(currentRow: CircuitItem | undefined): void {
     if (currentRow) {
-      currentCircuitName.value = currentRow
+      currentCircuitItem.value = currentRow
     }
   }
 
   function handleRemove(): void {
     circuitTable.value?.setCurrentRow(undefined)
-    if (currentCircuitName.value.index >= 0) {
-      circuitNames.splice(currentCircuitName.value.index, 1)
-      currentCircuitName.value.index = -1
+    if (currentCircuitItem.value.index >= 0) {
+      circuitItems.splice(currentCircuitItem.value.index, 1)
+      currentCircuitItem.value.index = -1
     }
-    circuitNames.forEach((item, index) => (item.index = index))
+    circuitItems.forEach((item, index) => (item.index = index))
   }
 
   function handleImport(): void {
-    circuitNames.push({
-      index: circuitNames.length,
-      name: '2016-05-3'
+    circuitItems.push({
+      index: circuitItems.length,
+      name: `Circuit${circuitItems.length}`,
+      circuit: JSON.stringify(circuitGates)
+    })
+  }
+
+  function handleLoad(): void {
+    if (currentCircuitItem.value.index >= 0) {
+      loadCircuitFromString(JSON.stringify(currentCircuitItem.value.circuit))
+    }
+  }
+
+  function handleSave(): void {
+    circuitItems.push({
+      index: circuitItems.length,
+      name: `Circuit${circuitItems.length}`,
+      circuit: JSON.stringify(circuitGates)
     })
   }
 </script>
@@ -43,7 +64,7 @@
   <div class="circuit-editor">
     <el-table
       ref="circuitTable"
-      :data="circuitNames"
+      :data="circuitItems"
       height="300"
       highlight-current-row
       @current-change="handleCurrentChange"
@@ -60,7 +81,7 @@
       >
         <el-form-item label="">
           <el-input
-            v-model="currentCircuitName.name"
+            v-model="currentCircuitItem.name"
             size="small"
             style="width: 6rem"
           />
@@ -90,7 +111,14 @@
         <el-form-item>
           <el-button
             type="success"
-            @click=""
+            @click="handleLoad"
+            >Load Selected Circuit
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            type="success"
+            @click="handleSave"
             >Save Current Circuit
           </el-button>
         </el-form-item>

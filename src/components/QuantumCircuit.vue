@@ -32,7 +32,7 @@
   } from './store/Circuit'
   import { sendRequest, ws } from './server/Server'
   import SampleControl from './SampleControl.vue'
-  import CircuitEditor from './CircuitEditor.vue'
+  import CircuitToolbar from './CircuitToolbar.vue'
 
   initPalette()
   initCircuit()
@@ -64,7 +64,7 @@
     <div style="display: flex; flex-direction: row">
       <div style="display: flex; flex-direction: column; margin-right: 2rem">
         <SampleControl />
-        <CircuitEditor />
+        <CircuitToolbar />
       </div>
       <CircuitChart class="circuit-chart" />
     </div>

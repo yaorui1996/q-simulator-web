@@ -34,7 +34,7 @@ let eventStatus: EventStatus = EventStatus.Idle
 let selectedCircuitDropzoneGate: Gate = emptyGate()
 let draggedCircuitDropzoneGate: Gate = emptyGate()
 
-function deleteDraggedCircuitDrppzoneGate(): void {
+function deleteDraggedCircuitDropzoneGate(): void {
   Object.assign(draggedCircuitDropzoneGate, {
     name: GateName.Null,
     value: '',
@@ -43,15 +43,17 @@ function deleteDraggedCircuitDrppzoneGate(): void {
   })
 }
 
-function moveDraggedCircuitDrppzoneGate(step: number, register: number): void {
-  Object.assign(circuitGates[step][register], {
-    name: draggedCircuitDropzoneGate.name,
-    value: draggedCircuitDropzoneGate.value,
-    swapIndex: draggedCircuitDropzoneGate.swapIndex,
-    display: Display.Drag
-  })
-  deleteDraggedCircuitDrppzoneGate()
-  draggedCircuitDropzoneGate = circuitGates[step][register]
+function moveDraggedCircuitDropzoneGate(step: number, register: number): void {
+  if (step > 0) {
+    Object.assign(circuitGates[step][register], {
+      name: draggedCircuitDropzoneGate.name,
+      value: draggedCircuitDropzoneGate.value,
+      swapIndex: draggedCircuitDropzoneGate.swapIndex,
+      display: Display.Drag
+    })
+    deleteDraggedCircuitDropzoneGate()
+    draggedCircuitDropzoneGate = circuitGates[step][register]
+  }
 }
 
 export function handleMouseEnterPaletteDropzone(eventGate: Gate): void {
@@ -180,7 +182,7 @@ export function handleMouseMoveCircuitStep(
         draggedCircuitDropzoneGate.register == targetRegister
       )
     ) {
-      moveDraggedCircuitDrppzoneGate(targetStep, targetRegister)
+      moveDraggedCircuitDropzoneGate(targetStep, targetRegister)
     }
   }
 }
@@ -215,7 +217,7 @@ export function handleMouseLeaveCircuitBoard(): void {
   if (eventStatus == EventStatus.DraggingInsideBoard) {
     eventStatus = EventStatus.DraggingOutsideBoard
     initDragDropzone(draggedCircuitDropzoneGate)
-    deleteDraggedCircuitDrppzoneGate()
+    deleteDraggedCircuitDropzoneGate()
   }
 }
 
@@ -243,7 +245,7 @@ export function handleMouseMoveQuantumCircuit(event: MouseEvent): void {
   } else if (eventStatus == EventStatus.DraggingInsideBoard) {
     eventStatus = EventStatus.DraggingOutsideBoard
     initDragDropzone(draggedCircuitDropzoneGate)
-    deleteDraggedCircuitDrppzoneGate()
+    deleteDraggedCircuitDropzoneGate()
   }
 }
 
