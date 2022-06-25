@@ -9,12 +9,7 @@
   import StateVectorBar from './charts/StateVectorBar.vue'
   import SamplingDistributionBar from './charts/SamplingDistributionBar.vue'
 
-  const options = reactive<string[]>([
-    'State Vector',
-    'Probability',
-    'Sampling Distribution'
-  ])
-  const selected = ref<string>('State Vector')
+  import { options, selected } from './store/Chart'
 </script>
 
 <template>

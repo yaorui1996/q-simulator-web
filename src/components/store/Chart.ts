@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import exportFromJSON from 'export-from-json'
 
 import { refillArray } from '../utils/Array'
@@ -6,6 +6,13 @@ import { getStateFullName } from '../utils/String'
 import { circuitGates, getRegisterNum, getStepNum, stepSelect } from './Circuit'
 import { computation, Measurement } from './Computation'
 import { GateName } from '../Gate'
+
+export const options = reactive<string[]>([
+  'State Vector',
+  'Probability',
+  'Sampling Distribution'
+])
+export const selected = ref<string>('State Vector')
 
 export const stateVectorBarOption = reactive({
   tooltip: {
@@ -250,7 +257,7 @@ export const samplingDistributionBarOption = reactive({
       interval: 0,
       rotate: 0
     },
-    data: ['00', '01', '10', '11']
+    data: []
   },
   yAxis: {
     type: 'value'
@@ -263,7 +270,7 @@ export const samplingDistributionBarOption = reactive({
         show: false,
         position: 'inside'
       },
-      data: [1, 2, 3, 4]
+      data: []
     }
   ],
   toolbox: {
@@ -426,12 +433,12 @@ export function updateSamplingDistributionBar(): void {
     const gateNum: number = samplingMeasurements[0].length
     const sampleNames: string[] = Array(Math.pow(2, gateNum))
       .fill('')
-      .map((_, index) => index.toString(2).padStart(getRegisterNum(), '0'))
+      .map((_, index) => index.toString(2).padStart(gateNum, '0'))
     const sampleFrequency: number[] = Array(Math.pow(2, gateNum)).fill(0)
     samplingMeasurements.forEach((measurements) => {
       measurements.sort(
         (measurement1, measurement2) =>
-          ((measurement1.register - measurement2.register) * getStepNum()) / 2 +
+          ((measurement1.register - measurement2.register) * gateNum) / 2 +
           (measurement1.step - measurement2.step)
       )
       sampleFrequency[
