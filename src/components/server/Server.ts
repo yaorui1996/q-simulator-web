@@ -1,6 +1,9 @@
 import { ref } from 'vue'
 import { ConstantBackoff, WebsocketBuilder } from 'websocket-ts'
-import { changeChartDataToStepSelectStateVector } from '../store/Chart'
+import {
+  changeChartDataToStepSelectStateVector,
+  updateSamplingDistributionBar
+} from '../store/Chart'
 import {
   getStepNum,
   getRegisterNum,
@@ -39,20 +42,34 @@ export const ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
   })
   .build()
 
-export function sendRequest(): void {
-  console.log(
-    JSON.stringify({
-      request: {
-        time: false,
-        submitCircuit: true,
-        acquireResult: true
-      },
-      circuit: getEncodedCircuit(),
-      sample: 1,
-      stateVector: true
-    })
-  )
-  ws.send(JSON.stringify(getEncodedCircuit()))
+export function sendRequest(sampleNum: number = 1): void {
+  if (sampleNum == 1) {
+    ws.send(
+      JSON.stringify({
+        request: {
+          time: false,
+          submitCircuit: true,
+          acquireResult: true
+        },
+        circuit: getEncodedCircuit(),
+        sample: 1,
+        stateVector: true
+      })
+    )
+  } else if (sampleNum > 1) {
+    ws.send(
+      JSON.stringify({
+        request: {
+          time: false,
+          submitCircuit: true,
+          acquireResult: true
+        },
+        circuit: getEncodedCircuit(),
+        sample: sampleNum,
+        stateVector: false
+      })
+    )
+  }
 }
 
 export function handleResponse(response: any): void {
@@ -97,6 +114,7 @@ export function handleResponse(response: any): void {
         })
       })
       computation.circuit = JSON.stringify(circuitGates)
+      updateSamplingDistributionBar()
     }
   }
 }

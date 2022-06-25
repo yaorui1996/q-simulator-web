@@ -3,8 +3,9 @@ import exportFromJSON from 'export-from-json'
 
 import { refillArray } from '../utils/Array'
 import { getStateFullName } from '../utils/String'
-import { circuitGates, getRegisterNum, stepSelect } from './Circuit'
-import { computation } from './Computation'
+import { circuitGates, getRegisterNum, getStepNum, stepSelect } from './Circuit'
+import { computation, Measurement } from './Computation'
+import { GateName } from '../Gate'
 
 export const stateVectorBarOption = reactive({
   tooltip: {
@@ -411,5 +412,38 @@ export function changeChartDataToStepSelectStateVector(): void {
     )
     probabilityBarOption.xAxis.axisLabel.show = getRegisterNum() <= 5
     probabilityBarOption.xAxis.axisLabel.rotate = getRegisterNum() <= 3 ? 0 : 90
+  }
+}
+
+export function updateSamplingDistributionBar(): void {
+  if (
+    computation.circuit == JSON.stringify(circuitGates) &&
+    computation.samples.length > 1
+  ) {
+    const samplingMeasurements: Measurement[][] = computation.samples.map(
+      (item) => item.measurements
+    )
+    const gateNum: number = samplingMeasurements[0].length
+    const sampleNames: string[] = Array(Math.pow(2, gateNum))
+      .fill('')
+      .map((_, index) => index.toString(2).padStart(getRegisterNum(), '0'))
+    const sampleFrequency: number[] = Array(Math.pow(2, gateNum)).fill(0)
+    samplingMeasurements.forEach((measurements) => {
+      measurements.sort(
+        (measurement1, measurement2) =>
+          ((measurement1.register - measurement2.register) * getStepNum()) / 2 +
+          (measurement1.step - measurement2.step)
+      )
+      sampleFrequency[
+        parseInt(
+          measurements.map((measurement) => measurement.value).join(''),
+          2
+        )
+      ]++
+    })
+    refillArray(samplingDistributionBarOption.xAxis.data, sampleNames)
+    refillArray(samplingDistributionBarOption.series[0].data, sampleFrequency)
+    samplingDistributionBarOption.xAxis.axisLabel.show = gateNum <= 5
+    samplingDistributionBarOption.xAxis.axisLabel.rotate = gateNum <= 3 ? 0 : 90
   }
 }

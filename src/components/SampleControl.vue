@@ -36,7 +36,11 @@
       // console.log(JSON.stringify(getEncodedCircuit(), undefined, 2))
     } else {
       checkingCircuitGatesError.value = false
-      sendRequest()
+      if (sampleNum.value == 1) {
+        sendRequest()
+      } else if (sampleNum.value > 1) {
+        sendRequest(sampleNum.value)
+      }
     }
   }
 
