@@ -39,7 +39,7 @@ QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化
 
 ## 1. 用户界面
 
-![](/docs/manual/用户界面.jpg)
+![](./manual/用户界面.jpg)
 
 ### 1.1 量子门调色盘
 
@@ -47,7 +47,7 @@ QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化
 
 将鼠标放在量子门上，会显示对应量子门的名称和介绍。
 
-![](/docs/manual/量子门调色盘.jpg)
+![](./manual/量子门调色盘.jpg)
 
 ### 1.2 量子线路
 
@@ -55,25 +55,25 @@ QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化
 
 蓝色可移动线条代表步骤选择器。
 
-![](/docs/manual/量子线路_0.jpg)
+![](./manual/量子线路_0.jpg)
 
 ### 1.3 控制面板
 
 用户可以在这里控制线路运行，设置采样次数，存储读取线路。
 
-![](/docs/manual/控制面板.jpg)
+![](./manual/控制面板.jpg)
 
 ### 1.4 数据可视化面板
 
 展示线路运行结果。
 
-![](/docs/manual/数据可视化面板.jpg)
+![](./manual/数据可视化面板.jpg)
 
 ### 1.5 服务器状态
 
 显示服务器连接状态。
 
-![](/docs/manual/服务器状态.jpg)
+![](./manual/服务器状态.jpg)
 
 ## 2. 使用说明
 
@@ -83,13 +83,13 @@ QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化
 
 将鼠标放在调色盘的量子门上，会显示对应量子门的名称和介绍。从调色盘中拖动量子门到量子线路中，用户可以实现量子门的新增。已经放置的量子门可以再次被拖动到其它位置。将量子门拖动到量子线路外可以实现量子门删除操作。
 
-![](/docs/manual/量子线路_1.jpg)
+![](./manual/量子线路_1.jpg)
 
 #### 2.1.2 插入量子门
 
 将量子门拖动到横向相邻的两个量子门的中间位置可以实现量子门的插入。
 
-![](/docs/manual/量子线路_插入.jpg)
+![](./manual/量子线路_插入.jpg)
 
 #### 2.1.3 设置量子门参数
 
@@ -97,19 +97,19 @@ QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化
 
 参数设置的单位为 π ，中间的输入框可以输入数值或表达式，合法的数值是浮点数，合法的表达式是浮点数和四则运算符号。例如可以输入 0.333 或 1/3 ，运算结果为 0.333π 或 1/3π 。
 
-![](/docs/manual/量子线路_设置量子门参数.jpg)
+![](./manual/量子线路_设置量子门参数.jpg)
 
 #### 2.1.4 Control Gate 操作
 
 每一步的所有 Control Gates 会串联作用到这一步的所有其它的量子门上，不包括 Reset Operation 和 Measurement Gate 。
 
-![](/docs/manual/量子线路_ControlGate.jpg)
+![](./manual/量子线路_ControlGate.jpg)
 
 #### 2.1.5 Swap Gate 操作
 
 Swap Gate 只能成对添加或者删除，点击其中一个 Swap Gate 会高亮显示与之配对的 Swap Gate，当一对 Swap Gates 位于同一步时，并且不和其它成对的 Swap Gates 相交时，程序会将这对 Swap Gates 连接以表示有效。
 
-![](/docs/manual/量子线路_SwapGate.jpg)
+![](./manual/量子线路_SwapGate.jpg)
 
 ### 2.2 运行线路
 
@@ -123,7 +123,7 @@ Swap Gate 只能成对添加或者删除，点击其中一个 Swap Gate 会高�
 
 如果线路中包含非法量子门将会显示警告，并将非法量子门高亮显示，直到用户修改完毕。
 
-![](/docs/manual/控制面板_单次采样.jpg)
+![](./manual/控制面板_单次采样.jpg)
 
 #### 2.2.2 多次采样
 
@@ -133,7 +133,7 @@ Swap Gate 只能成对添加或者删除，点击其中一个 Swap Gate 会高�
 
 如果线路中包含非法量子门将会显示警告，并将非法量子门高亮显示，直到用户修改完毕。
 
-![](/docs/manual/控制面板_多次采样.jpg)
+![](./manual/控制面板_多次采样.jpg)
 
 ### 2.3 显示结果
 
@@ -149,15 +149,15 @@ Probability 图表显示的是态矢量各分量的概率。
 
 点击图表右上角的两个按钮，可以显示表格数据和下载数据。
 
-![](/docs/manual/数据可视化面板_按钮.jpg)
+![](./manual/数据可视化面板_按钮.jpg)
 
 例如线路：
 
-![](/docs/manual/量子线路_2.jpg)
+![](./manual/量子线路_2.jpg)
 
 单次采样结果为：
 
-![](/docs/manual/数据可视化面板_StateVector.jpg)
+![](./manual/数据可视化面板_StateVector.jpg)
 
 #### 2.3.2 多次采样的结果
 
@@ -167,7 +167,7 @@ Sampling Distribution 图表显示的是多次采样结果的分布。
 
 对于 [2.3.1](#231-单次采样的结果) 中的样例线路，1000 次采样的结果为：
 
-![](/docs/manual/数据可视化面板_SamplingDistribution.jpg)
+![](./manual/数据可视化面板_SamplingDistribution.jpg)
 
 ### 2.4 线路保存
 
@@ -181,7 +181,7 @@ Sampling Distribution 图表显示的是多次采样结果的分布。
 
 点击 Load Select 按钮，用户可以将选中的线路加载到当前线路。
 
-![](/docs/manual/控制面板_存储读取.jpg)
+![](./manual/控制面板_存储读取.jpg)
 
 ### 2.4.2 下载上传线路
 
