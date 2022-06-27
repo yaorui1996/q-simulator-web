@@ -12,7 +12,7 @@ QSimulatorWeb 是一个可拖动量子线路的前端项目。它提供图形化
     - [Installation 安装](#installation-安装)
     - [Run 运行](#run-运行)
   - [Directory Structure 项目架构](#directory-structure-项目架构)
-  - [Usage of Quantum Circuit 量子线路使用方法](#usage-of-quantum-circuit-量子线路使用方法)
+  - [Manual of QSimulatorWeb 量子模拟器网页使用说明](#manual-of-qsimulatorweb-量子模拟器网页使用说明)
   - [Circuit Data Structure 线路数据结构](#circuit-data-structure-线路数据结构)
   - [Communication Protocol 通信协议](#communication-protocol-通信协议)
   - [State Encode Protocol 态编码方案](#state-encode-protocol-态编码方案)
@@ -49,9 +49,9 @@ Project 项目
 └── package.json
 ```
 
-## Usage of Quantum Circuit 量子线路使用方法
+## Manual of QSimulatorWeb 量子模拟器网页使用说明
 
-介绍量子线路如何拖动，参数设置方法和解读可视化结果。[详细文档](/docs/CircuitUsage.md)
+介绍量子线路如何拖动，参数设置方法和解读可视化结果。[详细文档](/docs/Manual.md)
 
 ## Circuit Data Structure 线路数据结构
 
