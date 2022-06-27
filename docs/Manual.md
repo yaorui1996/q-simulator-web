@@ -210,5 +210,3 @@ Sampling Distribution 图表显示的是多次采样结果的分布。
 ### 3.2 线路编码
 
 线路编码符合量子计算服务器规范。
-
-![](/docs/manual/量子线路.jpg)
