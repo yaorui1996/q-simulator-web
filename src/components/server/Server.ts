@@ -42,34 +42,22 @@ export const ws = new WebsocketBuilder('ws://101.6.96.206:5000/circuit')
   })
   .build()
 
-export function sendRequest(sampleNum: number = 1): void {
-  if (sampleNum == 1) {
-    ws.send(
-      JSON.stringify({
-        request: {
-          time: false,
-          submitCircuit: true,
-          acquireResult: true
-        },
-        circuit: getEncodedCircuit(),
-        sample: 1,
-        stateVector: true
-      })
-    )
-  } else if (sampleNum > 1) {
-    ws.send(
-      JSON.stringify({
-        request: {
-          time: false,
-          submitCircuit: true,
-          acquireResult: true
-        },
-        circuit: getEncodedCircuit(),
-        sample: sampleNum,
-        stateVector: false
-      })
-    )
-  }
+export function sendRequest(
+  sampleNum: number = 1,
+  stateVector: boolean = true
+): void {
+  ws.send(
+    JSON.stringify({
+      request: {
+        time: false,
+        submitCircuit: true,
+        acquireResult: true
+      },
+      circuit: getEncodedCircuit(),
+      sample: sampleNum,
+      stateVector: stateVector
+    })
+  )
 }
 
 export function handleResponse(response: any): void {
@@ -82,7 +70,7 @@ export function handleResponse(response: any): void {
   }
   if ('data' in response) {
     computation.samples.splice(0, computation.samples.length)
-    if (response.data.length == 1) {
+    if (response.data.length == 1 && response.verification.data.stateVector) {
       const sample = response.data[0]
       computation.samples.push({
         stateVectors: sample.stateVector.map((item: any) => ({
@@ -102,8 +90,8 @@ export function handleResponse(response: any): void {
         stepSelect.value = getStepNum() - 1
       }
       changeChartDataToStepSelectStateVector()
-    } else if (response.data.length > 1) {
-      response.data.forEach((sample: any, index: number) => {
+    } else {
+      response.data.forEach((sample: any) => {
         computation.samples.push({
           stateVectors: [],
           measurements: sample.measurement.map((item: any) => ({

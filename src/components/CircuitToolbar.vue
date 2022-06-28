@@ -3,16 +3,20 @@
   lang="ts"
 >
   import { Check, Close } from '@element-plus/icons-vue'
-  import { ElTable, UploadFile, UploadRawFile } from 'element-plus'
+  import { ElMessage, ElTable, UploadFile, UploadRawFile } from 'element-plus'
   import { ref, reactive } from 'vue'
   import exportFromJSON from 'export-from-json'
 
   import { connected } from './server/Server'
   import {
     circuitGates,
+    getCircuitGatesErrorNum,
     loadCircuitFromString,
     trimCircuit
   } from './store/Circuit'
+  import { Gate, GateName } from './Gate'
+
+  const elMessage = ref<HTMLElement>()
 
   interface CircuitItem {
     index: number
@@ -43,12 +47,43 @@
     circuitItems.forEach((item, index) => (item.index = index))
   }
 
-  function handleImport(): void {
-    const data = { foo: 'foo', bar: 'bar' }
-    const fileName = 'download'
-    const exportType = exportFromJSON.types.json
+  function onUploadChange(file: UploadFile): void {
+    let reader = new FileReader()
+    reader.readAsText(file.raw as UploadRawFile)
+    reader.onload = () => {
+      const circuit: string = JSON.stringify(
+        JSON.parse(reader.result as string)
+      )
+      if (
+        JSON.parse(circuit)
+          .flat()
+          .some((gate: any) => !(gate.name in GateName))
+      ) {
+        ElMessage({
+          showClose: true,
+          message: 'Error, invalid circuit.',
+          type: 'error',
+          grouping: true,
+          appendTo: elMessage.value
+        })
+      } else {
+        circuitItems.push({
+          index: circuitItems.length,
+          name: file.name.replace('.json', ''),
+          circuit: circuit
+        })
+      }
+    }
+  }
 
-    exportFromJSON({ data, fileName, exportType })
+  function handleExport(): void {
+    if (currentCircuitItem.value.index >= 0) {
+      exportFromJSON({
+        data: JSON.parse(currentCircuitItem.value.circuit),
+        fileName: currentCircuitItem.value.name,
+        exportType: exportFromJSON.types.json
+      })
+    }
   }
 
   function handleLoad(): void {
@@ -64,31 +99,13 @@
       circuit: JSON.stringify(circuitGates)
     })
   }
-
-  function onUploadChange(file: UploadFile): void {
-    let reader = new FileReader()
-    reader.readAsText(file.raw as UploadRawFile)
-    reader.onload = () => {
-      circuitItems.push({
-        index: circuitItems.length,
-        name: file.name.replace('.json', ''),
-        circuit: JSON.stringify(JSON.parse(reader.result as string))
-      })
-    }
-  }
-
-  function handleExport(): void {
-    if (currentCircuitItem.value.index >= 0) {
-      exportFromJSON({
-        data: JSON.parse(currentCircuitItem.value.circuit),
-        fileName: currentCircuitItem.value.name,
-        exportType: exportFromJSON.types.json
-      })
-    }
-  }
 </script>
 
 <template>
+  <div
+    ref="elMessage"
+    style="pointer-events: none"
+  ></div>
   <div class="circuit-editor">
     <el-table
       ref="circuitTable"

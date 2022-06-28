@@ -18,7 +18,7 @@
 
   const elMessage = ref<HTMLElement>()
 
-  const sampleNum = ref<number>(2)
+  const sampleNum = ref<number>(1)
 
   function handleClickRun() {
     const errorNum: number = getCircuitGatesErrorNum()
@@ -60,7 +60,7 @@
       })
     } else {
       checkingCircuitGatesError.value = false
-      sendRequest(sampleNum.value)
+      sendRequest(sampleNum.value, false)
       refillArray(options, ['Sampling Distribution'])
       selected.value = 'Sampling Distribution'
     }
@@ -118,9 +118,8 @@
           :controls="false"
           :precision="0"
           :step="1"
-          :min="2"
+          :min="1"
           :max="1000"
-          @change=""
           style="width: 5rem"
         />
       </el-form-item>

@@ -425,7 +425,7 @@ export function changeChartDataToStepSelectStateVector(): void {
 export function updateSamplingDistributionBar(): void {
   if (
     computation.circuit == JSON.stringify(circuitGates) &&
-    computation.samples.length > 1
+    computation.samples.length > 0
   ) {
     const samplingMeasurements: Measurement[][] = computation.samples.map(
       (item) => item.measurements
