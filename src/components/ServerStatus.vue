@@ -22,6 +22,12 @@
       />
     </el-tooltip>
   </div>
+  <a
+    href="/docs/Manual.pdf"
+    download="Manual.pdf"
+  >
+    Manual
+  </a>
 </template>
 
 <style scoped>
@@ -31,5 +37,11 @@
     right: 3rem;
     display: flex;
     flex-direction: row;
+  }
+
+  a {
+    position: absolute;
+    top: 6rem;
+    right: 2.5rem;
   }
 </style>
