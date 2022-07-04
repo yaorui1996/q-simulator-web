@@ -1,3 +1,4 @@
+import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 import { ConstantBackoff, WebsocketBuilder } from 'websocket-ts'
 import {
@@ -46,18 +47,29 @@ export function sendRequest(
   sampleNum: number = 1,
   stateVector: boolean = true
 ): void {
-  ws.send(
-    JSON.stringify({
-      request: {
-        time: false,
-        submitCircuit: true,
-        acquireResult: true
-      },
-      circuit: getEncodedCircuit(),
-      sample: sampleNum,
-      stateVector: stateVector
+  if (getRegisterNum() <= 15 && getStepNum() / 2 <= 100 && sampleNum <= 1000) {
+    ws.send(
+      JSON.stringify({
+        request: {
+          time: false,
+          submitCircuit: true,
+          acquireResult: true
+        },
+        circuit: getEncodedCircuit(),
+        sample: sampleNum,
+        stateVector: stateVector
+      })
+    )
+  } else {
+    ElMessage({
+      showClose: true,
+      dangerouslyUseHTMLString: true,
+      message:
+        'Error, invalid request.<br/><br/>Max Qubit Num is 15.<br/>Max Step Num is 100.<br/>Max Sample Num is 1000.',
+      type: 'error',
+      grouping: true
     })
-  )
+  }
 }
 
 export function handleResponse(response: any): void {
