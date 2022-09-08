@@ -1,4 +1,5 @@
 :root {
+  --circuit-container-background-color-gray: rgb(243, 244, 246);
   --circuit-background-color-gray: rgb(249, 250, 251);
   --cursor-grab: grab;
   --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',

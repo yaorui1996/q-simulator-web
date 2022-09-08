@@ -39,39 +39,49 @@
 </script>
 
 <template>
-  <div
-    class="circuit"
-    @mouseleave="handleMouseLeaveQuantumCircuit()"
-    @mousedown="handleMouseDownQuantumCircuit()"
-    @mouseup="handleMouseUpQuantumCircuit()"
-    @mousemove="handleMouseMoveQuantumCircuit($event)"
-  >
-    <ServerStatus />
-    <div class="drag-dropzone-container">
-      <CommonDropzone
-        :gate="dragDropzoneGate"
-        v-if="isGateInDragDropzone(dragDropzoneGate)"
-      />
-    </div>
-    <CircuitPalette
-      class="circuit-palette"
-      :palette-gates="paletteGates"
-    />
-    <CircuitBoard
-      class="circuit-board"
-      :circuit-gates="circuitGates"
-    />
-    <div style="display: flex; flex-direction: row">
-      <div style="display: flex; flex-direction: column; margin-right: 2rem">
-        <SampleControl />
-        <CircuitToolbar />
+  <div class="circuit-container">
+    <h1>华翊量子模拟器</h1>
+    <div
+      class="circuit"
+      @mouseleave="handleMouseLeaveQuantumCircuit()"
+      @mousedown="handleMouseDownQuantumCircuit()"
+      @mouseup="handleMouseUpQuantumCircuit()"
+      @mousemove="handleMouseMoveQuantumCircuit($event)"
+    >
+      <ServerStatus />
+      <div class="drag-dropzone-container">
+        <CommonDropzone
+          :gate="dragDropzoneGate"
+          v-if="isGateInDragDropzone(dragDropzoneGate)"
+        />
       </div>
-      <CircuitChart class="circuit-chart" />
+      <CircuitPalette
+        class="circuit-palette"
+        :palette-gates="paletteGates"
+      />
+      <CircuitBoard
+        class="circuit-board"
+        :circuit-gates="circuitGates"
+      />
+      <div style="display: flex; flex-direction: row">
+        <div style="display: flex; flex-direction: column; margin-right: 2rem">
+          <SampleControl />
+          <CircuitToolbar />
+        </div>
+        <CircuitChart class="circuit-chart" />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+  .circuit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--circuit-container-background-color-gray);
+  }
+
   .circuit {
     user-select: none;
     /* overflow: auto; */
