@@ -270,8 +270,8 @@ function cleanQuantumCircuit(): void {
 }
 
 function setDragDropzonePos(event: MouseEvent): void {
-  dragDropzonePos.left = event.pageX - 55 / 2
-  dragDropzonePos.top = event.pageY - 55 / 2
+  dragDropzonePos.left = event.clientX - 55 / 2 - document.getElementById('circuit')!.offsetLeft + 5
+  dragDropzonePos.top = event.clientY - 55 / 2 - document.getElementById('circuit')!.offsetTop + 5
 }
 
 function moveStepFocus(eventGate: Gate): void {

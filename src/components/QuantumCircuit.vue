@@ -43,6 +43,7 @@
     <h1>华翊量子模拟器</h1>
     <div
       class="circuit"
+      id="circuit"
       @mouseleave="handleMouseLeaveQuantumCircuit()"
       @mousedown="handleMouseDownQuantumCircuit()"
       @mouseup="handleMouseUpQuantumCircuit()"
